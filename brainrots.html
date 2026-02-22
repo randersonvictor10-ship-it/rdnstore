@@ -83,3 +83,99 @@ h1{
 
 </body>
 </html>
+<div class="brainrot-item">
+  <h2>Brainrot XYZ</h2>
+  <p>Preço: R$ XX</p>
+
+  <!-- Botão comprar -->
+  <button id="btn-comprar" class="btn-comprar">Comprar</button>
+
+  <!-- Opções escondidas -->
+  <div id="opcoes-compra" class="opcoes-compra" style="display: none;">
+    <p>Escolha onde comprar:</p>
+    <a 
+      href="https://wa.me/5581995367131?text=Olá%20quero%20comprar%20esse%20Brainrot%20da%20RDN%20STORE"
+      target="_blank"
+      class="btn-whatsapp"
+    >
+      WhatsApp
+    </a>
+
+    <a 
+      href="https://instagram.com/rdn.store.ofc"
+      target="_blank"
+      class="btn-instagram"
+    >
+      Instagram
+    </a>
+  </div>
+</div>
+
+<style>
+.brainrot-item {
+  text-align: center;
+  margin: 20px auto;
+  color: #fff;
+  font-family: 'Arial', sans-serif;
+}
+
+.btn-comprar {
+  background: #ff004f;
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-top: 8px;
+}
+
+.btn-comprar:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(255,255,255,0.6);
+}
+
+.opcoes-compra p {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.btn-whatsapp, .btn-instagram {
+  display: inline-block;
+  padding: 12px 18px;
+  margin: 6px;
+  border-radius: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #000;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-whatsapp {
+  background: #25D366;
+}
+
+.btn-instagram {
+  background: linear-gradient(45deg, #ff004f, #ffb300);
+}
+
+.btn-whatsapp:hover,
+.btn-instagram:hover {
+  transform: scale(1.12);
+  box-shadow: 0 0 15px rgba(255,255,255,0.6);
+}
+</style>
+
+<script>
+const btnComprar = document.getElementById('btn-comprar');
+const opcoesCompra = document.getElementById('opcoes-compra');
+
+btnComprar.addEventListener('click', () => {
+  if (opcoesCompra.style.display === "none") {
+    opcoesCompra.style.display = "block";
+  } else {
+    opcoesCompra.style.display = "none";
+  }
+});
+</script>
