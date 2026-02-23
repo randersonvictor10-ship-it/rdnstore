@@ -18,6 +18,7 @@ body{background:#000;color:white;}
 .card-content{padding:15px;}
 .buy-btn{margin-top:10px;width:100%;padding:8px;background:#8b0000;border:none;color:white;border-radius:8px;cursor:pointer;}
 .buy-btn:hover{background:#ff2e2e;}
+.buy-btn:disabled{background:#555;cursor:not-allowed;}
 .cart{position:fixed;right:-360px;top:0;width:320px;height:100%;background:#111;padding:15px;box-shadow:-2px 0 15px rgba(255,0,0,0.7);transition:0.4s ease;overflow-y:auto;z-index:999;}
 .cart.active{right:0;}
 .cart-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #8b0000;padding-bottom:10px;margin-bottom:10px;}
@@ -73,21 +74,21 @@ let cart = [];
 let total = 0;
 const telefoneWhatsApp = "5581995367131";
 
-// Estoque até você definir
+// Aqui você define facilmente stock de cada produto
 const produtos = [
-  { nome:"la romantic 1,4b", preco:55, stock: Infinity, img:"brainrot1.png" },
-  { nome:"fora de stock2", preco:50, stock: 0, img:"brainrot2.png" },
-  { nome:"fora de stock3", preco:45, stock: 0, img:"brainrot3.png" },
-  { nome:"fora de stock4", preco:40, stock: 0, img:"brainrot4.png" },
-  { nome:"fora de stock5", preco:35, stock: 0, img:"brainrot5.png" },
-  { nome:"fora de stock6", preco:30, stock: 0, img:"brainrot6.png" },
-  { nome:"fora de stock7", preco:28, stock: 0, img:"brainrot7.png" },
-  { nome:"fora de stock8", preco:25, stock: 0, img:"brainrot8.png" },
-  { nome:"fora de stock9", preco:22, stock: 0, img:"brainrot9.png" },
-  { nome:"fota de stock10", preco:20, stock: 0, img:"brainrot10.png" }
+  { nome:"Produto 1", preco:55, stock:1, img:"brainrot1.png" }, // em estoque
+  { nome:"Produto 2", preco:50, stock:0, img:"brainrot2.png" }, // esgotado
+  { nome:"Produto 3", preco:45, stock:0, img:"brainrot3.png" },
+  { nome:"Produto 4", preco:40, stock:0, img:"brainrot4.png" },
+  { nome:"Produto 5", preco:35, stock:0, img:"brainrot5.png" },
+  { nome:"Produto 6", preco:30, stock:0, img:"brainrot6.png" },
+  { nome:"Produto 7", preco:28, stock:0, img:"brainrot7.png" },
+  { nome:"Produto 8", preco:25, stock:0, img:"brainrot8.png" },
+  { nome:"Produto 9", preco:22, stock:0, img:"brainrot9.png" },
+  { nome:"Produto 10", preco:20, stock:0, img:"brainrot10.png" }
 ];
 
-// Criar produtos
+// Criar produtos dinamicamente
 produtos.forEach((produto,i)=>{
   productsDiv.innerHTML += `
     <div class="card">
@@ -95,16 +96,29 @@ produtos.forEach((produto,i)=>{
       <div class="card-content">
         <div>${produto.nome}</div>
         <div class="price">R$${produto.preco}</div>
-        <button class="buy-btn" onclick="buy(${i})">Comprar</button>
+        <button class="buy-btn" id="buy${i}" onclick="buy(${i})" ${produto.stock===0?'disabled':''}>
+          ${produto.stock===0?'Esgotado':'Comprar'}
+        </button>
       </div>
     </div>
   `;
 });
 
+// Funções
 function buy(i){
+  if(produtos[i].stock <= 0){ return; }
+  produtos[i].stock--; // diminui stock
   cart.push({id:i,nome:produtos[i].nome,preco:produtos[i].preco});
-  total += produtos[i].preco;
   updateCart();
+  atualizarBotao(i);
+}
+
+function atualizarBotao(i){
+  const btn = document.getElementById("buy"+i);
+  if(produtos[i].stock <= 0){
+    btn.disabled = true;
+    btn.innerText = "Esgotado";
+  }
 }
 
 function updateCart(){
@@ -118,10 +132,14 @@ function updateCart(){
       </div>
     `;
   });
+  total = cart.reduce((acc,item)=>acc+item.preco,0);
   document.getElementById("total").innerText="Total: R$"+total.toFixed(2);
 }
 
 function removeItem(index){
+  const item = cart[index];
+  produtos[item.id].stock++; // devolve stock
+  atualizarBotao(item.id);
   cart.splice(index,1);
   updateCart();
 }
@@ -143,7 +161,6 @@ function fecharCheckout(){ document.getElementById("checkout").style.display="no
 
 function finalizarCompra(){
   if(cart.length===0){ alert("Carrinho vazio!"); return; }
-
   const numeroPedido=Date.now();
   const data=new Date().toLocaleString("pt-BR");
   let mensagem=`🛒 *NOVO PEDIDO - Rdn Store*%0A`;
@@ -151,12 +168,11 @@ function finalizarCompra(){
   mensagem+=`📅 ${data}%0A%0A`;
   cart.forEach(item=>mensagem+=`• ${item.nome} — R$${item.preco}%0A`);
   mensagem+=`%0A💰 *Total: R$${total.toFixed(2)}*`;
-
   window.open(`https://wa.me/${telefoneWhatsApp}?text=${mensagem}`,"_blank");
-
+  
   // Limpar carrinho
-  cart=[]; total=0; updateCart();
-  fecharCheckout();
+  cart.forEach(item=>atualizarBotao(item.id)); // mantém estoque já diminuído
+  cart=[]; updateCart(); fecharCheckout();
 }
 </script>
 
