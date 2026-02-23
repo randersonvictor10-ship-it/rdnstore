@@ -62,7 +62,7 @@ const telefoneWhatsApp = "5581995367131";
 
 /* ================== PRODUTOS ================== */
 const estoques = [5,1,4,8,2,9,7,1,1,10];
-const produtos = [1,1,1,1,1,1,1,1,1,1];
+const produtos = [
   { nome:"Brainrot 1,4b", preco:55, img:"brainrot1.png" },
   { nome:"Brainrot 1,2b", preco:50, img:"brainrot2.png" },
   { nome:"Brainrot 1,0b", preco:45, img:"brainrot3.png" },
@@ -79,7 +79,7 @@ const produtos = [1,1,1,1,1,1,1,1,1,1];
 produtos.forEach((produto, i) => {
 
   if (localStorage.getItem("stock"+i) === null) {
-    localStorage.setItem("stock"+i, estoques[1]);
+    localStorage.setItem("stock"+i, estoques[i]);
   }
 
   productsDiv.innerHTML += `
@@ -104,7 +104,7 @@ function updateStock(i){
   const el = document.getElementById("stock"+i);
   const sold = document.getElementById("sold"+i);
 
-  if(stock > 0){
+  if(stock > 1){
     el.innerText = "Restam " + stock + " unidades";
     el.style.color = "#00ff88";
     sold.style.display = "none";
@@ -118,7 +118,7 @@ function updateStock(i){
 /* ================== COMPRAR ================== */
 function buy(i){
   let stock = parseInt(localStorage.getItem("stock"+i));
-  if(stock > 0){
+  if(stock > 1){
     stock--;
     localStorage.setItem("stock"+i, stock);
     updateStock(i);
