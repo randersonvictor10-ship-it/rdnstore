@@ -6,21 +6,50 @@
 <title>RDN STORE</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family: Arial, Helvetica, sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
 
 body{
-    background: linear-gradient(180deg,#0c1b2f,#071426);
+    background:#000;
     color:white;
+    overflow-x:hidden;
 }
 
-/* Barra Cupom */
+/* PARTÍCULAS */
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:-1;
+}
+
+/* LOADER */
+#loader{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.loader-circle{
+    width:60px;
+    height:60px;
+    border:5px solid #330000;
+    border-top:5px solid red;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    to{transform:rotate(360deg);}
+}
+
+/* CUPOM BAR */
 .cupom-bar{
-    background:#3b6edc;
+    background:linear-gradient(90deg,#5a0000,#ff0000);
     padding:15px;
     display:flex;
     justify-content:space-between;
@@ -30,156 +59,193 @@ body{
 
 .cupom-btn{
     background:white;
-    color:black;
+    color:#8b0000;
     padding:8px 15px;
     border-radius:10px;
+    cursor:pointer;
 }
 
-/* Header */
+/* HEADER */
 header{
     display:flex;
     justify-content:space-between;
-    align-items:center;
     padding:20px;
 }
 
 .logo{
-    color:#4cc2ff;
-    font-size:22px;
+    color:red;
     font-weight:bold;
+    font-size:22px;
 }
 
-.header-buttons{
-    display:flex;
-    gap:10px;
+/* HERO */
+.hero{
+    margin:20px;
+    padding:40px;
+    text-align:center;
+    border-radius:20px;
+    background:linear-gradient(90deg,#5a0000,#ff0000);
+    box-shadow:0 0 25px red;
 }
 
-.header-buttons button{
-    background:#1b2c45;
-    border:none;
-    color:white;
-    padding:10px 15px;
+/* PRODUTO */
+.produto{
+    background:#111;
+    margin:20px;
+    padding:20px;
     border-radius:15px;
+}
+
+button{
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    background:red;
+    color:white;
     cursor:pointer;
 }
 
-/* Card principal */
-.hero{
-    margin:20px;
-    padding:40px 20px;
-    border-radius:25px;
-    text-align:center;
-    background: linear-gradient(90deg,#1ea5ff,#3b6edc);
-}
-
-.hero h1{
-    font-size:28px;
-    margin-bottom:10px;
-}
-
-.hero p{
-    font-size:18px;
-}
-
-/* Categorias */
-.categorias{
-    padding:20px;
-}
-
-.categorias h2{
-    margin-bottom:20px;
-    font-size:22px;
-}
-
-.categoria-card{
-    background:#1b2c45;
-    padding:25px;
-    border-radius:20px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:15px;
-    font-weight:bold;
-}
-
-/* Botões flutuantes */
-.floating{
+/* CARRINHO */
+#cart{
     position:fixed;
-    right:20px;
-    bottom:20px;
-    display:flex;
-    flex-direction:column;
-    gap:15px;
+    right:10px;
+    top:80px;
+    background:#111;
+    padding:15px;
+    border-radius:15px;
+    width:200px;
+    box-shadow:0 0 15px red;
 }
 
-.floating a{
-    width:60px;
-    height:60px;
-    border-radius:50%;
-    background:#3b6edc;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-decoration:none;
+input{
+    width:100%;
+    padding:8px;
+    margin-top:5px;
+    border-radius:8px;
+    border:none;
 }
 </style>
 </head>
 
 <body>
 
+<div id="loader">
+    <div class="loader-circle"></div>
+</div>
+
+<canvas id="particles"></canvas>
+
 <div class="cupom-bar">
-    <span>5% OFF • Use o cupom e ganhe desconto!</span>
-    <div class="cupom-btn">PADIX5</div>
+    <span>5% OFF • Use o cupom</span>
+    <div class="cupom-btn">RDN5</div>
 </div>
 
 <header>
     <div class="logo">RDN STORE</div>
-
-    <div class="header-buttons">
-        <button>🔍</button>
-        <button>👤 Entrar</button>
-        <button>🛒</button>
-    </div>
 </header>
 
 <div class="hero">
-    <h1>RDN STORE</h1>
-    <p>Cupom: PADIX5</p>
+    <h1>Bem-vindo à RDN STORE</h1>
+    <p>Cupom ativo: RDN5</p>
 </div>
 
-<div class="categorias">
-    <h2>Categorias Populares</h2>
-
-    <div class="categoria-card">
-        <span>ROUBE BRAINROT</span>
-        <span>→ Ver produtos</span>
-    </div>
-
-    <div class="categoria-card">
-        <span>BASES COMPLETAS</span>
-        <span>→ Ver produtos</span>
-    </div>
-
-    <div class="categoria-card">
-        <span>FUJA DO TSUNAMI</span>
-        <span>→ Ver produtos</span>
-    </div>
+<div class="produto">
+    <h3>Produto Exemplo</h3>
+    <p>Preço: R$100</p>
+    <button onclick="addToCart(100)">Adicionar ao Carrinho</button>
 </div>
 
-<!-- Botões flutuantes -->
-<div class="floating">
+<div id="cart">
+    <h4>Carrinho</h4>
+    <p>Total: R$ <span id="total">0</span></p>
 
-    <!-- WhatsApp -->
-    <a href="https://wa.me/5581995367131" target="_blank">
-        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" width="28">
-    </a>
-
-    <!-- Instagram -->
-    <a href="https://instagram.com/rdn.store.ofc" target="_blank">
-        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" width="26">
-    </a>
-
+    <input type="text" id="couponInput" placeholder="Digite o cupom">
+    <button onclick="applyCoupon()">Aplicar</button>
 </div>
+
+<script>
+// LOADER
+window.onload = function(){
+    setTimeout(()=>{
+        document.getElementById("loader").style.display="none";
+    },1500);
+}
+
+// CARRINHO
+let total = 0;
+let discountApplied = false;
+
+function addToCart(price){
+    total += price;
+    updateTotal();
+}
+
+function updateTotal(){
+    document.getElementById("total").innerText = total.toFixed(2);
+}
+
+function applyCoupon(){
+    let code = document.getElementById("couponInput").value;
+
+    if(code === "RDN5" && !discountApplied){
+        total *= 0.95;
+        discountApplied = true;
+        updateTotal();
+        alert("Cupom aplicado! 5% de desconto.");
+    } else {
+        alert("Cupom inválido ou já aplicado.");
+    }
+}
+
+// PARTÍCULAS
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particlesArray = [];
+
+class Particle{
+    constructor(){
+        this.x = Math.random()*canvas.width;
+        this.y = Math.random()*canvas.height;
+        this.size = Math.random()*2;
+        this.speedY = Math.random()*1;
+    }
+    update(){
+        this.y += this.speedY;
+        if(this.y > canvas.height){
+            this.y = 0;
+            this.x = Math.random()*canvas.width;
+        }
+    }
+    draw(){
+        ctx.fillStyle="red";
+        ctx.beginPath();
+        ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+        ctx.fill();
+    }
+}
+
+function init(){
+    for(let i=0;i<100;i++){
+        particlesArray.push(new Particle());
+    }
+}
+
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for(let i=0;i<particlesArray.length;i++){
+        particlesArray[i].update();
+        particlesArray[i].draw();
+    }
+    requestAnimationFrame(animate);
+}
+
+init();
+animate();
+</script>
 
 </body>
 </html>
