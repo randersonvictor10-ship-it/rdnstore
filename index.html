@@ -1,251 +1,249 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RDN STORE</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RDN STORE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* === BODY === */
+        body {
+            background: linear-gradient(180deg, #000000, #1a1a1a);
+            color: white;
+            overflow-x: hidden;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
+        /* === CUPOM BAR === */
+        .cupom-bar {
+            background: #c81010;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+        }
 
-body{
-    background:#000;
-    color:white;
-    overflow-x:hidden;
-}
+        .cupom-btn {
+            background: black;
+            color: #c81010;
+            padding: 8px 18px;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-/* PARTÍCULAS */
-canvas{
-    position:fixed;
-    top:0;
-    left:0;
-    z-index:-1;
-}
+        /* === HEADER === */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
 
-/* LOADER */
-#loader{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:black;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-}
+        .logo {
+            color: #c81010;
+            font-size: 22px;
+            font-weight: bold;
+        }
 
-.loader-circle{
-    width:60px;
-    height:60px;
-    border:5px solid #330000;
-    border-top:5px solid red;
-    border-radius:50%;
-    animation:spin 1s linear infinite;
-}
+        header button {
+            background: #c81010;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 15px;
+            cursor: pointer;
+        }
 
-@keyframes spin{
-    to{transform:rotate(360deg);}
-}
+        /* === HERO / BANNER === */
+        .hero {
+            margin: 20px;
+            padding: 45px 20px;
+            border-radius: 30px;
+            text-align: center;
+            background: linear-gradient(90deg, #1a0000, #3a0000);
+        }
 
-/* CUPOM BAR */
-.cupom-bar{
-    background:linear-gradient(90deg,#5a0000,#ff0000);
-    padding:15px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    font-weight:bold;
-}
+        .hero h1 {
+            font-size: 28px;
+            margin: 0;
+            color: #fff;
+        }
 
-.cupom-btn{
-    background:white;
-    color:#8b0000;
-    padding:8px 15px;
-    border-radius:10px;
-    cursor:pointer;
-}
+        .hero p {
+            margin-top: 10px;
+            font-size: 16px;
+        }
 
-/* HEADER */
-header{
-    display:flex;
-    justify-content:space-between;
-    padding:20px;
-}
+        /* === CATEGORIAS === */
+        .categorias {
+            margin: 20px;
+        }
 
-.logo{
-    color:red;
-    font-weight:bold;
-    font-size:22px;
-}
+        .categoria-card {
+            background: #1a1a1a;
+            padding: 25px;
+            border-radius: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+            transition: 0.3s;
+            border: 2px solid #c81010;
+        }
 
-/* HERO */
-.hero{
-    margin:20px;
-    padding:40px;
-    text-align:center;
-    border-radius:20px;
-    background:linear-gradient(90deg,#5a0000,#ff0000);
-    box-shadow:0 0 25px red;
-}
+        .categoria-card:hover {
+            background: #2a0000;
+        }
 
-/* PRODUTO */
-.produto{
-    background:#111;
-    margin:20px;
-    padding:20px;
-    border-radius:15px;
-}
+        .categoria-card a {
+            color: #fff;
+            text-decoration: none;
+        }
 
-button{
-    padding:10px;
-    border:none;
-    border-radius:10px;
-    background:red;
-    color:white;
-    cursor:pointer;
-}
+        /* === MODAL DE CUPOM === */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+        }
 
-/* CARRINHO */
-#cart{
-    position:fixed;
-    right:10px;
-    top:80px;
-    background:#111;
-    padding:15px;
-    border-radius:15px;
-    width:200px;
-    box-shadow:0 0 15px red;
-}
+        .modal-content {
+            background: #1a1a1a;
+            padding: 25px;
+            border-radius: 20px;
+            width: 300px;
+            text-align: center;
+            color: white;
+            margin: 15% auto;
+        }
 
-input{
-    width:100%;
-    padding:8px;
-    margin-top:5px;
-    border-radius:8px;
-    border:none;
-}
-</style>
+        .modal-content button {
+            background: #c81010;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* === BOTÕES FLUTUANTES === */
+        .float-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 28px;
+            color: white;
+            z-index: 999;
+        }
+
+        .float-btn.whatsapp {
+            background-color: #25D366;
+            right: 20px;
+        }
+
+        .float-btn.instagram {
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+            right: 90px;
+        }
+
+    </style>
 </head>
-
 <body>
 
-<div id="loader">
-    <div class="loader-circle"></div>
-</div>
+    <!-- CUPOM BAR -->
+    <div class="cupom-bar">
+        5% OFF • Use o cupom e ganhe desconto!
+        <div class="cupom-btn" onclick="abrirModal()">RDN5</div>
+    </div>
 
-<canvas id="particles"></canvas>
+    <!-- HEADER -->
+    <header>
+        <div class="logo">RDN STORE</div>
+        <div>
+            <button>Entrar</button>
+        </div>
+    </header>
 
-<div class="cupom-bar">
-    <span>5% OFF • Use o cupom</span>
-    <div class="cupom-btn">RDN5</div>
-</div>
+    <!-- HERO -->
+    <div class="hero">
+        <h1>RDN STORE</h1>
+        <p>Os melhores brainrots do momento 🔥</p>
+    </div>
 
-<header>
-    <div class="logo">RDN STORE</div>
-</header>
+    <!-- CATEGORIAS -->
+    <div class="categorias">
+        <div class="categoria-card">
+            <span>ROUBE BRAINROT</span>
+            <a href="brainrots.html">→ Ver produtos</a>
+        </div>
+        <div class="categoria-card">
+            <span>BASES COMPLETAS</span>
+            <a href="#">→ Ver produtos</a>
+        </div>
+        <div class="categoria-card">
+            <span>FUJA DO TSUNAMI</span>
+            <a href="#">→ Ver produtos</a>
+        </div>
+    </div>
 
-<div class="hero">
-    <h1>Bem-vindo à RDN STORE</h1>
-    <p>Cupom ativo: RDN5</p>
-</div>
+    <!-- MODAL CUPOM -->
+    <div id="modalCupom" class="modal">
+        <div class="modal-content">
+            <h2>Use o cupom RDN5!</h2>
+            <p>Clique abaixo para copiar o cupom e aplicá-lo na sua compra.</p>
+            <button onclick="copiarCupom()">Copiar Cupom</button>
+        </div>
+    </div>
 
-<div class="produto">
-    <h3>Produto Exemplo</h3>
-    <p>Preço: R$100</p>
-    <button onclick="addToCart(100)">Adicionar ao Carrinho</button>
-</div>
+    <!-- BOTÕES FLUTUANTES -->
+    <a href="https://wa.me/81995367131" target="_blank" class="float-btn whatsapp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
-<div id="cart">
-    <h4>Carrinho</h4>
-    <p>Total: R$ <span id="total">0</span></p>
+    <a href="https://instagram.com/rdn.store.ofc" target="_blank" class="float-btn instagram">
+        <i class="fab fa-instagram"></i>
+    </a>
 
-    <input type="text" id="couponInput" placeholder="Digite o cupom">
-    <button onclick="applyCoupon()">Aplicar</button>
-</div>
-
-<script>
-// LOADER
-window.onload = function(){
-    setTimeout(()=>{
-        document.getElementById("loader").style.display="none";
-    },1500);
-}
-
-// CARRINHO
-let total = 0;
-let discountApplied = false;
-
-function addToCart(price){
-    total += price;
-    updateTotal();
-}
-
-function updateTotal(){
-    document.getElementById("total").innerText = total.toFixed(2);
-}
-
-function applyCoupon(){
-    let code = document.getElementById("couponInput").value;
-
-    if(code === "RDN5" && !discountApplied){
-        total *= 0.95;
-        discountApplied = true;
-        updateTotal();
-        alert("Cupom aplicado! 5% de desconto.");
-    } else {
-        alert("Cupom inválido ou já aplicado.");
-    }
-}
-
-// PARTÍCULAS
-const canvas = document.getElementById("particles");
-const ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let particlesArray = [];
-
-class Particle{
-    constructor(){
-        this.x = Math.random()*canvas.width;
-        this.y = Math.random()*canvas.height;
-        this.size = Math.random()*2;
-        this.speedY = Math.random()*1;
-    }
-    update(){
-        this.y += this.speedY;
-        if(this.y > canvas.height){
-            this.y = 0;
-            this.x = Math.random()*canvas.width;
+    <script>
+        // MODAL
+        function abrirModal() {
+            document.getElementById("modalCupom").style.display = "block";
         }
-    }
-    draw(){
-        ctx.fillStyle="red";
-        ctx.beginPath();
-        ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
-        ctx.fill();
-    }
-}
 
-function init(){
-    for(let i=0;i<100;i++){
-        particlesArray.push(new Particle());
-    }
-}
+        window.onclick = function(event) {
+            let modal = document.getElementById("modalCupom");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
 
-function animate(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    for(let i=0;i<particlesArray.length;i++){
-        particlesArray[i].update();
-        particlesArray[i].draw();
-    }
-    requestAnimationFrame(animate);
-}
-
-init();
-animate();
-</script>
+        // COPIAR CUPOM
+        function copiarCupom() {
+            navigator.clipboard.writeText("RDN5").then(() => {
+                alert("Cupom RDN5 copiado!");
+                document.getElementById("modalCupom").style.display = "none";
+            });
+        }
+    </script>
 
 </body>
 </html>
