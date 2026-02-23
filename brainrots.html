@@ -8,6 +8,169 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif;}
 body{background:#000;color:white;}
+
+/* ===== TOP BAR ===== */
+.top-bar{
+  background:#8b0000;
+  padding:10px;
+  text-align:center;
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  box-shadow:0 2px 10px rgba(255,0,0,0.4);
+  animation: topGlow 1.5s infinite alternate;
+}
+@keyframes topGlow{
+  from{box-shadow:0 2px 10px rgba(255,0,0,0.2);}
+  to{box-shadow:0 2px 15px rgba(255,0,0,0.7);}
+}
+
+/* ===== HEADER ===== */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px;
+  background:#111;
+  border-bottom:2px solid #8b0000;
+}
+.logo{
+  color:#ff2e2e;
+  font-size:26px;
+  font-weight:bold;
+  animation:neon 1.5s infinite alternate;
+}
+@keyframes neon{
+  from{text-shadow:0 0 5px red;}
+  to{text-shadow:0 0 20px red,0 0 40px red;}
+}
+.header button{
+  font-size:24px;
+  background:none;
+  border:none;
+  color:red;
+  cursor:pointer;
+  transition:0.3s;
+}
+.header button:hover{color:#ff2e2e;}
+
+/* ===== PRODUTOS ===== */
+.products{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  padding:20px;
+}
+.card{
+  background:#111;
+  border:1px solid #8b0000;
+  border-radius:15px;
+  overflow:hidden;
+  position:relative;
+  box-shadow:0 0 10px rgba(255,0,0,0.3);
+  transition:0.4s;
+}
+.card:hover{box-shadow:0 0 20px rgba(255,0,0,0.7);}
+.card img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+  border-bottom:1px solid #8b0000;
+  transition:0.3s transform;
+}
+.card img:hover{transform:scale(1.05);}
+.card-content{
+  padding:15px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.price{color:#ff2e2e;font-weight:bold;font-size:16px;margin-top:5px;}
+.buy-btn{
+  margin-top:10px;
+  width:100%;
+  padding:10px;
+  background:#8b0000;
+  border:none;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.3s;
+}
+.buy-btn:hover{background:#ff2e2e;transform:scale(1.05);}
+</style>
+</head>
+
+<body>
+
+<div class="top-bar">Rdn Store Oficial 🔥</div>
+
+<div class="header">
+  <div class="logo">Rdn Store</div>
+</div>
+
+<div class="products" id="products"></div>
+
+<script>
+const productsDiv = document.getElementById("products");
+const telefoneWhatsApp = "5581995367131";
+
+// Produtos: stock infinito até você alterar
+const produtos = [
+  { nome:"la romantic 1,4b", preco:55, img:"brainrot1.png" },
+  { nome:"fora de stock2", preco:50, img:"brainrot2.png" },
+  { nome:"fora de stock3", preco:45, img:"brainrot3.png" },
+  { nome:"fora de stock4", preco:40, img:"brainrot4.png" },
+  { nome:"fora de stock5", preco:35, img:"brainrot5.png" },
+  { nome:"fora de stock6", preco:30, img:"brainrot6.png" },
+  { nome:"fora de stock7", preco:28, img:"brainrot7.png" },
+  { nome:"fora de stock8", preco:25, img:"brainrot8.png" },
+  { nome:"fora de stock9", preco:22, img:"brainrot9.png" },
+  { nome:"fora de stock10", preco:20, img:"brainrot10.png" }
+];
+
+// Criar cards de produtos
+produtos.forEach((produto, i)=>{
+  productsDiv.innerHTML += `
+    <div class="card">
+      <img src="images/${produto.img}" alt="${produto.nome}">
+      <div class="card-content">
+        <div>${produto.nome}</div>
+        <div class="price">R$${produto.preco}</div>
+        <button class="buy-btn" onclick="comprar(${i})">Comprar</button>
+      </div>
+    </div>
+  `;
+});
+
+// Função de comprar: abre WhatsApp em nova aba
+function comprar(i){
+  const produto = produtos[i];
+  const numeroPedido = Date.now();
+  const data = new Date().toLocaleString("pt-BR");
+
+  let mensagem = `🛒 *NOVO PEDIDO - Rdn Store*%0A`;
+  mensagem += `🆔 Pedido: ${numeroPedido}%0A`;
+  mensagem += `📅 ${data}%0A%0A`;
+  mensagem += `• ${produto.nome} — R$${produto.preco}%0A`;
+  mensagem += `%0A💰 *Total: R$${produto.preco.toFixed(2)}*`;
+
+  window.open(`https://wa.me/${telefoneWhatsApp}?text=${mensagem}`, "_blank");
+}
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rdn Store</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif;}
+body{background:#000;color:white;}
 .top-bar{background:#8b0000;padding:10px;text-align:center;font-weight:bold;}
 .header{display:flex;justify-content:space-between;align-items:center;padding:15px;background:#111;border-bottom:2px solid #8b0000;}
 .logo{color:#ff2e2e;font-size:26px;font-weight:bold;}
