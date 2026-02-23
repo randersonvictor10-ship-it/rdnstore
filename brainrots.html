@@ -8,16 +8,22 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif;}
 body{background:#000;color:white;}
+
+/* TOP BAR */
 .top-bar{background:#8b0000;padding:10px;text-align:center;font-weight:bold;}
+
+/* HEADER */
 .header{display:flex;justify-content:space-between;align-items:center;padding:15px;background:#111;border-bottom:2px solid #8b0000;}
-.logo{color:#ff2e2e;font-size:26px;font-weight:bold;}
-.header button{font-size:24px;background:none;border:none;color:red;cursor:pointer;}
-.products{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px;}
-.card{background:#111;border:1px solid #8b0000;border-radius:15px;overflow:hidden;position:relative;transition:0.3s;box-shadow:0 0 10px rgba(255,0,0,0.2);}
-.card:hover{box-shadow:0 0 20px rgba(255,0,0,0.7);transform:translateY(-3px);}
-.card img{width:100%;height:140px;object-fit:cover;}
+.logo{color:#ff2e2e;font-size:26px;font-weight:bold;animation:neon 1.5s infinite alternate;text-shadow:0 0 5px red;}
+@keyframes neon{from{text-shadow:0 0 5px red;} to{text-shadow:0 0 20px red,0 0 40px red;}}
+
+/* PRODUTOS */
+.products{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:20px;}
+.card{background:#111;border:1px solid #8b0000;border-radius:15px;overflow:hidden;position:relative;box-shadow:0 0 10px rgba(255,0,0,0.3);transition:0.3s;}
+.card:hover{box-shadow:0 0 20px rgba(255,0,0,0.7);}
+.card img{width:100%;height:140px;object-fit:cover;border-bottom:1px solid #8b0000;}
 .card-content{padding:15px;}
-.price{color:#ff2e2e;font-weight:bold;margin-top:5px;}
+.price{color:#ff2e2e;font-weight:bold;font-size:16px;margin-top:5px;}
 .buy-btn{margin-top:10px;width:100%;padding:8px;background:#8b0000;border:none;color:white;border-radius:8px;cursor:pointer;font-weight:bold;transition:0.3s;}
 .buy-btn:hover{background:#ff2e2e;box-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e;}
 </style>
@@ -39,16 +45,16 @@ const telefoneWhatsApp = "5581995367131";
 
 // Produtos
 const produtos = [
-  { nome:"la romantic 1,4b", preco:55, img:"brainrot1.png" },
-  { nome:"fora de stock2", preco:50, img:"brainrot2.png" },
-  { nome:"fora de stock3", preco:45, img:"brainrot3.png" },
-  { nome:"fora de stock4", preco:40, img:"brainrot4.png" },
-  { nome:"fora de stock5", preco:35, img:"brainrot5.png" },
-  { nome:"fora de stock6", preco:30, img:"brainrot6.png" },
-  { nome:"fora de stock7", preco:28, img:"brainrot7.png" },
-  { nome:"fora de stock8", preco:25, img:"brainrot8.png" },
-  { nome:"fora de stock9", preco:22, img:"brainrot9.png" },
-  { nome:"fota de stock10", preco:20, img:"brainrot10.png" }
+  { nome:"Brainrot 1,4b", preco:55, img:"brainrot1.png" },
+  { nome:"Brainrot 1,2b", preco:50, img:"brainrot2.png" },
+  { nome:"Brainrot 1,0b", preco:45, img:"brainrot3.png" },
+  { nome:"Brainrot 900m", preco:40, img:"brainrot4.png" },
+  { nome:"Brainrot 800m", preco:35, img:"brainrot5.png" },
+  { nome:"Brainrot 700m", preco:30, img:"brainrot6.png" },
+  { nome:"Brainrot 600m", preco:28, img:"brainrot7.png" },
+  { nome:"Brainrot 500m", preco:25, img:"brainrot8.png" },
+  { nome:"Brainrot 400m", preco:22, img:"brainrot9.png" },
+  { nome:"Brainrot 300m", preco:20, img:"brainrot10.png" }
 ];
 
 // Criar cards
@@ -65,7 +71,7 @@ produtos.forEach((produto,i)=>{
   `;
 });
 
-// Função comprar: abre WhatsApp
+// Função comprar: abre WhatsApp em nova aba
 function comprar(i){
   const produto = produtos[i];
   const numeroPedido = Date.now();
@@ -77,7 +83,6 @@ function comprar(i){
   mensagem += `• ${produto.nome} — R$${produto.preco}%0A`;
   mensagem += `%0A💰 *Total: R$${produto.preco.toFixed(2)}*`;
 
-  // Abre novo site/WhatsApp
   window.open(`https://wa.me/${telefoneWhatsApp}?text=${mensagem}`, "_blank");
 }
 </script>
