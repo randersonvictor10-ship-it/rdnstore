@@ -98,11 +98,11 @@ localStorage.setItem("stock"+i,5);
 
 productsDiv.innerHTML+=`
 <div class="card">
-<div class="sold-out" id="sold${i}">1</div>
+<div class="sold-out" id="sold${i}">ESGOTADO</div>
 <img src="images/brainrot${i}.png">
 <div class="card-content">
-<div>${la romantic 1.4b[i-1]}</div>
-<div class="price">R$${55[i-1]}</div>
+<div>${nomes[i-1]}</div>
+<div class="price">R$${precos[i-1]}</div>
 <div class="stock" id="stock${i}"></div>
 <button class="buy-btn" onclick="buy(${i})">Comprar</button>
 </div>
@@ -114,7 +114,7 @@ let stock=parseInt(localStorage.getItem("stock"+id));
 let el=document.getElementById("stock"+id);
 let sold=document.getElementById("sold"+id);
 
-if(stock>1){
+if(stock>0){
 el.innerText="Restam "+stock+" unidades";
 el.style.color="#00ff88";
 sold.style.display="none";
