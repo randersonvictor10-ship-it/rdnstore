@@ -178,20 +178,14 @@ function updateStock(i){
 
 /* COMPRAR */
 function buy(i){
-  let stock = parseInt(localStorage.getItem("stock"+i));
-  if(stock > 0){
-    localStorage.setItem("stock"+i, stock - 1);
-    updateStock(i);
+  cart.push({
+    id: i,
+    nome: produtos[i].nome,
+    preco: produtos[i].preco
+  });
 
-    cart.push({
-      id: i,
-      nome: produtos[i].nome,
-      preco: produtos[i].preco
-    });
-
-    total += produtos[i].preco;
-    updateCart();
-  }
+  total += produtos[i].preco;
+  updateCart();
 }
 
 /* CARRINHO */
