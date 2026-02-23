@@ -2,39 +2,34 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Rdn Store OFC | Roblox</title>
+  <title>Brainrots | Rdn Store OFC</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
     body { background: #0b0b0b; color: #fff; }
+
     header {
-      background: linear-gradient(135deg, #8b0000, #000);
-      padding: 40px 20px;
+      background: #000;
+      padding: 20px;
       text-align: center;
-    }
-    header h1 { font-size: 2.5rem; color: #ff2a2a; }
-    header p { margin-top: 10px; color: #ddd; }
-
-    .btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 14px 30px;
-      background: #ff2a2a;
-      color: #000;
-      text-decoration: none;
-      border-radius: 6px;
-      font-weight: bold;
+      border-bottom: 2px solid #ff2a2a;
     }
 
-    section { padding: 50px 20px; max-width: 1200px; margin: auto; }
+    header h1 { color: #ff2a2a; }
 
-    .cards {
+    section {
+      max-width: 1200px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    .products {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
     }
 
-    .card {
+    .product {
       background: #111;
       border: 1px solid #ff2a2a;
       border-radius: 10px;
@@ -42,46 +37,69 @@
       text-align: center;
     }
 
-    .card h3 { color: #ff2a2a; margin-bottom: 10px; }
-    .card p { color: #ccc; }
+    .product h3 { color: #ff2a2a; margin-bottom: 10px; }
+    .product p { color: #ccc; margin-bottom: 15px; }
+
+    .price {
+      font-size: 20px;
+      color: #ff2a2a;
+      margin-bottom: 15px;
+    }
+
+    .buy {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #ff2a2a;
+      color: #000;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
 
     footer {
       background: #000;
-      padding: 20px;
+      padding: 15px;
       text-align: center;
       color: #777;
       font-size: 14px;
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>Rdn Store OFC</h1>
-  <p>Sua loja confiável de itens Roblox</p>
-  <a href="brainrots.html" class="btn">Ver Brainrots</a>
+  <h1>Brainrots</h1>
+  <p>Itens disponíveis — Roblox</p>
 </header>
 
 <section>
-  <h2 style="text-align:center; margin-bottom:30px;">Por que escolher a Rdn Store?</h2>
-  <div class="cards">
-    <div class="card">
-      <h3>Entrega Rápida</h3>
-      <p>Pedidos entregues de forma ágil e segura.</p>
+  <div class="products">
+    <div class="product">
+      <h3>Brainrot Básico</h3>
+      <p>Entrega rápida no jogo</p>
+      <div class="price">R$ 9,99</div>
+      <a href="#" class="buy">Comprar</a>
     </div>
-    <div class="card">
-      <h3>Suporte Ativo</h3>
-      <p>Atendimento direto pelo Instagram ou WhatsApp.</p>
+
+    <div class="product">
+      <h3>Brainrot Médio</h3>
+      <p>Mais vantagens no jogo</p>
+      <div class="price">R$ 19,99</div>
+      <a href="#" class="buy">Comprar</a>
     </div>
-    <div class="card">
-      <h3>Clientes Satisfeitos</h3>
-      <p>Centenas de jogadores satisfeitos.</p>
+
+    <div class="product">
+      <h3>Brainrot Premium</h3>
+      <p>Pacote completo</p>
+      <div class="price">R$ 29,99</div>
+      <a href="#" class="buy">Comprar</a>
     </div>
   </div>
 </section>
 
 <footer>
-  © 2026 Rdn Store OFC — Roblox Store
+  © 2026 Rdn Store OFC — Todos os direitos reservados
 </footer>
 
 </body>
