@@ -6,11 +6,33 @@
 <title>RDN STORE</title>
 
 <style>
-body{
+*{
     margin:0;
+    padding:0;
+    box-sizing:border-box;
     font-family: Arial, Helvetica, sans-serif;
-    background-color:#000;
-    color:#fff;
+}
+
+body{
+    background: linear-gradient(180deg,#0c1b2f,#071426);
+    color:white;
+}
+
+/* Barra Cupom */
+.cupom-bar{
+    background:#3b6edc;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-weight:bold;
+}
+
+.cupom-btn{
+    background:white;
+    color:black;
+    padding:8px 15px;
+    border-radius:10px;
 }
 
 /* Header */
@@ -18,136 +40,134 @@ header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:15px;
-    border-bottom:2px solid red;
+    padding:20px;
 }
 
 .logo{
-    color:red;
+    color:#4cc2ff;
     font-size:22px;
     font-weight:bold;
 }
 
-.entrar{
-    background:red;
+.header-buttons{
+    display:flex;
+    gap:10px;
+}
+
+.header-buttons button{
+    background:#1b2c45;
+    border:none;
     color:white;
-    padding:8px 18px;
-    border-radius:8px;
-    text-decoration:none;
-    font-weight:bold;
+    padding:10px 15px;
+    border-radius:15px;
+    cursor:pointer;
 }
 
 /* Card principal */
 .hero{
-    background:#111;
     margin:20px;
-    padding:30px 20px;
-    border-radius:20px;
+    padding:40px 20px;
+    border-radius:25px;
+    text-align:center;
+    background: linear-gradient(90deg,#1ea5ff,#3b6edc);
 }
 
 .hero h1{
-    color:red;
-    margin:0;
+    font-size:28px;
+    margin-bottom:10px;
 }
 
 .hero p{
-    color:#ccc;
+    font-size:18px;
 }
 
 /* Categorias */
 .categorias{
-    margin:20px;
+    padding:20px;
 }
 
 .categorias h2{
-    margin-bottom:15px;
+    margin-bottom:20px;
+    font-size:22px;
 }
 
-.categoria-item{
+.categoria-card{
+    background:#1b2c45;
+    padding:25px;
+    border-radius:20px;
     display:flex;
+    justify-content:space-between;
     align-items:center;
     margin-bottom:15px;
-}
-
-.categoria-item img{
-    width:40px;
-    height:40px;
-    margin-right:10px;
-    border-radius:8px;
-}
-
-.barra{
-    flex:1;
-    background:#222;
-    height:20px;
-    border-radius:20px;
-    overflow:hidden;
-}
-
-.barra span{
-    display:block;
-    height:100%;
-    width:70%;
-    background:red;
-    border-radius:20px;
+    font-weight:bold;
 }
 
 /* Botões flutuantes */
-.social{
+.floating{
     position:fixed;
-    bottom:20px;
     right:20px;
+    bottom:20px;
     display:flex;
     flex-direction:column;
     gap:15px;
 }
 
-.social a{
+.floating a{
     width:60px;
     height:60px;
-    background:red;
     border-radius:50%;
+    background:#3b6edc;
     display:flex;
     align-items:center;
     justify-content:center;
+    text-decoration:none;
 }
 </style>
 </head>
 
 <body>
 
+<div class="cupom-bar">
+    <span>5% OFF • Use o cupom e ganhe desconto!</span>
+    <div class="cupom-btn">PADIX5</div>
+</div>
+
 <header>
     <div class="logo">RDN STORE</div>
-    <a href="#" class="entrar">Entrar</a>
+
+    <div class="header-buttons">
+        <button>🔍</button>
+        <button>👤 Entrar</button>
+        <button>🛒</button>
+    </div>
 </header>
 
 <div class="hero">
     <h1>RDN STORE</h1>
-    <p>Os melhores brainrots do momento 🔥</p>
+    <p>Cupom: PADIX5</p>
 </div>
 
 <div class="categorias">
     <h2>Categorias Populares</h2>
 
-    <div class="categoria-item">
-        <img src="https://via.placeholder.com/40">
-        <div class="barra"><span></span></div>
+    <div class="categoria-card">
+        <span>ROUBE BRAINROT</span>
+        <span>→ Ver produtos</span>
     </div>
 
-    <div class="categoria-item">
-        <img src="https://via.placeholder.com/40">
-        <div class="barra"><span></span></div>
+    <div class="categoria-card">
+        <span>BASES COMPLETAS</span>
+        <span>→ Ver produtos</span>
     </div>
 
-    <div class="categoria-item">
-        <img src="https://via.placeholder.com/40">
-        <div class="barra"><span></span></div>
+    <div class="categoria-card">
+        <span>FUJA DO TSUNAMI</span>
+        <span>→ Ver produtos</span>
     </div>
-
 </div>
 
-<!-- Botões -->
-<div class="social">
+<!-- Botões flutuantes -->
+<div class="floating">
 
     <!-- WhatsApp -->
     <a href="https://wa.me/5581995367131" target="_blank">
