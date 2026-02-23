@@ -1,8 +1,21 @@
-<script>
-const productsDiv = document.getElementById("products");
-let cart = [], total = 0, pedidosPendentes = 0;
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Loja Brainrots</title>
+</head>
+<body>
 
-/* 🔥 10 PRODUTOS */
+<h1>Loja Brainrots</h1>
+
+<div id="products"></div>
+
+<script>
+
+const productsDiv = document.getElementById("products");
+let cart = [], total = 0;
+
+/* 10 PRODUTOS */
 const produtos = [
   { nome: "Brainrot 1,4b", preco: 55, img: "brainrot1.png", estoque: 5 },
   { nome: "Brainrot 1,2b", preco: 50, img: "brainrot2.png", estoque: 4 },
@@ -16,7 +29,6 @@ const produtos = [
   { nome: "Brainrot 300m", preco: 20, img: "brainrot10.png", estoque: 7 }
 ];
 
-/* CRIAR PRODUTOS */
 produtos.forEach((produto, index) => {
 
   if (localStorage.getItem("stock" + index) === null) {
@@ -24,77 +36,33 @@ produtos.forEach((produto, index) => {
   }
 
   productsDiv.innerHTML += `
-    <div class="card">
-      <div class="sold-out" id="sold${index}">ESGOTADO</div>
-      <img src="images/${produto.img}">
-      <div class="card-content">
-        <div>${produto.nome}</div>
-        <div class="price">R$${produto.preco}</div>
-        <div class="stock" id="stock${index}"></div>
-        <button class="buy-btn" onclick="buy(${index})">Comprar</button>
-      </div>
+    <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+      <h3>${produto.nome}</h3>
+      <p>Preço: R$${produto.preco}</p>
+      <p id="stock${index}"></p>
+      <button onclick="buy(${index})">Comprar</button>
     </div>
   `;
 
   updateStock(index);
 });
 
-/* ESTOQUE */
 function updateStock(id) {
   let stock = parseInt(localStorage.getItem("stock" + id));
-  let el = document.getElementById("stock" + id);
-  let sold = document.getElementById("sold" + id);
-
-  if (stock > 0) {
-    el.innerText = "Restam " + stock + " unidades";
-    el.style.color = "#00ff88";
-    sold.style.display = "none";
-  } else {
-    el.innerText = "Produto esgotado";
-    el.style.color = "red";
-    sold.style.display = "flex";
-  }
+  document.getElementById("stock" + id).innerText =
+    stock > 0 ? "Restam " + stock + " unidades" : "Produto esgotado";
 }
 
-/* COMPRAR */
 function buy(id) {
   let stock = parseInt(localStorage.getItem("stock" + id));
   if (stock > 0) {
     stock--;
     localStorage.setItem("stock" + id, stock);
     updateStock(id);
-    cart.push(produtos[id].nome);
-    total += produtos[id].preco;
-    updateCart();
   }
 }
 
-/* CARRINHO */
-function updateCart() {
-  const cartItems = document.getElementById("cartItems");
-  cartItems.innerHTML = "";
-  cart.forEach((item, index) => {
-    cartItems.innerHTML += `
-      <div class="cart-item">
-        ${item}
-        <button class="remove-btn" onclick="removeItem(${index})">🗑</button>
-      </div>`;
-  });
-  document.getElementById("total").innerText =
-    "Total: R$" + total.toFixed(2);
-}
-
-function removeItem(index) {
-  total -= produtos.find(p => p.nome === cart[index]).preco;
-  cart.splice(index, 1);
-  updateCart();
-}
-
-/* ABRIR / FECHAR */
-function toggleCart() {
-  document.getElementById("cart").classList.toggle("active");
-}
-function fecharCarrinho() {
-  document.getElementById("cart").classList.remove("active");
-}
 </script>
+
+</body>
+</html>
