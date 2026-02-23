@@ -167,50 +167,23 @@ function removeItem(index){
 
 /* ================== FINALIZAR ================== */
 function finalizarCompra(){
-
   if(cart.length === 0){
     alert("Carrinho vazio!");
     return;
   }
 
-  const formaPagamento = getFormaPagamento();
-
-  if(!formaPagamento){
-    alert("Selecione uma forma de pagamento.");
-    return;
-  }
-
-  /* GERAR ID SEQUENCIAL */
-  let ultimoId = parseInt(localStorage.getItem("ultimoPedido")) || 0;
-  ultimoId++;
-  localStorage.setItem("ultimoPedido", ultimoId);
-
-  const numeroPedido = String(ultimoId).padStart(3, "0");
+  const numeroPedido = Date.now();
   const data = new Date().toLocaleString("pt-BR");
 
-  const pedido = {
-    id: numeroPedido,
-    data: data,
-    itens: [...cart],
-    total: total.toFixed(2),
-    pagamento: formaPagamento,
-    status: "Pendente"
-  };
-
-  salvarPedido(pedido);
-
-  /* MENSAGEM PROFISSIONAL */
-  let mensagem = 
-`🛒 *NOVO PEDIDO - RDN STORE*%0A
-📦 Pedido Nº: ${numeroPedido}%0A
-📅 Data: ${data}%0A
-💳 Pagamento: ${formaPagamento}%0A%0A`;
+  let mensagem = `🛒 *NOVO PEDIDO - Rdn Store*%0A`;
+  mensagem += `🆔 Pedido: ${numeroPedido}%0A`;
+  mensagem += `📅 ${data}%0A%0A`;
 
   cart.forEach(item => {
     mensagem += `• ${item.nome} - R$${item.preco}%0A`;
   });
 
-  mensagem += `%0A💰 *TOTAL: R$${total.toFixed(2)}*`;
+  mensagem += `%0A💰 *Total: R$${total.toFixed(2)}*`;
 
   window.open(
     `https://wa.me/${telefoneWhatsApp}?text=${mensagem}`,
@@ -224,6 +197,7 @@ function finalizarCompra(){
   total = 0;
   updateCart();
 }
+
 /* ================== ADMIN ================== */
 function abrirAdmin(){
   const senha = prompt("Senha admin:");
