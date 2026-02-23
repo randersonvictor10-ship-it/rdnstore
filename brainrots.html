@@ -166,6 +166,12 @@ function updateStock(i){
 
 /* COMPRAR (NÃO MEXE NO ESTOQUE) */
 function buy(i){
+  let stock = +localStorage.getItem("stock"+i);
+  if(stock <= 0){
+    alert("Produto esgotado!");
+    return;
+  }
+
   cart.push({ id:i, nome:produtos[i].nome, preco:produtos[i].preco });
   total += produtos[i].preco;
   updateCart();
