@@ -7,157 +7,196 @@
 
 <style>
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family: Arial, sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family: 'Segoe UI', sans-serif;
 }
 
 body{
-    background:#0a0a0a;
-    color:white;
+background:#0b0b0b;
+color:white;
 }
 
-/* BARRA SUPERIOR */
+/* BARRA CUPOM */
 .topbar{
-    background:#111;
-    padding:15px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+background:linear-gradient(90deg,#8b0000,#ff0000);
+padding:12px 15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:14px;
 }
 
-.logo-text{
-    font-size:20px;
-    font-weight:bold;
-    color:red;
+.cupom-btn{
+background:white;
+color:#b30000;
+padding:6px 14px;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+.cupom-btn:hover{
+transform:scale(1.05);
+}
+
+/* HEADER */
+.header{
+background:rgba(15,15,15,0.9);
+backdrop-filter:blur(10px);
+padding:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+position:sticky;
+top:0;
+z-index:100;
+}
+
+.logo{
+font-weight:bold;
+font-size:20px;
+color:#ff0000;
 }
 
 .icons{
-    display:flex;
-    gap:15px;
+display:flex;
+gap:15px;
 }
 
 .icon{
-    width:35px;
-    height:35px;
-    background:#1a1a1a;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
+background:#1a1a1a;
+padding:8px 12px;
+border-radius:10px;
+cursor:pointer;
+transition:0.3s;
 }
 
-/* BANNER PRINCIPAL */
+.icon:hover{
+background:#300000;
+}
+
+/* BANNER */
 .banner{
-    margin:20px;
-    background:linear-gradient(135deg,#1a0000,#300000);
-    border-radius:20px;
-    padding:20px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    box-shadow:0 0 20px red;
+margin:20px;
+background:linear-gradient(135deg,#1a0000,#330000);
+border-radius:25px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:25px;
+box-shadow:0 0 40px rgba(255,0,0,0.4);
+position:relative;
+overflow:hidden;
 }
 
-.banner-text{
-    max-width:50%;
+.banner::after{
+content:"";
+position:absolute;
+width:300px;
+height:300px;
+background:red;
+filter:blur(150px);
+opacity:0.2;
+right:-100px;
+top:-100px;
 }
 
 .banner-text h1{
-    font-size:28px;
-    color:red;
+font-size:30px;
+color:#ff0000;
 }
 
 .banner-text p{
-    margin:10px 0;
-    color:#ccc;
+margin:10px 0;
+color:#ccc;
+}
+
+.banner-text span{
+background:#ff0000;
+padding:6px 12px;
+border-radius:8px;
+font-weight:bold;
 }
 
 .banner img{
-    width:150px;
-    animation: float 3s infinite ease-in-out;
+width:170px;
+animation:float 3s ease-in-out infinite;
+z-index:2;
 }
 
 @keyframes float{
-    0%{transform:translateY(0);}
-    50%{transform:translateY(-10px);}
-    100%{transform:translateY(0);}
+0%{transform:translateY(0);}
+50%{transform:translateY(-10px);}
+100%{transform:translateY(0);}
 }
 
-/* BOTÃO */
-.btn{
-    display:inline-block;
-    margin-top:10px;
-    padding:12px 20px;
-    background:red;
-    border-radius:10px;
-    text-decoration:none;
-    color:white;
-    font-weight:bold;
-    transition:0.3s;
-}
-
-.btn:hover{
-    background:darkred;
-}
-
-/* CATEGORIAS */
+/* SEÇÃO */
 .section{
-    padding:20px;
+padding:20px;
 }
 
 .section h2{
-    margin-bottom:15px;
+margin-bottom:15px;
 }
 
-.cards{
-    display:flex;
-    flex-direction:column;
-    gap:15px;
-}
-
+/* CARDS */
 .card{
-    background:#111;
-    border-radius:15px;
-    padding:20px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    box-shadow:0 0 10px red;
-    transition:0.3s;
-    text-decoration:none;
-    color:white;
+background:#141414;
+border-radius:20px;
+margin-bottom:20px;
+padding:25px;
+position:relative;
+overflow:hidden;
+transition:0.3s;
+box-shadow:0 0 20px rgba(255,0,0,0.2);
 }
 
 .card:hover{
-    transform:scale(1.03);
-    background:#1a0000;
+transform:scale(1.02);
+background:#1f0000;
+}
+
+.card h3{
+font-size:20px;
+margin-bottom:8px;
+}
+
+.card a{
+color:#ff0000;
+text-decoration:none;
+font-weight:bold;
 }
 
 /* BOTÕES FLUTUANTES */
 .floating{
-    position:fixed;
-    right:15px;
-    bottom:20px;
-    display:flex;
-    flex-direction:column;
-    gap:15px;
+position:fixed;
+right:15px;
+bottom:20px;
+display:flex;
+flex-direction:column;
+gap:15px;
 }
 
 .floating a{
-    width:55px;
-    height:55px;
-    background:red;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:white;
-    font-weight:bold;
-    text-decoration:none;
-    box-shadow:0 0 15px red;
+width:55px;
+height:55px;
+background:linear-gradient(145deg,#8b0000,#ff0000);
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+text-decoration:none;
+font-weight:bold;
+box-shadow:0 0 20px rgba(255,0,0,0.6);
+transition:0.3s;
+}
+
+.floating a:hover{
+transform:scale(1.1);
 }
 </style>
 </head>
@@ -165,47 +204,60 @@ body{
 <body>
 
 <div class="topbar">
-    <div class="logo-text">RDN STORE</div>
-    <div class="icons">
-        <div class="icon">🔍</div>
-        <div class="icon">👤</div>
-        <div class="icon">🛒</div>
-    </div>
+<div>🔥 5% OFF • Use o cupom e ganhe desconto!</div>
+<div class="cupom-btn" onclick="copiarCupom()">RDN5</div>
+</div>
+
+<div class="header">
+<div class="logo">RDN STORE</div>
+<div class="icons">
+<div class="icon">🔍</div>
+<div class="icon">🎧</div>
+<div class="icon">👤</div>
+<div class="icon">🛒</div>
+</div>
 </div>
 
 <div class="banner">
-    <div class="banner-text">
-        <h1>RDN STORE</h1>
-        <p>Os melhores Brainrots do mercado 🔥</p>
-        <a href="brainrots.html" class="btn">Roube um Brainrot</a>
-    </div>
-    <img src="personagem.png">
+<div class="banner-text">
+<h1>RDN STORE</h1>
+<p>Os melhores Brainrots do mercado 🔥</p>
+<span>CUPOM: RDN5</span>
+</div>
+<img src="personagem.png">
 </div>
 
 <div class="section">
-    <h2>Categorias Populares</h2>
-    <div class="cards">
-        <a href="brainrots.html" class="card">
-            <div>🔥 Roube Brainrot</div>
-            <div>→</div>
-        </a>
+<h2>Categorias Populares</h2>
 
-        <a href="#" class="card">
-            <div>💎 Bases Completas</div>
-            <div>→</div>
-        </a>
+<div class="card">
+<h3>ROUBE BRAINROT</h3>
+<a href="brainrots.html">→ Ver produtos</a>
+</div>
 
-        <a href="#" class="card">
-            <div>🌊 Fuja do Tsunami</div>
-            <div>→</div>
-        </a>
-    </div>
+<div class="card">
+<h3>BASES COMPLETAS</h3>
+<a href="#">→ Ver produtos</a>
+</div>
+
+<div class="card">
+<h3>FUJA DO TSUNAMI</h3>
+<a href="#">→ Ver produtos</a>
+</div>
+
 </div>
 
 <div class="floating">
-    <a href="https://wa.me/5581995367131" target="_blank">W</a>
-    <a href="https://instagram.com/Rdn.store.ofc" target="_blank">I</a>
+<a href="https://wa.me/5581995367131" target="_blank">W</a>
+<a href="https://instagram.com/Rdn.store.ofc" target="_blank">I</a>
 </div>
+
+<script>
+function copiarCupom(){
+navigator.clipboard.writeText("RDN5");
+alert("Cupom RDN5 copiado!");
+}
+</script>
 
 </body>
 </html>
