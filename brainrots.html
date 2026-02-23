@@ -90,13 +90,72 @@ const nomes=[
 
 const precos=[55,50,45,40,35,30,28,25,22,20];
 
-for(let i=1;i<=10;i++){
+  <script>
+const productsDiv = document.getElementById("products");
 
-if(localStorage.getItem("stock"+i)===null){
-localStorage.setItem("stock"+i,5);
+const estoques = [5,3,10,2,8,6,4,7,1,9];
+const produtos = [
+  { nome:"Brainrot 1,4b", preco:55, img:"brainrot1.png" },
+  { nome:"Brainrot 1,2b", preco:50, img:"brainrot2.png" },
+  { nome:"Brainrot 1,0b", preco:45, img:"brainrot3.png" },
+  { nome:"Brainrot 900m", preco:40, img:"brainrot4.png" },
+  { nome:"Brainrot 800m", preco:35, img:"brainrot5.png" },
+  { nome:"Brainrot 700m", preco:30, img:"brainrot6.png" },
+  { nome:"Brainrot 600m", preco:28, img:"brainrot7.png" },
+  { nome:"Brainrot 500m", preco:25, img:"brainrot8.png" },
+  { nome:"Brainrot 400m", preco:22, img:"brainrot9.png" },
+  { nome:"Brainrot 300m", preco:20, img:"brainrot10.png" }
+];
+
+produtos.forEach((produto, i) => {
+
+  if (localStorage.getItem("stock"+i) === null) {
+    localStorage.setItem("stock"+i, estoques[i]);
+  }
+
+  productsDiv.innerHTML += `
+    <div class="card">
+      <div class="sold-out" id="sold${i}">ESGOTADO</div>
+      <img src="images/${produto.img}">
+      <div class="card-content">
+        <div>${produto.nome}</div>
+        <div class="price">R$${produto.preco}</div>
+        <div class="stock" id="stock${i}"></div>
+        <button class="buy-btn" onclick="buy(${i})">Comprar</button>
+      </div>
+    </div>
+  `;
+
+  updateStock(i);
+});
+
+function updateStock(i){
+  const stock = parseInt(localStorage.getItem("stock"+i));
+  const el = document.getElementById("stock"+i);
+  const sold = document.getElementById("sold"+i);
+
+  if(stock > 0){
+    el.innerText = "Restam " + stock + " unidades";
+    el.style.color = "#00ff88";
+    sold.style.display = "none";
+  } else {
+    el.innerText = "Produto esgotado";
+    el.style.color = "red";
+    sold.style.display = "flex";
+  }
 }
 
-productsDiv.innerHTML+=`
+function buy(i){
+  let stock = parseInt(localStorage.getItem("stock"+i));
+  if(stock > 0){
+    stock--;
+    localStorage.setItem("stock"+i, stock);
+    updateStock(i);
+  }
+}
+</script>
+
+
 <div class="card">
 <div class="sold-out" id="sold${i}">ESGOTADO</div>
 <img src="images/brainrot${i}.png">
