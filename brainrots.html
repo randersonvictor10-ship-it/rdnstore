@@ -6,26 +6,201 @@
 <title>Rdn Store</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
+/* ===== RESET E FONT ===== */
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif;}
 body{background:#000;color:white;}
-.top-bar{background:#8b0000;padding:10px;text-align:center;font-weight:bold;}
-.header{display:flex;justify-content:space-between;padding:15px;background:#111;border-bottom:2px solid #8b0000;}
-.logo{color:#ff2e2e;font-size:22px;font-weight:bold;animation:neon 1.5s infinite alternate;}
-@keyframes neon{from{text-shadow:0 0 5px red;}to{text-shadow:0 0 20px red,0 0 40px red;}}
-.products{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:20px;}
-.card{background:#111;border:1px solid #8b0000;border-radius:15px;overflow:hidden;position:relative;}
-.card img{width:100%;height:140px;object-fit:cover;}
-.card-content{padding:15px;}
-.price{color:#ff2e2e;font-weight:bold;}
+
+/* ===== TOP BAR ===== */
+.top-bar{
+  background:#8b0000;
+  padding:10px;
+  text-align:center;
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  box-shadow:0 2px 10px rgba(255,0,0,0.4);
+}
+
+/* ===== HEADER ===== */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px;
+  background:#111;
+  border-bottom:2px solid #8b0000;
+}
+.logo{
+  color:#ff2e2e;
+  font-size:26px;
+  font-weight:bold;
+  animation:neon 1.5s infinite alternate;
+  text-shadow:0 0 5px red;
+}
+@keyframes neon{
+  from{text-shadow:0 0 5px red;}
+  to{text-shadow:0 0 20px red,0 0 40px red;}
+}
+.header button{
+  font-size:24px;
+  background:none;
+  border:none;
+  color:red;
+  cursor:pointer;
+}
+
+/* ===== PRODUTOS ===== */
+.products{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  padding:20px;
+}
+.card{
+  background:#111;
+  border:1px solid #8b0000;
+  border-radius:15px;
+  overflow:hidden;
+  position:relative;
+  box-shadow:0 0 10px rgba(255,0,0,0.3);
+  transition:0.3s;
+}
+.card:hover{
+  box-shadow:0 0 20px rgba(255,0,0,0.7);
+}
+.card img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+  border-bottom:1px solid #8b0000;
+}
+.card-content{
+  padding:15px;
+}
+.price{color:#ff2e2e;font-weight:bold;font-size:16px;}
 .stock{font-size:12px;margin-top:5px;}
-.buy-btn{margin-top:10px;width:100%;padding:8px;background:#8b0000;border:none;color:white;border-radius:8px;cursor:pointer;}
-.sold-out{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:none;justify-content:center;align-items:center;color:red;font-size:22px;}
-.cart{position:fixed;right:-350px;top:0;width:300px;height:100%;background:#111;padding:15px;box-shadow:-2px 0 10px rgba(255,0,0,0.5);transition:0.4s ease;overflow-y:auto;z-index:999;}
+.buy-btn{
+  margin-top:10px;
+  width:100%;
+  padding:8px;
+  background:#8b0000;
+  border:none;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.3s;
+}
+.buy-btn:hover{background:#ff2e2e;}
+
+/* ===== SOLD OUT ===== */
+.sold-out{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.85);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  color:red;
+  font-size:22px;
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+/* ===== CARRINHO ===== */
+.cart{
+  position:fixed;
+  right:-360px;
+  top:0;
+  width:320px;
+  height:100%;
+  background:#111;
+  padding:15px;
+  box-shadow:-2px 0 15px rgba(255,0,0,0.7);
+  transition:0.4s ease;
+  overflow-y:auto;
+  z-index:999;
+}
 .cart.active{right:0;}
-.cart-header{display:flex;justify-content:space-between;align-items:center;}
-.close-btn{background:none;border:none;color:red;font-size:18px;cursor:pointer;}
-.cart-item{display:flex;justify-content:space-between;margin-bottom:8px;background:#1a1a1a;padding:6px;border-radius:6px;}
-.remove-btn{background:none;border:none;color:red;cursor:pointer;}
+.cart-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #8b0000;
+  padding-bottom:10px;
+  margin-bottom:10px;
+}
+.close-btn{
+  background:none;
+  border:none;
+  color:red;
+  font-size:20px;
+  cursor:pointer;
+}
+.cart-item{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:10px;
+  background:#1a1a1a;
+  padding:8px;
+  border-radius:8px;
+  border:1px solid #8b0000;
+  transition:0.3s;
+}
+.cart-item:hover{
+  background:#222;
+}
+.remove-btn{
+  background:none;
+  border:none;
+  color:red;
+  cursor:pointer;
+}
+
+/* ===== CHECKOUT ===== */
+#checkout{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#000;
+  z-index:2000;
+  padding:20px;
+  overflow-y:auto;
+}
+#checkout h2{color:#ff2e2e;text-align:center;margin-bottom:20px;}
+#checkoutItems div{
+  margin-bottom:8px;
+  padding:10px;
+  background:#111;
+  border:1px solid #8b0000;
+  border-radius:8px;
+  transition:0.3s;
+}
+#checkoutItems div:hover{
+  background:#222;
+}
+#checkoutTotal{margin-top:15px;color:#ff2e2e;font-weight:bold;font-size:18px;}
+#checkout button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border-radius:10px;
+  font-weight:bold;
+  font-size:16px;
+  border:none;
+  cursor:pointer;
+}
+#checkout button:nth-child(2){background:#8b0000;color:white;}
+#checkout button:nth-child(3){background:#111;color:white;border:1px solid #8b0000;}
+#checkout button:nth-child(2):hover{background:#ff2e2e;}
+#checkout button:nth-child(3):hover{background:#222;}
 </style>
 </head>
 
@@ -46,59 +221,18 @@ body{background:#000;color:white;}
     <h2>Carrinho</h2>
     <button class="close-btn" onclick="fecharCarrinho()">✖</button>
   </div>
-
   <div id="cartItems"></div>
   <h3 id="total">Total: R$0</h3>
-
-  <button onclick="abrirCheckout()" class="buy-btn">
-    Ir para compra
-  </button>
+  <button onclick="abrirCheckout()" class="buy-btn">Ir para compra</button>
 </div>
 
 <!-- ================== CHECKOUT ================== -->
-<div id="checkout" style="
-  display:none;
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:#000;
-  z-index:2000;
-  padding:20px;
-  overflow-y:auto;
-">
-
-  <h2 style="color:#ff2e2e;text-align:center;">Finalizar compra</h2>
-
-  <div id="checkoutItems" style="margin-top:20px;"></div>
-
-  <h3 id="checkoutTotal" style="margin-top:15px;"></h3>
-
-  <button onclick="finalizarCompra()" style="
-    width:100%;
-    margin-top:15px;
-    padding:12px;
-    background:#8b0000;
-    color:white;
-    border:none;
-    border-radius:10px;
-    font-size:16px;
-  ">
-    Finalizar no WhatsApp
-  </button>
-
-  <button onclick="fecharCheckout()" style="
-    width:100%;
-    margin-top:10px;
-    padding:10px;
-    background:#111;
-    color:white;
-    border:1px solid #8b0000;
-    border-radius:10px;
-  ">
-    Voltar
-  </button>
+<div id="checkout">
+  <h2>Finalizar compra</h2>
+  <div id="checkoutItems"></div>
+  <h3 id="checkoutTotal"></h3>
+  <button onclick="finalizarCompra()">Finalizar no WhatsApp</button>
+  <button onclick="fecharCheckout()">Voltar</button>
 </div>
 
 <script>
@@ -106,20 +240,8 @@ body{background:#000;color:white;}
 const productsDiv = document.getElementById("products");
 let cart = [];
 let total = 0;
-
-/* CONFIGURAÇÃO */
 const telefoneWhatsApp = "5581995367131";
-
-/* ESTOQUE INICIAL */
-const estoques = [1,0,0,0,0,0,0,0,0,0];  
-  
-for (let i = 0; i < 10; i++) {  
-  if (localStorage.getItem("stock"+i) === null) {  
-    localStorage.setItem("stock"+i, estoques[i]);  
-  }  
-}  
-
-/* PRODUTOS */
+const estoques = [1,1,1,1,1,1,1,1,1,1];
 const produtos = [
   { nome:"Brainrot 1,4b", preco:55, img:"brainrot1.png" },
   { nome:"Brainrot 1,2b", preco:50, img:"brainrot2.png" },
@@ -133,8 +255,15 @@ const produtos = [
   { nome:"Brainrot 300m", preco:20, img:"brainrot10.png" }
 ];
 
+/* Inicializar estoque */
+for(let i=0;i<10;i++){
+  if(localStorage.getItem("stock"+i)===null){
+    localStorage.setItem("stock"+i, estoques[i]);
+  }
+}
+
 /* ================== CRIAR PRODUTOS ================== */
-produtos.forEach((produto, i) => {
+produtos.forEach((produto,i)=>{
   productsDiv.innerHTML += `
     <div class="card">
       <div class="sold-out" id="sold${i}">ESGOTADO</div>
@@ -150,53 +279,42 @@ produtos.forEach((produto, i) => {
   updateStock(i);
 });
 
-/* ================== ESTOQUE ================== */
+/* ================== FUNÇÕES ================== */
 function updateStock(i){
-  const estoques = [1,0,0,0,0,0,0,0,0,0];  
-  
-for (let i = 0; i < 10; i++) {  
+  const stock = +localStorage.getItem("stock"+i);
   const el = document.getElementById("stock"+i);
   const sold = document.getElementById("sold"+i);
-
-  if(stock > 0){
-    el.innerText = "Restam " + stock + " unidades";
-    el.style.color = "#00ff88";
-    sold.style.display = "none";
+  if(stock>0){
+    el.innerText = "Restam "+stock+" unidades";
+    el.style.color="#00ff88";
+    sold.style.display="none";
   } else {
     el.innerText = "Produto esgotado";
-    el.style.color = "red";
-    sold.style.display = "flex";
+    el.style.color="red";
+    sold.style.display="flex";
   }
 }
 
-/* ================== COMPRAR ================== */
 function buy(i){
   let stock = +localStorage.getItem("stock"+i);
-  if(stock <= 0){
-    alert("Produto esgotado!");
-    return;
-  }
-
-  cart.push({ id:i, nome:produtos[i].nome, preco:produtos[i].preco });
+  if(stock<=0){ alert("Produto esgotado!"); return; }
+  cart.push({id:i,nome:produtos[i].nome,preco:produtos[i].preco});
   total += produtos[i].preco;
   updateCart();
 }
 
-/* ================== CARRINHO ================== */
 function updateCart(){
-  const cartItems = document.getElementById("cartItems");
-  cartItems.innerHTML = "";
-
+  const cartItems=document.getElementById("cartItems");
+  cartItems.innerHTML="";
   cart.forEach((item,index)=>{
-    cartItems.innerHTML += `
+    cartItems.innerHTML+=`
       <div class="cart-item">
         ${item.nome}
         <button class="remove-btn" onclick="removeItem(${index})">🗑</button>
       </div>
     `;
   });
-
-  document.getElementById("total").innerText = "Total: R$" + total.toFixed(2);
+  document.getElementById("total").innerText="Total: R$"+total.toFixed(2);
 }
 
 function removeItem(index){
@@ -204,63 +322,49 @@ function removeItem(index){
   updateCart();
 }
 
-/* ================== CHECKOUT ================== */
+function toggleCart(){ document.getElementById("cart").classList.toggle("active"); }
+function fecharCarrinho(){ document.getElementById("cart").classList.remove("active"); }
+
 function abrirCheckout(){
-  if(cart.length === 0){
-    alert("Carrinho vazio!");
-    return;
-  }
+  if(cart.length===0){ alert("Carrinho vazio!"); return; }
   fecharCarrinho();
-  const area = document.getElementById("checkoutItems");
-  area.innerHTML = "";
+  const area=document.getElementById("checkoutItems");
+  area.innerHTML="";
   cart.forEach(item=>{
-    area.innerHTML += `
-      <div style="background:#111;padding:10px;border-radius:8px;border:1px solid #8b0000;margin-bottom:8px;">
-        ${item.nome} — R$${item.preco}
-      </div>
-    `;
+    area.innerHTML+=`<div>${item.nome} — R$${item.preco}</div>`;
   });
-  document.getElementById("checkoutTotal").innerText = "Total: R$" + total.toFixed(2);
-  document.getElementById("checkout").style.display = "block";
+  document.getElementById("checkoutTotal").innerText="Total: R$"+total.toFixed(2);
+  document.getElementById("checkout").style.display="block";
 }
 
-function fecharCheckout(){
-  document.getElementById("checkout").style.display = "none";
-}
+function fecharCheckout(){ document.getElementById("checkout").style.display="none"; }
 
-/* ================== FINALIZAR ================== */
 function finalizarCompra(){
   if(cart.length===0){ alert("Carrinho vazio!"); return; }
 
   // Diminuir estoque
   cart.forEach(item=>{
-    let s = +localStorage.getItem("stock"+item.id);
-    localStorage.setItem("stock"+item.id, s-1);
+    let s=+localStorage.getItem("stock"+item.id);
+    localStorage.setItem("stock"+item.id,s-1);
     updateStock(item.id);
   });
 
-  // Monta mensagem para WhatsApp
-  const numeroPedido = Date.now();
-  const data = new Date().toLocaleString("pt-BR");
-  let mensagem = `🛒 *NOVO PEDIDO - Rdn Store*%0A`;
-  mensagem += `🆔 Pedido: ${numeroPedido}%0A`;
-  mensagem += `📅 ${data}%0A%0A`;
+  // Monta mensagem WhatsApp
+  const numeroPedido=Date.now();
+  const data=new Date().toLocaleString("pt-BR");
+  let mensagem=`🛒 *NOVO PEDIDO - Rdn Store*%0A`;
+  mensagem+=`🆔 Pedido: ${numeroPedido}%0A`;
+  mensagem+=`📅 ${data}%0A%0A`;
   cart.forEach(item=>mensagem+=`• ${item.nome} — R$${item.preco}%0A`);
-  mensagem += `%0A💰 *Total: R$${total.toFixed(2)}*`;
+  mensagem+=`%0A💰 *Total: R$${total.toFixed(2)}*`;
 
   // Abre WhatsApp
   window.open(`https://wa.me/${telefoneWhatsApp}?text=${mensagem}`,"_blank");
 
   // Limpar carrinho
-  cart=[];
-  total=0;
-  updateCart();
+  cart=[]; total=0; updateCart();
   fecharCheckout();
 }
-
-/* ================== UI ================== */
-function toggleCart(){ document.getElementById("cart").classList.toggle("active"); }
-function fecharCarrinho(){ document.getElementById("cart").classList.remove("active"); }
 </script>
 
 </body>
