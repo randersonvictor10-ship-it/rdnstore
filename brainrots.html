@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Roube Brainrot - Padix Store</title>
+<title>Padix Store</title>
 
 <style>
 *{
@@ -18,7 +18,6 @@ body{
     color:white;
 }
 
-/* Barra de cupom */
 .top-bar{
     background:#1e88ff;
     padding:10px;
@@ -34,7 +33,6 @@ body{
     margin-left:10px;
 }
 
-/* Header */
 .header{
     display:flex;
     justify-content:space-between;
@@ -60,14 +58,12 @@ body{
     cursor:pointer;
 }
 
-/* Título */
 .title{
     padding:20px;
-    font-size:24px;
+    font-size:22px;
     font-weight:bold;
 }
 
-/* Banner */
 .banner{
     width:100%;
     padding:0 20px 20px;
@@ -78,7 +74,6 @@ body{
     border-radius:16px;
 }
 
-/* Produtos */
 .products{
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -136,27 +131,6 @@ body{
     font-weight:bold;
     cursor:pointer;
 }
-
-/* Produto esgotado */
-.sold-out{
-    position:relative;
-}
-
-.sold-out img{
-    filter:blur(5px);
-}
-
-.sold-out::after{
-    content:"PRODUTO ESGOTADO";
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%, -50%);
-    background:rgba(0,0,0,0.7);
-    padding:10px 20px;
-    border-radius:10px;
-    font-weight:bold;
-}
 </style>
 </head>
 <body>
@@ -176,7 +150,7 @@ body{
     </div>
 </div>
 
-<div class="title">ROUBE BRAINROT</div>
+<div class="title">Nossos Produtos</div>
 
 <div class="banner">
     <img src="https://via.placeholder.com/800x200" alt="Banner">
@@ -184,34 +158,12 @@ body{
 
 <div class="products">
 
-    <div class="card sold-out">
-        <img src="https://via.placeholder.com/300x200">
-        <div class="card-content">
-            <div class="product-name">LA GRANDE COMBI GOLD 92.5M/s</div>
-            <div class="old-price">R$69.90</div>
-            <div class="price">R$27.90</div>
-            <div class="pix">À vista no Pix</div>
-            <button class="buy-btn">Comprar agora</button>
-        </div>
-    </div>
-
     <div class="card">
         <img src="https://via.placeholder.com/300x200">
         <div class="card-content">
             <div class="product-name">CHICLETEIRA CURSED 38M/s</div>
             <div class="old-price">R$69.90</div>
             <div class="price">R$29.90</div>
-            <div class="pix">À vista no Pix</div>
-            <button class="buy-btn">Comprar agora</button>
-        </div>
-    </div>
-
-    <div class="card sold-out">
-        <img src="https://via.placeholder.com/300x200">
-        <div class="card-content">
-            <div class="product-name">ESOK DIAMANTE 105M/s</div>
-            <div class="old-price">R$89.90</div>
-            <div class="price">R$34.90</div>
             <div class="pix">À vista no Pix</div>
             <button class="buy-btn">Comprar agora</button>
         </div>
