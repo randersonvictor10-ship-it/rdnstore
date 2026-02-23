@@ -8,35 +8,8 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: radial-gradient(circle at top, #1a0000, #000000 70%);
+  background: #000;
   color: #fff;
-  overflow: hidden;
-  position: relative;
-}
-
-/* Triângulos neon ultra 3D */
-.triangulo {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  background: linear-gradient(135deg, #ff0000, #ff3300, #ff6600);
-  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  opacity: 0.9;
-  filter: drop-shadow(0 0 15px #ff0000)
-          drop-shadow(0 0 30px #ff3300)
-          drop-shadow(0 0 45px #ff6600)
-          brightness(1.4);
-  transform-style: preserve-3d;
-  mix-blend-mode: screen;
-  animation: flutuarUltra 25s infinite linear;
-}
-
-@keyframes flutuarUltra {
-  0% { transform: translate3d(0,0,0) rotateX(0deg) rotateY(0deg) scale(1); opacity:0.7; }
-  25% { transform: translate3d(-30px,-80px,20px) rotateX(45deg) rotateY(90deg) scale(1.2); opacity:1; }
-  50% { transform: translate3d(20px,10px,-20px) rotateX(90deg) rotateY(180deg) scale(0.9); opacity:0.75; }
-  75% { transform: translate3d(-10px,-50px,10px) rotateX(135deg) rotateY(270deg) scale(1.1); opacity:0.95; }
-  100% { transform: translate3d(0,0,0) rotateX(360deg) rotateY(360deg) scale(1); opacity:0.7; }
 }
 
 /* Cabeçalho */
@@ -44,19 +17,18 @@ header {
   position: fixed;
   top: 0;
   width: 100%;
-  background: rgba(20,0,0,0.9);
+  background: #1a0000;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 50px;
-  z-index: 10;
   box-shadow: 0 0 15px #ff0000;
+  z-index: 10;
 }
 header .logo {
   font-size: 28px;
   font-weight: bold;
   color: #ff3300;
-  text-shadow: 0 0 20px #ff6600;
 }
 header nav a {
   margin-left: 25px;
@@ -67,18 +39,17 @@ header nav a {
 }
 header nav a:hover {
   color: #ff004f;
-  text-shadow: 0 0 15px #ff3300;
 }
 
 /* Banner */
 .banner {
   text-align: center;
-  padding-top: 130px; /* abaixado 15% */
+  padding-top: 150px;
+  padding-bottom: 100px;
 }
 .banner h1 {
   font-size: 60px;
   color: #ff3300;
-  text-shadow: 0 0 30px #ff6600;
   margin-bottom: 20px;
 }
 .banner p {
@@ -94,12 +65,10 @@ header nav a:hover {
   text-decoration: none;
   color: #fff;
   background: linear-gradient(135deg, #ff004f, #8b0000, #ff3300);
-  box-shadow: 0 0 15px #ff004f, 0 0 25px #ff3300, 0 0 40px #ff6600 inset;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.3s;
 }
 .btn-brainrots:hover {
-  transform: scale(1.2) rotateX(5deg);
-  box-shadow: 0 0 25px #ff004f, 0 0 50px #ff3300, 0 0 60px #ff6600 inset;
+  transform: scale(1.1);
 }
 
 /* Avaliações */
@@ -111,7 +80,6 @@ header nav a:hover {
   font-size: 36px;
   margin-bottom: 20px;
   color: #ff3300;
-  text-shadow: 0 0 20px #ff6600;
 }
 
 /* Rodapé */
@@ -123,18 +91,6 @@ footer {
 </style>
 </head>
 <body>
-
-<!-- 15 Triângulos ultra 3D -->
-<script>
-for(let i=0;i<15;i++){
-  let t=document.createElement('div');
-  t.className='triangulo';
-  t.style.top=Math.random()*100+'%';
-  t.style.left=Math.random()*100+'%';
-  t.style.animationDuration=(15+Math.random()*20)+'s';
-  document.body.appendChild(t);
-}
-</script>
 
 <header>
   <div class="logo">RDN STORE</div>
