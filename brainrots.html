@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RDN STORE - Brainrots</title>
 <style>
-body {
+body, html {
   margin: 0;
+  padding: 0;
   font-family: Arial, sans-serif;
   background: #000;
   color: #fff;
+  overflow-x: hidden;
 }
 
 /* Cabeçalho */
@@ -17,13 +19,13 @@ header {
   position: fixed;
   top: 0;
   width: 100%;
-  background: #1a0000;
+  background: #140000;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 50px;
   box-shadow: 0 0 15px #ff0000;
-  z-index: 10;
+  z-index: 100;
 }
 header .logo {
   font-size: 28px;
@@ -32,8 +34,8 @@ header .logo {
 }
 header nav a {
   margin-left: 25px;
-  text-decoration: none;
   color: #fff;
+  text-decoration: none;
   font-weight: bold;
   transition: 0.3s;
 }
@@ -41,19 +43,26 @@ header nav a:hover {
   color: #ff004f;
 }
 
-/* Produtos em grade */
+/* Grid produtos */
 .produtos {
   display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
-  padding: 150px 50px 50px;
+  padding: 130px 50px 50px;
 }
+
+/* Produto Card */
 .produto {
   background: #1a0000;
-  padding: 15px;
-  border-radius: 15px;
+  padding: 18px;
+  border-radius: 12px;
   text-align: center;
-  box-shadow: 0 0 10px #ff004f;
+  box-shadow: 0 0 12px #800000;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.produto:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 25px #ff004f;
 }
 .produto img {
   width: 100%;
@@ -61,32 +70,82 @@ header nav a:hover {
   margin-bottom: 10px;
 }
 .produto h3 {
-  margin: 10px 0;
   color: #ff3300;
+  font-size: 20px;
+  margin: 8px 0;
 }
-.produto p {
-  margin: 5px 0;
+.produto .preco {
+  color: #ff0000;
+  font-size: 18px;
+  margin: 6px 0;
 }
+
+/* Botão Comprar */
 .btn-comprar {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 15px 30px;
-  border-radius: 15px;
+  background: linear-gradient(135deg, #ff004f, #8b0000, #ff3300);
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 8px;
   font-weight: bold;
   text-decoration: none;
-  color: #fff;
-  background: linear-gradient(135deg, #ff004f, #8b0000, #ff3300);
-  transition: transform 0.3s;
+  display: inline-block;
+  margin-top: 8px;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 .btn-comprar:hover {
   transform: scale(1.05);
+  box-shadow: 0 0 15px #ff004f;
+}
+
+/* Modal Opções Compra */
+.modal-compra {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.85);
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+}
+.modal-content {
+  background: #1a0000;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 0 20px #ff004f;
+}
+.modal-content h2 {
+  margin-bottom: 20px;
+  color: #ff3300;
+}
+.modal-content a {
+  display: inline-block;
+  margin: 10px;
+  padding: 15px 30px;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.modal-content a.instagram {
+  background: linear-gradient(45deg, #ff004f, #ffb300);
+}
+.modal-content a:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 15px rgba(255,255,255,0.8);
 }
 
 /* Rodapé */
 footer {
   text-align: center;
-  margin: 50px 0;
-  opacity: 0.7;
+  padding: 30px 20px;
+  background: #0a0000;
+  color: #bbb;
+  font-size: 14px;
+  margin-top: 40px;
 }
 </style>
 </head>
@@ -106,26 +165,49 @@ footer {
   <div class="produto">
     <img src="brainrot1.png" alt="Brainrot 1">
     <h3>Brainrot 1</h3>
-    <p>R$ 10,00</p>
-    <a href="https://wa.me/5581995367131" target="_blank" class="btn-comprar">Comprar</a>
+    <div class="preco">R$ 10,00</div>
+    <a href="#" class="btn-comprar" onclick="abrirModal('Brainrot 1')">Comprar</a>
   </div>
   <div class="produto">
     <img src="brainrot2.png" alt="Brainrot 2">
     <h3>Brainrot 2</h3>
-    <p>R$ 15,00</p>
-    <a href="https://wa.me/5581995367131" target="_blank" class="btn-comprar">Comprar</a>
+    <div class="preco">R$ 15,00</div>
+    <a href="#" class="btn-comprar" onclick="abrirModal('Brainrot 2')">Comprar</a>
   </div>
   <div class="produto">
     <img src="brainrot3.png" alt="Brainrot 3">
     <h3>Brainrot 3</h3>
-    <p>R$ 25,00</p>
-    <a href="https://wa.me/5581995367131" target="_blank" class="btn-comprar">Comprar</a>
+    <div class="preco">R$ 25,00</div>
+    <a href="#" class="btn-comprar" onclick="abrirModal('Brainrot 3')">Comprar</a>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal" class="modal-compra">
+  <div class="modal-content">
+    <h2>Escolha onde comprar</h2>
+    <a id="btnWhatsapp" target="_blank">WhatsApp</a>
+    <a id="btnInstagram" class="instagram" target="_blank">Instagram</a>
   </div>
 </div>
 
 <footer>
 © 2026 • RDN STORE
 </footer>
+
+<script>
+function abrirModal(produto) {
+  document.getElementById('modal').style.display = 'flex';
+  document.getElementById('btnWhatsapp').href = `https://wa.me/5581995367131?text=Quero%20comprar%20${encodeURIComponent(produto)}`;
+  document.getElementById('btnInstagram').href = `https://instagram.com/rdn.store.ofc`;
+}
+// Fecha modal ao clicar fora
+window.onclick = function(e) {
+  if(e.target.id === 'modal'){
+    document.getElementById('modal').style.display = 'none';
+  }
+}
+</script>
 
 </body>
 </html>
