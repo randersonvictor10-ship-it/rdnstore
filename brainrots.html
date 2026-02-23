@@ -255,19 +255,22 @@ function fecharCheckout(){
 
 /* FINALIZAR */
 function finalizarCompra(){
-  let msg = "🛒 *NOVO PEDIDO - Rdn Store*%0A%0A";
+  if(cart.length === 0){
+    alert("Carrinho vazio!");
+    return;
+  }
+
+  // ✅ AQUI DIMINUI O ESTOQUE (SÓ AQUI)
   cart.forEach(item=>{
-    msg += `• ${item.nome} - R$${item.preco}%0A`;
+    let s = +localStorage.getItem("stock"+item.id);
+    localStorage.setItem("stock"+item.id, s - 1);
+    updateStock(item.id);
   });
-  msg += `%0A💰 Total: R$${total.toFixed(2)}`;
 
-  window.open(`https://wa.me/${telefoneWhatsApp}?text=${msg}`, "_blank");
+  const numeroPedido = Date.now();
+  const data = new Date().toLocaleString("pt-BR");
 
-  cart = [];
-  total = 0;
-  updateCart();
-  fecharCheckout();
-}
+  let mensagem = `🛒 *NOVO PEDIDO - Rdn Store*%0A`;
 
 /* UI */
 function toggleCart(){ document.getElementById("cart").classList.toggle("active"); }
