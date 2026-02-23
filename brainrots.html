@@ -13,31 +13,31 @@ body {
   color: #fff;
   overflow-x: hidden;
   position: relative;
-  text-shadow: 0 0 10px #ff0000;
+  text-shadow: 0 0 15px #ff0000;
 }
 
-/* Triângulos neon */
+/* Triângulos neon 3D realistas */
 .triangulo {
   position: absolute;
-  width: 25px;
-  height: 25px;
-  background: linear-gradient(45deg, #ff0000, #ff3300, #ff6600);
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, #ff0000, #ff3300, #ff6600);
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  opacity: 0.8;
-  filter: drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 15px #ff3300) drop-shadow(0 0 20px #ff6600);
-  animation-name: flutuar;
+  opacity: 0.85;
+  filter: drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 20px #ff3300) drop-shadow(0 0 30px #ff6600) brightness(1.2);
+  animation-name: flutuar3d;
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
   transform-origin: center;
   mix-blend-mode: screen;
 }
 
-@keyframes flutuar {
-  0% { transform: translateY(0px) rotate(0deg); opacity:0.7; }
-  25% { transform: translateY(-60px) rotate(90deg); opacity:1; }
-  50% { transform: translateY(0px) rotate(180deg); opacity:0.7; }
-  75% { transform: translateY(-40px) rotate(270deg); opacity:0.9; }
-  100% { transform: translateY(0px) rotate(360deg); opacity:0.7; }
+@keyframes flutuar3d {
+  0% { transform: translate3d(0,0,0) rotateX(0deg) rotateY(0deg) scale(1); opacity:0.7; }
+  25% { transform: translate3d(-15px,-60px,10px) rotateX(45deg) rotateY(90deg) scale(1.1); opacity:1; }
+  50% { transform: translate3d(10px,0,-10px) rotateX(90deg) rotateY(180deg) scale(0.9); opacity:0.75; }
+  75% { transform: translate3d(-10px,-40px,5px) rotateX(135deg) rotateY(270deg) scale(1.05); opacity:0.95; }
+  100% { transform: translate3d(0,0,0) rotateX(360deg) rotateY(360deg) scale(1); opacity:0.7; }
 }
 
 /* Brainrot Item */
@@ -110,7 +110,7 @@ footer {
 
 <body>
 
-<!-- Triângulos neon -->
+<!-- Triângulos neon 3D -->
 <div class="triangulo" style="top:10%; left:5%; animation-duration:12s;"></div>
 <div class="triangulo" style="top:20%; left:15%; animation-duration:16s;"></div>
 <div class="triangulo" style="top:30%; left:25%; animation-duration:14s;"></div>
