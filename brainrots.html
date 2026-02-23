@@ -105,7 +105,11 @@ function updateStock(id){
     else{el.innerText="Produto esgotado";el.style.color="red";document.getElementById("sold"+id).style.display="flex";}
 }
 
-for(let i=1;i<=10;i++) updateStock(i);
+tsDiv.innerHTML+=`
+<div class="card">
+  ...
+</div>
+`; updateStock(i);
 
 function buy(id){
     let stock=parseInt(localStorage.getItem("stock"+id));
