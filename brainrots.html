@@ -30,13 +30,11 @@ body{background:#000;color:white;}
   color:#ff2e2e;
   font-size:26px;
   font-weight:bold;
+  animation: neon-logo 1.5s infinite alternate;
 }
-.header button{
-  font-size:24px;
-  background:none;
-  border:none;
-  color:red;
-  cursor:pointer;
+@keyframes neon-logo{
+  from{text-shadow:0 0 5px #ff2e2e;}
+  to{text-shadow:0 0 20px #ff2e2e,0 0 40px #ff2e2e;}
 }
 
 /* ===== PRODUTOS ===== */
@@ -52,6 +50,12 @@ body{background:#000;color:white;}
   border-radius:15px;
   overflow:hidden;
   position:relative;
+  transition:0.3s;
+  box-shadow:0 0 10px rgba(255,0,0,0.2);
+}
+.card:hover{
+  box-shadow:0 0 20px rgba(255,0,0,0.7);
+  transform:translateY(-5px);
 }
 .card img{
   width:100%;
@@ -75,8 +79,16 @@ body{background:#000;color:white;}
   color:white;
   border-radius:8px;
   cursor:pointer;
+  font-weight:bold;
+  animation: neon-btn 1.5s infinite alternate;
 }
 .buy-btn:hover{background:#ff2e2e;}
+
+/* EFEITOS NEON */
+@keyframes neon-btn{
+  from{box-shadow:0 0 5px #ff2e2e,0 0 10px #ff2e2e;}
+  to{box-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e;}
+}
 </style>
 </head>
 
@@ -94,7 +106,7 @@ body{background:#000;color:white;}
 const productsDiv = document.getElementById("products");
 const telefoneWhatsApp = "5581995367131";
 
-// Produtos (nome, preço, imagem)
+// Produtos
 const produtos = [
   { nome:"la romantic 1,4b", preco:55, img:"brainrot1.png" },
   { nome:"fora de stock2", preco:50, img:"brainrot2.png" },
@@ -108,7 +120,7 @@ const produtos = [
   { nome:"fota de stock10", preco:20, img:"brainrot10.png" }
 ];
 
-// Criar cards de produtos
+// Criar cards
 produtos.forEach((produto,i)=>{
   productsDiv.innerHTML += `
     <div class="card">
@@ -122,7 +134,7 @@ produtos.forEach((produto,i)=>{
   `;
 });
 
-// Função de comprar: abre WhatsApp em nova aba
+// Função comprar: abre WhatsApp
 function comprar(i){
   const produto = produtos[i];
   const numeroPedido = Date.now();
@@ -134,7 +146,6 @@ function comprar(i){
   mensagem += `• ${produto.nome} — R$${produto.preco}%0A`;
   mensagem += `%0A💰 *Total: R$${produto.preco.toFixed(2)}*`;
 
-  // Abrir WhatsApp em nova aba
   window.open(`https://wa.me/${telefoneWhatsApp}?text=${mensagem}`, "_blank");
 }
 </script>
