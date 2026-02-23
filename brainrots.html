@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Padix Store</title>
+<title>Rdn Store</title>
 
 <style>
 *{
@@ -14,36 +14,41 @@
 }
 
 body{
-    background:#0b1220;
+    background:#000;
     color:white;
 }
 
+/* Barra topo */
 .top-bar{
-    background:#1e88ff;
+    background:#8b0000;
     padding:10px;
     text-align:center;
     font-weight:bold;
 }
 
 .top-bar span{
-    background:white;
-    color:#1e88ff;
+    background:black;
+    color:#ff2e2e;
     padding:5px 10px;
     border-radius:8px;
     margin-left:10px;
+    border:1px solid #ff2e2e;
 }
 
+/* Header */
 .header{
     display:flex;
     justify-content:space-between;
     align-items:center;
     padding:15px;
-    background:#0f172a;
+    background:#111;
+    border-bottom:2px solid #8b0000;
 }
 
 .logo{
     font-weight:bold;
-    font-size:18px;
+    font-size:20px;
+    color:#ff2e2e;
 }
 
 .icons{
@@ -52,18 +57,22 @@ body{
 }
 
 .icon-btn{
-    background:#1e293b;
+    background:#1a1a1a;
     padding:10px 14px;
     border-radius:12px;
     cursor:pointer;
+    border:1px solid #8b0000;
 }
 
+/* Título */
 .title{
     padding:20px;
     font-size:22px;
     font-weight:bold;
+    color:#ff2e2e;
 }
 
+/* Produtos */
 .products{
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -72,11 +81,17 @@ body{
 }
 
 .card{
-    background:#111827;
+    background:#111;
     border-radius:16px;
     overflow:hidden;
-    border:1px solid #1e293b;
+    border:1px solid #8b0000;
     position:relative;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:scale(1.03);
+    box-shadow:0 0 15px #ff0000;
 }
 
 .card img{
@@ -98,6 +113,7 @@ body{
     font-size:20px;
     font-weight:bold;
     margin:5px 0;
+    color:#ff2e2e;
 }
 
 .stock{
@@ -111,10 +127,15 @@ body{
     padding:10px;
     border:none;
     border-radius:10px;
-    background:#1e88ff;
+    background:#8b0000;
     color:white;
     font-weight:bold;
     cursor:pointer;
+    transition:0.3s;
+}
+
+.buy-btn:hover{
+    background:#ff0000;
 }
 
 .sold-out{
@@ -123,33 +144,90 @@ body{
     left:0;
     width:100%;
     height:100%;
-    background:rgba(0,0,0,0.7);
+    background:rgba(0,0,0,0.8);
     display:flex;
     justify-content:center;
     align-items:center;
     font-weight:bold;
     font-size:16px;
     display:none;
+    color:red;
 }
 </style>
 </head>
 <body>
 
 <div class="top-bar">
-    5% OFF - Use o cupom!
-    <span>PADIX5</span>
+    5% OFF - Use o cupom
+    <span>RDN5</span>
 </div>
 
 <div class="header">
-    <div class="logo">PADIX STORE</div>
+    <div class="logo">Rdn Store</div>
     <div class="icons">
         <div class="icon-btn">🔍</div>
         <div class="icon-btn">🛒</div>
     </div>
 </div>
 
-<div class="title">Nossos Produtos</div>
+<div class="title">Produtos</div>
 
 <div class="products">
 
-<!--
+<!-- 10 PRODUTOS -->
+
+<script>
+for(let i = 1; i <= 10; i++){
+    document.write(`
+    <div class="card" data-stock="5">
+        <div class="sold-out">PRODUTO ESGOTADO</div>
+        <img src="https://via.placeholder.com/300x200">
+        <div class="card-content">
+            <div class="product-name">Brainrot ${i}</div>
+            <div class="price">R$29.90</div>
+            <div class="stock"></div>
+            <button class="buy-btn">Comprar agora</button>
+        </div>
+    </div>
+    `);
+}
+</script>
+
+</div>
+
+<script>
+const cards = document.querySelectorAll(".card");
+
+cards.forEach(card => {
+
+    let stock = parseInt(card.getAttribute("data-stock"));
+    const stockText = card.querySelector(".stock");
+    const button = card.querySelector(".buy-btn");
+    const soldOut = card.querySelector(".sold-out");
+
+    function updateStock(){
+        if(stock > 0){
+            stockText.innerText = "Estoque: " + stock;
+            button.disabled = false;
+            soldOut.style.display = "none";
+        }else{
+            stockText.innerText = "Sem estoque";
+            button.disabled = true;
+            soldOut.style.display = "flex";
+        }
+    }
+
+    button.addEventListener("click", () => {
+        if(stock > 0){
+            stock--;
+            updateStock();
+            alert("Produto adicionado ao carrinho!");
+        }
+    });
+
+    updateStock();
+});
+</script>
+
+</body>
+</html>
