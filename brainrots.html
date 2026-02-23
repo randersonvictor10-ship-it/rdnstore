@@ -86,7 +86,16 @@ let cart=[],total=0,pedidosPendentes=0;
 for(let i=1;i<=10;i++){
     if(localStorage.getItem("stock"+i)===null) localStorage.setItem("stock"+i,5);
     productsDiv.innerHTML+=`
-    
+    <div class="card">
+        <div class="sold-out" id="sold${i}">ESGOTADO</div>
+        <img src="https://via.placeholder.com/300x200">
+        <div class="card-content">
+            <div>Brainrot ${i}</div>
+            <div class="price">R$29.90</div>
+            <div class="stock" id="stock${i}"></div>
+            <button class="buy-btn" onclick="buy(${i})">Comprar</button>
+        </div>
+    </div>`;
 }
 
 function updateStock(id){
@@ -153,13 +162,3 @@ function confirmarPagamento(){
 
 </body>
 </html>
-<div class="card">
-        <div class="sold-out" id="sold${i}">ESGOTADO</div>
-        <img src="https://via.placeholder.com/300x200">
-        <div class="card-content">
-            <div>Brainrot ${i}</div>https://photos.app.goo.gl/ckrVkExEo46WWyzq9
-            <div class="price">R$30.90</div>
-            <div class="stock" id="stock${i}"></div>
-            <button class="buy-btn" onclick="buy(${i})">Comprar</button>
-        </div>
-    </div>`;
