@@ -31,22 +31,20 @@ body{background:#000;color:white;}
 
 <body>
 
-<div class="top-bar">Rdn Store Oficial 🔥</div>
-
-<div class="header">
-  <div class="logo">Rdn Store</div>
-  <button onclick="toggleCart()">🛒</button>
-</div>
-
-<div class="products" id="products"></div>
-
 <div class="cart" id="cart">
   <div class="cart-header">
     <h2>Carrinho</h2>
     <button class="close-btn" onclick="fecharCarrinho()">✖</button>
   </div>
+
   <div id="cartItems"></div>
+
   <h3 id="total">Total: R$0</h3>
+
+  <!-- BOTÕES DE AÇÃO -->
+  <button class="pix-btn" onclick="pagarPix()">💳 Pagar com PIX</button>
+  <button class="pix-btn" onclick="finalizarWhatsApp()">💬 Comprar pelo WhatsApp</button>
+  <button class="voltar-btn" onclick="irInstagram()">📸 Instagram</button>
 </div>
 
 <script>
