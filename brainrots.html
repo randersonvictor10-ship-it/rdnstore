@@ -15,45 +15,84 @@
       border-bottom: 2px solid #ff2a2a;
     }
 
-    header h1 { color: #ff2a2a; }
+    header h1 { color: #ff2a2a; font-size: 32px; }
+    header p { color: #ccc; margin-top: 5px; }
 
-    section {
+    section.store {
       max-width: 1200px;
       margin: auto;
       padding: 40px 20px;
     }
 
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
+    section.store h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #ff2a2a;
+      font-size: 28px;
     }
 
-    .product {
+    .store-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+
+    .store-card {
       background: #111;
-      border: 1px solid #ff2a2a;
-      border-radius: 10px;
+      border: 2px solid #ff2a2a;
+      border-radius: 12px;
       padding: 20px;
       text-align: center;
+      position: relative;
     }
 
-    .product h3 { color: #ff2a2a; margin-bottom: 10px; }
-    .product p { color: #ccc; margin-bottom: 15px; }
-
-    .price {
+    .store-card h3 {
       font-size: 20px;
-      color: #ff2a2a;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .store-card .desc {
+      font-size: 14px;
+      color: #bbb;
       margin-bottom: 15px;
     }
 
-    .buy {
-      display: inline-block;
-      padding: 10px 20px;
+    .store-card .price {
+      display: block;
+      font-size: 24px;
+      font-weight: bold;
+      color: #ff2a2a;
+      margin-bottom: 10px;
+    }
+
+    .store-card .buy-text {
+      display: block;
+      margin-bottom: 15px;
+      font-size: 16px;
+      color: #fff;
+    }
+
+    .buy-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
       background: #ff2a2a;
       color: #000;
       text-decoration: none;
-      border-radius: 5px;
       font-weight: bold;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: 0.2s;
+    }
+
+    .buy-btn:hover {
+      background: #ff4a4a;
+    }
+
+    .highlight {
+      transform: scale(1.03);
+      box-shadow: 0 0 20px rgba(255, 42, 42, 0.4);
     }
 
     footer {
@@ -64,6 +103,10 @@
       font-size: 14px;
       margin-top: 40px;
     }
+
+    @media (max-width: 768px) {
+      .store-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -73,28 +116,35 @@
   <p>Itens disponíveis — Roblox</p>
 </header>
 
-<section>
-  <div class="products">
-    <div class="product">
+<section class="store">
+  <h2>Brainrots Disponíveis</h2>
+
+  <div class="store-grid">
+
+    <div class="store-card">
       <h3>Brainrot Básico</h3>
-      <p>Entrega rápida no jogo</p>
-      <div class="price">R$ 9,99</div>
-      <a href="#" class="buy">Comprar</a>
+      <p class="desc">Entrega imediata no Roblox</p>
+      <span class="price">R$ 9,99</span>
+      <span class="buy-text">Comprar</span>
+      <a href="#" class="buy-btn">Comprar Agora</a>
     </div>
 
-    <div class="product">
+    <div class="store-card highlight">
       <h3>Brainrot Médio</h3>
-      <p>Mais vantagens no jogo</p>
-      <div class="price">R$ 19,99</div>
-      <a href="#" class="buy">Comprar</a>
+      <p class="desc">Mais vantagens e prioridade</p>
+      <span class="price">R$ 19,99</span>
+      <span class="buy-text">Comprar</span>
+      <a href="#" class="buy-btn">Comprar Agora</a>
     </div>
 
-    <div class="product">
+    <div class="store-card">
       <h3>Brainrot Premium</h3>
-      <p>Pacote completo</p>
-      <div class="price">R$ 29,99</div>
-      <a href="#" class="buy">Comprar</a>
+      <p class="desc">Pacote completo + bônus</p>
+      <span class="price">R$ 29,99</span>
+      <span class="buy-text">Comprar</span>
+      <a href="#" class="buy-btn">Comprar Agora</a>
     </div>
+
   </div>
 </section>
 
