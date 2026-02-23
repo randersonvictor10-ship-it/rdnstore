@@ -50,7 +50,15 @@ body{background:#000;color:white;}
 </div>
 
 <script>
-// =================== PRODUTOS ===================
+const productsDiv = document.getElementById("products");
+let cart = [];
+let total = 0;
+
+/* ========= CONFIG ========= */
+const telefoneWhatsApp = "5581995367131"; // COLOQUE SEU NÚMERO AQUI
+
+/* ========= PRODUTOS ========= */
+const estoques = [5,3,10,2,8,6,4,7,1,9];
 const produtos = [
   { nome:"Brainrot 1,4b", preco:55, img:"brainrot1.png" },
   { nome:"Brainrot 1,2b", preco:50, img:"brainrot2.png" },
@@ -64,16 +72,10 @@ const produtos = [
   { nome:"Brainrot 300m", preco:20, img:"brainrot10.png" }
 ];
 
-const estoques = [5,3,10,2,8,6,4,7,1,9];
-
-const productsDiv = document.getElementById("products");
-let cart = [];
-let total = 0;
-
-// =================== CRIAR PRODUTOS ===================
+/* ========= CRIAR PRODUTOS ========= */
 produtos.forEach((produto, i) => {
 
-  if(localStorage.getItem("stock"+i) === null){
+  if (localStorage.getItem("stock"+i) === null) {
     localStorage.setItem("stock"+i, estoques[i]);
   }
 
@@ -93,7 +95,7 @@ produtos.forEach((produto, i) => {
   updateStock(i);
 });
 
-// =================== ESTOQUE ===================
+/* ========= ESTOQUE ========= */
 function updateStock(i){
   const stock = parseInt(localStorage.getItem("stock"+i));
   const el = document.getElementById("stock"+i);
@@ -110,51 +112,98 @@ function updateStock(i){
   }
 }
 
-// =================== COMPRAR ===================
+/* ========= COMPRAR ========= */
 function buy(i){
   let stock = parseInt(localStorage.getItem("stock"+i));
+
   if(stock > 0){
     stock--;
     localStorage.setItem("stock"+i, stock);
     updateStock(i);
 
-    cart.push(produtos[i].nome);
+    cart.push({
+      id: i,
+      nome: produtos[i].nome,
+      preco: produtos[i].preco
+    });
+
     total += produtos[i].preco;
     updateCart();
   }
 }
 
-// =================== CARRINHO ===================
+/* ========= CARRINHO ========= */
 function updateCart(){
   const cartItems = document.getElementById("cartItems");
   cartItems.innerHTML = "";
+
   cart.forEach((item, index) => {
     cartItems.innerHTML += `
       <div class="cart-item">
-        ${item}
+        ${item.nome}
         <button class="remove-btn" onclick="removeItem(${index})">🗑</button>
       </div>
     `;
   });
-  document.getElementById("total").innerText = "Total: R$" + total.toFixed(2);
+
+  document.getElementById("total").innerText =
+    "Total: R$" + total.toFixed(2);
 }
 
+/* ========= REMOVER ITEM (DEVOLVE ESTOQUE) ========= */
 function removeItem(index){
-  const nome = cart[index];
-  const produto = produtos.find(p => p.nome === nome);
-  total -= produto.preco;
-  cart.splice(index,1);
+  const item = cart[index];
+
+  // devolver estoque
+  let stock = parseInt(localStorage.getItem("stock"+item.id));
+  localStorage.setItem("stock"+item.id, stock + 1);
+  updateStock(item.id);
+
+  total -= item.preco;
+  cart.splice(index, 1);
   updateCart();
 }
 
-// =================== CARRINHO UI ===================
+/* ========= WHATSAPP ========= */
+function finalizarCompra(){
+
+  if(cart.length === 0){
+    alert("Carrinho vazio!");
+    return;
+  }
+
+  const numeroPedido = Date.now();
+  const data = new Date().toLocaleString("pt-BR");
+
+  let mensagem = `🛒 *NOVO PEDIDO - Rdn Store*%0A`;
+  mensagem += `🆔 Pedido: ${numeroPedido}%0A`;
+  mensagem += `📅 ${data}%0A%0A`;
+
+  cart.forEach(item => {
+    mensagem += `• ${item.nome} - R$${item.preco}%0A`;
+  });
+
+  mensagem += `%0A💰 *Total: R$${total.toFixed(2)}*`;
+
+  const url = `https://wa.me/${telefoneWhatsApp}?text=${mensagem}`;
+
+  window.open(url, "_blank");
+
+  // limpa carrinho depois de enviar
+  cart = [];
+  total = 0;
+  updateCart();
+}
+
+/* ========= CARRINHO UI ========= */
 function toggleCart(){
   document.getElementById("cart").classList.toggle("active");
 }
+
 function fecharCarrinho(){
   document.getElementById("cart").classList.remove("active");
 }
-</script>
+    </script>
 
 </body>
 </html>
