@@ -161,25 +161,15 @@ function updateCart(){
 
 /* 🗑 DEVOLVER ESTOQUE */
 function removeItem(index){
-    const nomeProduto = cart[index];
+  const item = cart[index];
 
-    // descobrir qual produto é
-    produtos.forEach((p, i) => {
-        if (p.nome === nomeProduto) {
-            let stock = parseInt(localStorage.getItem("stock"+i));
-            localStorage.setItem("stock"+i, stock + 1);
-            updateStock(i);
-        }
-    });
+  let stock = parseInt(localStorage.getItem("stock"+item.id));
+  localStorage.setItem("stock"+item.id, stock + 1);
+  updateStock(item.id);
 
-    total -= produtos.find(p => p.nome === nomeProduto).preco;
-    cart.splice(index, 1);
-    updateCart();
-}
-
-    total -= produtos.find(p => p.nome === nomeProduto).preco;
-    cart.splice(index, 1);
-    updateCart();
+  total -= item.preco;
+  cart.splice(index, 1);
+  updateCart();
 }
 
 /* ================== FINALIZAR ================== */
