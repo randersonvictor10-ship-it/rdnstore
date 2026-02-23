@@ -8,57 +8,30 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
 body{background:#000;color:white;}
-.top-bar{background:#8b0000;padding:10px;text-align:center;font-weight:bold;}
+.top-bar{background:#8b0000;padding:10px;text-align:center;font-weight:bold;cursor:pointer;}
 .header{display:flex;justify-content:space-between;padding:15px;background:#111;border-bottom:2px solid #8b0000;}
-.logo{color:#ff2e2e;font-size:22px;font-weight:bold;animation:neon 1.5s infinite alternate;}
-@keyframes neon{from{text-shadow:0 0 5px red;}to{text-shadow:0 0 20px red,0 0 40px red;}}
-
+.logo{color:#ff2e2e;font-size:22px;font-weight:bold;}
 .products{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:20px;}
 .card{background:#111;border:1px solid #8b0000;border-radius:15px;overflow:hidden;position:relative;}
 .card img{width:100%;height:140px;object-fit:cover;}
 .card-content{padding:15px;}
 .price{color:#ff2e2e;font-weight:bold;}
-.stock{font-size:12px;margin-top:5px;}
-.buy-btn{margin-top:10px;width:100%;padding:8px;background:#8b0000;border:none;color:white;border-radius:8px;cursor:pointer;}
-
-.sold-out{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);display:none;justify-content:center;align-items:center;color:red;font-size:22px;}
-
+.buy-btn{margin-top:10px;width:100%;padding:8px;background:#8b0000;border:none;color:white;border-radius:8px;}
 .cart{position:fixed;right:-350px;top:0;width:300px;height:100%;background:#0b0b0b;padding:15px;
 box-shadow:-2px 0 15px rgba(255,0,0,.6);transition:.4s;overflow-y:auto;z-index:999;}
 .cart.active{right:0;}
-.cart-header{display:flex;justify-content:space-between;align-items:center;}
-.close-btn{background:none;border:none;color:red;font-size:18px;}
 .cart-item{display:flex;justify-content:space-between;margin-bottom:8px;background:#151515;padding:6px;border-radius:6px;}
-.remove-btn{background:none;border:none;color:red;}
-
-.checkout{
-position:fixed;top:0;left:0;width:100%;height:100%;
-background:linear-gradient(180deg,#000,#080000);
-z-index:2000;padding:20px;display:none;
-animation:fadeIn .4s ease;
-}
-@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-
-.checkout-card{
-background:#111;border:1px solid #8b0000;
-border-radius:12px;padding:15px;margin-bottom:10px;
-box-shadow:0 0 15px rgba(255,0,0,.2);
-}
-
-.action-btn{
-width:100%;padding:12px;margin-top:10px;
-border:none;border-radius:10px;
-font-size:15px;font-weight:bold;cursor:pointer;
-}
-.whatsapp{background:#25d366;color:black;}
-.instagram{background:linear-gradient(45deg,#833ab4,#fd1d1d,#fcb045);color:white;}
-.voltar{background:#111;color:white;border:1px solid #8b0000;}
+.checkout{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:2000;padding:20px;display:none;}
+.checkout-card{background:#111;border:1px solid #8b0000;padding:10px;border-radius:10px;margin-bottom:10px;}
+.admin{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:3000;padding:20px;display:none;overflow:auto;}
+input{width:100%;padding:8px;margin:5px 0;background:#111;border:1px solid #8b0000;color:white;}
+button{cursor:pointer}
 </style>
 </head>
 
 <body>
 
-<div class="top-bar">Rdn Store Oficial 🔥</div>
+<div class="top-bar" onclick="abrirAdmin()">Rdn Store Oficial 🔥 (toque 2x)</div>
 
 <div class="header">
   <div class="logo">Rdn Store</div>
@@ -67,118 +40,148 @@ font-size:15px;font-weight:bold;cursor:pointer;
 
 <div class="products" id="products"></div>
 
+<!-- CARRINHO -->
 <div class="cart" id="cart">
-  <div class="cart-header">
-    <h2>Carrinho</h2>
-    <button class="close-btn" onclick="fecharCarrinho()">✖</button>
-  </div>
+  <h2>Carrinho</h2>
   <div id="cartItems"></div>
   <h3 id="total">Total: R$0</h3>
   <button class="buy-btn" onclick="abrirCheckout()">Ir para compra</button>
 </div>
 
+<!-- CHECKOUT -->
 <div class="checkout" id="checkout">
-  <h2 style="color:#ff2e2e;text-align:center">Finalizar Pedido</h2>
+  <h2 style="color:#ff2e2e">Finalizar Pedido</h2>
   <div id="checkoutItems"></div>
   <h3 id="checkoutTotal"></h3>
+  <button class="buy-btn" onclick="finalizarPedido()">Finalizar no WhatsApp</button>
+  <button class="buy-btn" onclick="fecharCheckout()">Voltar</button>
+</div>
 
-  <button class="action-btn whatsapp" onclick="finalizarWhatsApp()">Finalizar no WhatsApp</button>
-  <button class="action-btn instagram" onclick="abrirInstagram()">Finalizar no Instagram</button>
-  <button class="action-btn voltar" onclick="fecharCheckout()">Voltar</button>
+<!-- ADMIN -->
+<div class="admin" id="adminPanel">
+  <h2 style="color:#ff2e2e">Painel Admin</h2>
+  <p>Pedidos confirmados: <span id="contadorPedidos">0</span></p>
+  <div id="adminEstoque"></div>
+  <button class="buy-btn" onclick="fecharAdmin()">Fechar</button>
 </div>
 
 <script>
+const senhaAdmin="rdn123";
+const telefone="5581995367131";
+
 const produtos=[
-{nome:"la romantic 1,4b",preco:55,img:"brainrot1.png"},
+{nome:"Brainrot 1,4b",preco:55,img:"brainrot1.png"},
 {nome:"Brainrot 1,2b",preco:50,img:"brainrot2.png"},
 {nome:"Brainrot 1,0b",preco:45,img:"brainrot3.png"},
 {nome:"Brainrot 900m",preco:40,img:"brainrot4.png"},
-{nome:"Brainrot 800m",preco:35,img:"brainrot5.png"},
-{nome:"Brainrot 700m",preco:30,img:"brainrot6.png"},
-{nome:"Brainrot 600m",preco:28,img:"brainrot7.png"},
-{nome:"Brainrot 500m",preco:25,img:"brainrot8.png"},
-{nome:"Brainrot 400m",preco:22,img:"brainrot9.png"},
-{nome:"Brainrot 300m",preco:20,img:"brainrot10.png"}
+{nome:"Brainrot 800m",preco:35,img:"brainrot5.png"}
 ];
 
-const estoques=[1,0,0,0,0,0,0,0,0,0];
-const productsDiv=document.getElementById("products");
 let cart=[],total=0;
-const zap="5581995367131";
 
 produtos.forEach((p,i)=>{
- if(localStorage.getItem("stock"+i)===null) localStorage.setItem("stock"+i,estoques[i]);
- productsDiv.innerHTML+=`
+ if(localStorage.getItem("stock"+i)===null) localStorage.setItem("stock"+i,5);
+ products.innerHTML+=`
  <div class="card">
- <div class="sold-out" id="sold${i}">ESGOTADO</div>
  <img src="images/${p.img}">
  <div class="card-content">
  <div>${p.nome}</div>
  <div class="price">R$${p.preco}</div>
- <div class="stock" id="stock${i}"></div>
+ <div id="stock${i}"></div>
  <button class="buy-btn" onclick="buy(${i})">Comprar</button>
  </div></div>`;
- updateStock(i);
+ atualizarEstoque(i);
 });
 
-function updateStock(i){
- const s=+localStorage.getItem("stock"+i);
- document.getElementById("stock"+i).innerText=s>0?`Restam ${s}`:"Esgotado";
- document.getElementById("sold"+i).style.display=s>0?"none":"flex";
+function atualizarEstoque(i){
+ let s=localStorage.getItem("stock"+i);
+ document.getElementById("stock"+i).innerText="Estoque: "+s;
 }
 
 function buy(i){
  let s=+localStorage.getItem("stock"+i);
  if(s>0){
  localStorage.setItem("stock"+i,s-1);
- cart.push({id:i,nome:produtos[i].nome,preco:produtos[i].preco});
+ cart.push(produtos[i]);
  total+=produtos[i].preco;
- updateStock(i);updateCart();
+ atualizarEstoque(i);
+ atualizarCarrinho();
  }
 }
 
-function updateCart(){
+function atualizarCarrinho(){
  cartItems.innerHTML="";
  cart.forEach((c,i)=>{
  cartItems.innerHTML+=`<div class="cart-item">${c.nome}
- <button class="remove-btn" onclick="removeItem(${i})">🗑</button></div>`;
+ <button onclick="remover(${i})">🗑</button></div>`;
  });
  totalEl.innerText="Total: R$"+total.toFixed(2);
 }
 
-function removeItem(i){
- let c=cart[i];
- localStorage.setItem("stock"+c.id,+localStorage.getItem("stock"+c.id)+1);
- total-=c.preco;cart.splice(i,1);
- updateStock(c.id);updateCart();
+function remover(i){
+ let item=cart[i];
+ let id=produtos.findIndex(p=>p.nome===item.nome);
+ localStorage.setItem("stock"+id,+localStorage.getItem("stock"+id)+1);
+ total-=item.preco;
+ cart.splice(i,1);
+ atualizarEstoque(id);
+ atualizarCarrinho();
 }
 
 function abrirCheckout(){
- if(cart.length===0)return alert("Carrinho vazio!");
- fecharCarrinho();checkout.style.display="block";
+ if(cart.length===0) return alert("Carrinho vazio");
+ checkout.style.display="block";
  checkoutItems.innerHTML="";
  cart.forEach(c=>{
- checkoutItems.innerHTML+=`<div class="checkout-card">${c.nome} — R$${c.preco}</div>`;
+ checkoutItems.innerHTML+=`<div class="checkout-card">${c.nome} - R$${c.preco}</div>`;
  });
  checkoutTotal.innerText="Total: R$"+total.toFixed(2);
 }
-function fecharCheckout(){checkout.style.display="none";}
-function finalizarWhatsApp(){
- let msg="🛒 Pedido Rdn Store%0A";
- cart.forEach(c=>msg+=`• ${c.nome}%0A`);
- msg+=`%0ATotal: R$${total.toFixed(2)}`;
- window.open(`https://wa.me/${zap}?text=${msg}`);
-}
-function abrirInstagram(){window.open("https://instagram.com/rdn.store.ofc","_blank");}
-function toggleCart(){cartEl.classList.toggle("active");}
-function fecharCarrinho(){cartEl.classList.remove("active");}
 
-const cartEl=document.getElementById("cart"),
-cartItems=document.getElementById("cartItems"),
-totalEl=document.getElementById("total"),
-checkout=document.getElementById("checkout"),
-checkoutItems=document.getElementById("checkoutItems"),
-checkoutTotal=document.getElementById("checkoutTotal");
+function fecharCheckout(){checkout.style.display="none";}
+
+function finalizarPedido(){
+ let nome=prompt("Digite seu nome:");
+ if(!nome) return;
+ let msg=`🛒 Pedido Rdn Store%0ACliente: ${nome}%0A`;
+ cart.forEach(c=>msg+=`• ${c.nome}%0A`);
+ msg+=`Total: R$${total.toFixed(2)}`;
+ window.open(`https://wa.me/${telefone}?text=${msg}`);
+ let contador=+localStorage.getItem("pedidos")||0;
+ localStorage.setItem("pedidos",contador+1);
+ cart=[];total=0;
+ atualizarCarrinho();
+ fecharCheckout();
+}
+
+function toggleCart(){cart.classList.toggle("active");}
+
+const cartEl=document.getElementById("cart");
+function toggleCart(){cartEl.classList.toggle("active");}
+
+const totalEl=document.getElementById("total");
+
+function abrirAdmin(){
+ let senha=prompt("Senha admin:");
+ if(senha!==senhaAdmin)return;
+ adminPanel.style.display="block";
+ contadorPedidos.innerText=localStorage.getItem("pedidos")||0;
+ adminEstoque.innerHTML="";
+ produtos.forEach((p,i)=>{
+ adminEstoque.innerHTML+=`
+ <div>${p.nome}
+ <input type="number" value="${localStorage.getItem("stock"+i)}"
+ onchange="mudarEstoque(${i},this.value)">
+ </div>`;
+ });
+}
+
+function mudarEstoque(i,val){
+ localStorage.setItem("stock"+i,val);
+ atualizarEstoque(i);
+}
+
+function fecharAdmin(){adminPanel.style.display="none";}
 </script>
 
 </body>
