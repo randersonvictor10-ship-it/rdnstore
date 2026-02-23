@@ -18,25 +18,30 @@ body {
 /* Triângulos flutuantes */
 .triangulo {
   position: absolute;
-  width: 15px;
-  height: 15px;
-  background: linear-gradient(45deg, #ff004f, #ffb300);
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(45deg, #ff6600, #ff3300);
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  opacity: 0.6;
-  animation: flutuar 10s linear infinite;
+  opacity: 0.7;
+  animation-name: flutuar;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  transform-origin: center;
 }
 
 @keyframes flutuar {
-  0% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-50px) rotate(180deg); }
-  100% { transform: translateY(0) rotate(360deg); }
+  0% { transform: translateY(0px) rotate(0deg); opacity:0.7; }
+  25% { transform: translateY(-40px) rotate(90deg); opacity:0.9; }
+  50% { transform: translateY(0px) rotate(180deg); opacity:0.7; }
+  75% { transform: translateY(-30px) rotate(270deg); opacity:0.85; }
+  100% { transform: translateY(0px) rotate(360deg); opacity:0.7; }
 }
 
 /* Brainrot Item */
 .brainrot-item {
   text-align: center;
   margin: 40px auto;
-  padding: 20px;
+  padding: 25px;
   border-radius: 15px;
   background: rgba(255,0,0,0.1);
   box-shadow: 0 0 30px rgba(255,0,0,0.3);
@@ -44,10 +49,10 @@ body {
 
 /* Botão Comprar */
 .btn-comprar {
-  background: linear-gradient(90deg, #ff0000, #8b0000);
+  background: linear-gradient(90deg, #ff004f, #8b0000);
   color: #fff;
   font-size: 20px;
-  padding: 18px 30px;
+  padding: 20px 35px;
   margin-top: 15px;
   border: none;
   border-radius: 15px;
@@ -104,11 +109,21 @@ footer {
 <body>
 
 <!-- Triângulos flutuantes -->
-<div class="triangulo" style="top:20px; left:10%; animation-duration:12s;"></div>
-<div class="triangulo" style="top:150px; left:30%; animation-duration:15s;"></div>
-<div class="triangulo" style="top:300px; left:50%; animation-duration:10s;"></div>
-<div class="triangulo" style="top:100px; left:70%; animation-duration:18s;"></div>
-<div class="triangulo" style="top:250px; left:85%; animation-duration:20s;"></div>
+<div class="triangulo" style="top:10%; left:5%; animation-duration:12s;"></div>
+<div class="triangulo" style="top:20%; left:15%; animation-duration:16s;"></div>
+<div class="triangulo" style="top:30%; left:25%; animation-duration:10s;"></div>
+<div class="triangulo" style="top:40%; left:35%; animation-duration:18s;"></div>
+<div class="triangulo" style="top:50%; left:45%; animation-duration:14s;"></div>
+<div class="triangulo" style="top:60%; left:55%; animation-duration:12s;"></div>
+<div class="triangulo" style="top:70%; left:65%; animation-duration:17s;"></div>
+<div class="triangulo" style="top:80%; left:75%; animation-duration:15s;"></div>
+<div class="triangulo" style="top:90%; left:85%; animation-duration:13s;"></div>
+<div class="triangulo" style="top:15%; left:90%; animation-duration:11s;"></div>
+<div class="triangulo" style="top:35%; left:10%; animation-duration:19s;"></div>
+<div class="triangulo" style="top:55%; left:20%; animation-duration:16s;"></div>
+<div class="triangulo" style="top:75%; left:40%; animation-duration:14s;"></div>
+<div class="triangulo" style="top:25%; left:60%; animation-duration:12s;"></div>
+<div class="triangulo" style="top:45%; left:80%; animation-duration:18s;"></div>
 
 <!-- Brainrot -->
 <div class="brainrot-item">
