@@ -4,109 +4,103 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RDN STORE</title>
-
 <style>
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: radial-gradient(circle at top, #1a0000, #000000 70%);
   color: #fff;
-  overflow-x: hidden;
+  overflow: hidden;
   position: relative;
-  text-shadow: 0 0 15px #ff0000;
 }
 
-/* Triângulos neon 3D realistas */
+/* Triângulos neon ultra 3D */
 .triangulo {
   position: absolute;
   width: 30px;
   height: 30px;
   background: linear-gradient(135deg, #ff0000, #ff3300, #ff6600);
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  opacity: 0.85;
-  filter: drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 20px #ff3300) drop-shadow(0 0 30px #ff6600) brightness(1.2);
-  animation-name: flutuar3d;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
-  transform-origin: center;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 15px #ff0000) drop-shadow(0 0 30px #ff3300) drop-shadow(0 0 45px #ff6600) brightness(1.4);
+  transform-style: preserve-3d;
   mix-blend-mode: screen;
+  animation: flutuarUltra 25s infinite linear;
 }
 
-@keyframes flutuar3d {
-  100% { transform: translate3d(0,0,0) rotateX(0deg) rotateY(0deg) scale(1); opacity:0.7; }
-  100% { transform: translate3d(-15px,-60px,10px) rotatey(45deg) rotateY(90deg) scale(1.1); opacity:1; }
-  100% { transform: translate3d(10px,0,-10px) rotateX(90deg) rotatex(180deg) scale(0.9); opacity:0.75; }
-  100% { transform: translate3d(-10px,-40px,5px) rotateX(135deg) rotateY(270deg) scale(1.05); opacity:0.95; }
-  100% { transform: translate3d(0,0,0) rotatey(360deg) rotatex(360deg) scale(1); opacity:0.7; }
+/* Movimento 3D aleatório */
+@keyframes flutuarUltra {
+  0% { transform: translate3d(0,0,0) rotateX(0deg) rotateY(0deg) scale(1); opacity:0.7; }
+  25% { transform: translate3d(-30px,-80px,20px) rotateX(45deg) rotateY(90deg) scale(1.2); opacity:1; }
+  50% { transform: translate3d(20px,10px,-20px) rotateX(90deg) rotateY(180deg) scale(0.9); opacity:0.75; }
+  75% { transform: translate3d(-10px,-50px,10px) rotateX(135deg) rotateY(270deg) scale(1.1); opacity:0.95; }
+  100% { transform: translate3d(0,0,0) rotateX(360deg) rotateY(360deg) scale(1); opacity:0.7; }
 }
 
-/* Botões estilo game */
-.btn {
-  font-size: 22px;
-  padding: 20px 35px;
-  margin: 15px;
-  border-radius: 15px;
+/* Botão ultra 3D estilo game */
+.btn-brainrots {
+  display: inline-block;
+  font-size: 24px;
+  padding: 25px 50px;
+  margin: 20px;
+  border-radius: 20px;
   font-weight: bold;
   text-decoration: none;
   color: #fff;
-  display: inline-block;
-  transition: transform 0.2s, box-shadow 0.2s;
+  background: linear-gradient(135deg, #ff004f, #8b0000, #ff3300);
+  box-shadow: 0 0 15px #ff004f, 0 0 25px #ff3300, 0 0 40px #ff6600 inset;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.btn-brainrots { background: linear-gradient(90deg, #ff004f, #8b0000); }
-
-.btn:hover {
-  transform: scale(1.15);
-  box-shadow: 0 0 25px rgba(255,255,255,0.8);
+.btn-brainrots:hover {
+  transform: scale(1.2) rotateX(5deg);
+  box-shadow: 0 0 25px #ff004f, 0 0 50px #ff3300, 0 0 60px #ff6600 inset;
 }
 
-/* Seção central */
+/* Central */
 .main-content {
   text-align: center;
-  padding-top: 200px;
+  padding-top: 100px;
 }
 
 h1 {
-  font-size: 64px;
-  margin-bottom: 34px;
+  font-size: 60px;
+  margin-bottom: 20px;
   color: #ff3300;
   text-shadow: 0 0 30px #ff6600;
 }
 
 p {
-  font-size: 34px;
-  margin-bottom: 64px;
+  font-size: 22px;
+  margin-bottom: 30px;
   opacity: 0.9;
 }
 
 footer {
   text-align: center;
-  margin: 64px 0;
+  margin: 50px 0;
   opacity: 0.7;
 }
 </style>
 </head>
-
 <body>
 
-<!-- Triângulos neon 3D -->
-<div class="triangulo" style="top:100%; left:5%; animation-duration:12s;"></div>
-<div class="triangulo" style="top:100%; left:15%; animation-duration:16s;"></div>
-<div class="triangulo" style="top:100%; left:25%; animation-duration:14s;"></div>
-<div class="triangulo" style="top:100%; left:35%; animation-duration:18s;"></div>
-<div class="triangulo" style="top:100%; left:45%; animation-duration:13s;"></div>
-<div class="triangulo" style="top:100%; left:55%; animation-duration:15s;"></div>
-<div class="triangulo" style="top:100%; left:65%; animation-duration:17s;"></div>
-<div class="triangulo" style="top:100%; left:75%; animation-duration:12s;"></div>
-<div class="triangulo" style="top:100%; left:85%; animation-duration:16s;"></div>
-<div class="triangulo" style="top:100%; left:90%; animation-duration:11s;"></div>
+<!-- 200 Triângulos ultra 3D -->
+<script>
+for(let i=0;i<200;i++){
+  let t=document.createElement('div');
+  t.className='triangulo';
+  t.style.top=Math.random()*100+'%';
+  t.style.left=Math.random()*100+'%';
+  t.style.animationDuration=(15+Math.random()*20)+'s';
+  document.body.appendChild(t);
+}
+</script>
 
-<!-- Conteúdo principal -->
 <div class="main-content">
   <h1>RDN STORE</h1>
-  <p>Os melhores Brainrots estão aqui! Clique para comprar e se divertir!</p>
-
-  <a href="brainrots.html" class="btn btn-brainrots">Comprar Brainrots</a>
+  <p>Os melhores Brainrots estão aqui! Clique abaixo para comprar!</p>
+  <a href="brainrots.html" class="btn-brainrots">Comprar Brainrots</a>
 </div>
 
 <footer>
