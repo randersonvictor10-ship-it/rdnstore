@@ -9,31 +9,34 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: radial-gradient(circle at top, #1a0000, #000);
+  background: radial-gradient(circle at top, #1a0000, #000000 70%);
   color: #fff;
   overflow-x: hidden;
   position: relative;
+  text-shadow: 0 0 10px #ff0000;
 }
 
-/* Triângulos flutuantes */
+/* Triângulos neon */
 .triangulo {
   position: absolute;
-  width: 20px;
-  height: 20px;
-  background: linear-gradient(45deg, #ff6600, #ff3300);
+  width: 25px;
+  height: 25px;
+  background: linear-gradient(45deg, #ff0000, #ff3300, #ff6600);
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  opacity: 0.7;
+  opacity: 0.8;
+  filter: drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 15px #ff3300) drop-shadow(0 0 20px #ff6600);
   animation-name: flutuar;
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
   transform-origin: center;
+  mix-blend-mode: screen;
 }
 
 @keyframes flutuar {
   0% { transform: translateY(0px) rotate(0deg); opacity:0.7; }
-  25% { transform: translateY(-40px) rotate(90deg); opacity:0.9; }
+  25% { transform: translateY(-60px) rotate(90deg); opacity:1; }
   50% { transform: translateY(0px) rotate(180deg); opacity:0.7; }
-  75% { transform: translateY(-30px) rotate(270deg); opacity:0.85; }
+  75% { transform: translateY(-40px) rotate(270deg); opacity:0.9; }
   100% { transform: translateY(0px) rotate(360deg); opacity:0.7; }
 }
 
@@ -97,7 +100,6 @@ body {
   box-shadow: 0 0 25px rgba(255,255,255,0.6);
 }
 
-/* Footer */
 footer {
   text-align: center;
   margin: 50px 0;
@@ -108,49 +110,29 @@ footer {
 
 <body>
 
-<!-- Triângulos flutuantes -->
+<!-- Triângulos neon -->
 <div class="triangulo" style="top:10%; left:5%; animation-duration:12s;"></div>
 <div class="triangulo" style="top:20%; left:15%; animation-duration:16s;"></div>
-<div class="triangulo" style="top:30%; left:25%; animation-duration:10s;"></div>
+<div class="triangulo" style="top:30%; left:25%; animation-duration:14s;"></div>
 <div class="triangulo" style="top:40%; left:35%; animation-duration:18s;"></div>
-<div class="triangulo" style="top:50%; left:45%; animation-duration:14s;"></div>
-<div class="triangulo" style="top:60%; left:55%; animation-duration:12s;"></div>
+<div class="triangulo" style="top:50%; left:45%; animation-duration:13s;"></div>
+<div class="triangulo" style="top:60%; left:55%; animation-duration:15s;"></div>
 <div class="triangulo" style="top:70%; left:65%; animation-duration:17s;"></div>
-<div class="triangulo" style="top:80%; left:75%; animation-duration:15s;"></div>
-<div class="triangulo" style="top:90%; left:85%; animation-duration:13s;"></div>
+<div class="triangulo" style="top:80%; left:75%; animation-duration:12s;"></div>
+<div class="triangulo" style="top:90%; left:85%; animation-duration:16s;"></div>
 <div class="triangulo" style="top:15%; left:90%; animation-duration:11s;"></div>
-<div class="triangulo" style="top:35%; left:10%; animation-duration:19s;"></div>
-<div class="triangulo" style="top:55%; left:20%; animation-duration:16s;"></div>
-<div class="triangulo" style="top:75%; left:40%; animation-duration:14s;"></div>
-<div class="triangulo" style="top:25%; left:60%; animation-duration:12s;"></div>
-<div class="triangulo" style="top:45%; left:80%; animation-duration:18s;"></div>
 
 <!-- Brainrot -->
 <div class="brainrot-item">
   <h2>Brainrot XYZ</h2>
   <p>Preço: R$ XX</p>
 
-  <!-- Botão comprar -->
   <button id="btn-comprar" class="btn-comprar">Comprar</button>
 
-  <!-- Opções escondidas -->
   <div id="opcoes-compra" class="opcoes-compra">
     <p>Escolha onde comprar:</p>
-    <a 
-      href="https://wa.me/5581995367131?text=Olá%20quero%20comprar%20esse%20Brainrot%20da%20RDN%20STORE"
-      target="_blank"
-      class="btn-whatsapp"
-    >
-      WhatsApp
-    </a>
-
-    <a 
-      href="https://instagram.com/rdn.store.ofc"
-      target="_blank"
-      class="btn-instagram"
-    >
-      Instagram
-    </a>
+    <a href="https://wa.me/5581995367131?text=Olá%20quero%20comprar%20esse%20Brainrot%20da%20RDN%20STORE" target="_blank" class="btn-whatsapp">WhatsApp</a>
+    <a href="https://instagram.com/rdn.store.ofc" target="_blank" class="btn-instagram">Instagram</a>
   </div>
 </div>
 
@@ -159,16 +141,11 @@ footer {
 </footer>
 
 <script>
-// Botão Comprar revela opções
 const btnComprar = document.getElementById('btn-comprar');
 const opcoesCompra = document.getElementById('opcoes-compra');
 
 btnComprar.addEventListener('click', () => {
-  if(opcoesCompra.style.display === "none") {
-    opcoesCompra.style.display = "block";
-  } else {
-    opcoesCompra.style.display = "none";
-  }
+  opcoesCompra.style.display = opcoesCompra.style.display === "none" ? "block" : "none";
 });
 </script>
 
