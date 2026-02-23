@@ -4,118 +4,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rdn Store</title>
-
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
 body{background:#000;color:white;}
-
-.top-bar{
-background:#8b0000;
-padding:10px;
-text-align:center;
-font-weight:bold;
-}
-
-.header{
-display:flex;
-justify-content:space-between;
-padding:15px;
-background:#111;
-border-bottom:2px solid #8b0000;
-}
-
-.logo{
-color:#ff2e2e;
-font-size:22px;
-font-weight:bold;
-animation:neon 1.5s infinite alternate;
-}
-
-@keyframes neon{
-from{text-shadow:0 0 5px red;}
-to{text-shadow:0 0 20px red,0 0 40px red;}
-}
-
-.products{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
-padding:20px;
-}
-
-.card{
-background:#111;
-border:1px solid #8b0000;
-border-radius:15px;
-overflow:hidden;
-position:relative;
-}
-
-.card img{
-width:100%;
-height:140px;
-object-fit:cover;
-}
-
+.top-bar{background:#8b0000;padding:10px;text-align:center;font-weight:bold;}
+.header{display:flex;justify-content:space-between;padding:15px;background:#111;border-bottom:2px solid #8b0000;}
+.logo{color:#ff2e2e;font-size:22px;font-weight:bold;animation:neon 1.5s infinite alternate;}
+@keyframes neon{from{text-shadow:0 0 5px red;}to{text-shadow:0 0 20px red,0 0 40px red;}}
+.products{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:20px;}
+.card{background:#111;border:1px solid #8b0000;border-radius:15px;overflow:hidden;position:relative;}
+.card img{width:100%;height:140px;object-fit:cover;}
 .card-content{padding:15px;}
-
 .price{color:#ff2e2e;font-weight:bold;}
-
 .stock{font-size:12px;margin-top:5px;}
-
-.buy-btn{
-margin-top:10px;
-width:100%;
-padding:8px;
-background:#8b0000;
-border:none;
-color:white;
-border-radius:8px;
-cursor:pointer;
-}
-
-.sold-out{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.8);
-display:flex;
-justify-content:center;
-align-items:center;
-color:red;
-display:none;
-}
-
-.cart{
-position:fixed;
-right:-320px;
-top:0;
-width:320px;
-height:100%;
-background:#111;
-border-left:2px solid red;
-transition:0.4s;
-padding:20px;
-overflow:auto;
-}
-
+.buy-btn{margin-top:10px;width:100%;padding:8px;background:#8b0000;border:none;color:white;border-radius:8px;cursor:pointer;}
+.sold-out{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;justify-content:center;align-items:center;color:red;display:none;}
+.cart{position:fixed;right:-350px;top:0;width:300px;height:100%;background:#111;padding:15px;box-shadow:-2px 0 10px rgba(255,0,0,0.5);transition:0.4s ease;overflow-y:auto;z-index:999;}
 .cart.active{right:0;}
-
-.admin-panel{
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:black;
-color:white;
-padding:30px;
-overflow:auto;
-z-index:9999;
-}
+.cart-header{display:flex;justify-content:space-between;align-items:center;}
+.close-btn{background:none;border:none;color:red;font-size:18px;cursor:pointer;}
+.pix-btn{width:100%;padding:10px;background:#8b0000;border:none;color:white;border-radius:8px;cursor:pointer;margin-top:10px;transition:0.3s;}
+.pix-btn:hover{background:red;}
+.voltar-btn{margin-top:10px;width:100%;padding:8px;background:#222;border:1px solid #8b0000;color:white;border-radius:8px;cursor:pointer;transition:0.3s;}
+.voltar-btn:hover{background:#8b0000;}
+.cart-item{display:flex;justify-content:space-between;margin-bottom:8px;background:#1a1a1a;padding:5px;border-radius:6px;}
+.remove-btn{background:none;border:none;color:red;cursor:pointer;}
+#pixArea img{margin:10px auto;display:block;}
+#pixArea p{word-break:break-all;font-size:11px;background:#000;padding:8px;border-radius:6px;color:#ccc;}
 </style>
 </head>
 <body>
@@ -130,169 +45,118 @@ z-index:9999;
 <div class="products" id="products"></div>
 
 <div class="cart" id="cart">
+<div class="cart-header">
 <h2>Carrinho</h2>
+<button class="close-btn" onclick="fecharCarrinho()">✖</button>
+</div>
+
 <div id="cartItems"></div>
 <h3 id="total">Total: R$0</h3>
-<button onclick="finalizarCompra()">Pagar com PIX</button>
+
+<button onclick="finalizarCompra()" class="pix-btn">Pagar com PIX</button>
+<button onclick="fecharCarrinho()" class="voltar-btn">← Continuar comprando</button>
+
+<div id="pixArea" style="display:none;text-align:center;margin-top:15px;">
+<h3 style="color:#ff2e2e;">Pagamento PIX</h3>
+<img id="qrCode" width="200">
+<p id="pixCode"></p>
+<button onclick="copiarPix()" class="pix-btn">Copiar PIX</button>
 </div>
 
-<div class="admin-panel" id="admin">
-<h2>Painel Admin</h2>
-<div id="adminContent"></div>
-<button onclick="resetarTudo()">Resetar Vendas</button>
-<button onclick="fecharAdmin()">Fechar</button>
+<p style="margin-top:15px;color:#ff2e2e;">
+🔥 Compras realizadas: <span id="contador">0</span>
+</p>
 </div>
+
+<div id="adminPanel" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+background:#111;padding:20px;border:2px solid red;border-radius:10px;z-index:2000;color:white;">
+<h3>Painel Admin - Rdn Store</h3>
+<p>Pedidos pendentes: <span id="pendentes">0</span></p>
+<button onclick="confirmarPagamento()" class="pix-btn">Confirmar Pagamento</button>
+<button onclick="fecharAdmin()" class="voltar-btn">Fechar</button>
+</div>
+
+<button onclick="abrirAdmin()" 
+style="position:fixed;bottom:10px;right:10px;background:black;color:red;border:1px solid red;padding:5px 10px;font-size:10px;border-radius:6px;">●</button>
 
 <script>
-let cart=[];
-let total=0;
-let chavePix="81995367131";
 const productsDiv=document.getElementById("products");
+let cart=[],total=0,pedidosPendentes=0;
 
-/* Criar produtos */
 for(let i=1;i<=10;i++){
-
-if(localStorage.getItem("stock"+i)===null){
-localStorage.setItem("stock"+i,5);
-}
-
-productsDiv.innerHTML+=`
-<div class="card">
-<div class="sold-out" id="sold${i}">ESGOTADO</div>
-<img src="https://via.placeholder.com/300x200">
-<div class="card-content">
-<div>Brainrot ${i}</div>
-<div class="price">R$29.90</div>
-<div class="stock" id="stock${i}"></div>
-<button class="buy-btn" onclick="buy(${i})">Comprar</button>
-</div>
-</div>
-`;
+    if(localStorage.getItem("stock"+i)===null) localStorage.setItem("stock"+i,5);
+    productsDiv.innerHTML+=`
+    <div class="card">
+        <div class="sold-out" id="sold${i}">ESGOTADO</div>
+        <img src="https://via.placeholder.com/300x200">
+        <div class="card-content">
+            <div>Brainrot ${i}</div>
+            <div class="price">R$29.90</div>
+            <div class="stock" id="stock${i}"></div>
+            <button class="buy-btn" onclick="buy(${i})">Comprar</button>
+        </div>
+    </div>`;
 }
 
 function updateStock(id){
-let stock=parseInt(localStorage.getItem("stock"+id));
-let el=document.getElementById("stock"+id);
+    let stock=parseInt(localStorage.getItem("stock"+id));
+    let el=document.getElementById("stock"+id);
+    if(stock>0){el.innerText="Restam "+stock+" unidades";el.style.color="#00ff88";document.getElementById("sold"+id).style.display="none";}
+    else{el.innerText="Produto esgotado";el.style.color="red";document.getElementById("sold"+id).style.display="flex";}
+}
 
-if(stock>0){
-el.innerText="Restam "+stock+" unidades";
-el.style.color="#00ff88";
-document.getElementById("sold"+id).style.display="none";
-}else{
-el.innerText="Produto esgotado";
-el.style.color="red";
-document.getElementById("sold"+id).style.display="flex";
-}
-}
+for(let i=1;i<=10;i++) updateStock(i);
 
 function buy(id){
-let stock=parseInt(localStorage.getItem("stock"+id));
-if(stock>0){
-stock--;
-localStorage.setItem("stock"+id,stock);
-updateStock(id);
-
-cart.push("Brainrot "+id);
-total+=29.90;
-updateCart();
-}
+    let stock=parseInt(localStorage.getItem("stock"+id));
+    if(stock>0){stock--;localStorage.setItem("stock"+id,stock);updateStock(id);cart.push("Brainrot "+id);total+=29.90;updateCart();}
 }
 
 function updateCart(){
-let area=document.getElementById("cartItems");
-area.innerHTML="";
-cart.forEach(item=>{
-area.innerHTML+=`<div>${item}</div>`;
-});
-document.getElementById("total").innerText="Total: R$"+total.toFixed(2);
+    const cartItems=document.getElementById("cartItems");
+    cartItems.innerHTML="";
+    cart.forEach((item,index)=>{
+        cartItems.innerHTML+=`<div class="cart-item">${item}<button class="remove-btn" onclick="removeItem(${index})">🗑</button></div>`;
+    });
+    document.getElementById("total").innerText="Total: R$"+total.toFixed(2);
 }
 
-function toggleCart(){
-document.getElementById("cart").classList.toggle("active");
-}
+function removeItem(index){cart.splice(index,1);total-=29.90;updateCart();}
 
-/* PIX AUTOMÁTICO */
+function toggleCart(){document.getElementById("cart").classList.toggle("active");}
+function fecharCarrinho(){document.getElementById("cart").classList.remove("active");}
+
+let contador=localStorage.getItem("contadorCompras")||0;
+document.getElementById("contador").innerText=contador;
+
 function finalizarCompra(){
-if(cart.length===0){
-alert("Carrinho vazio");
-return;
+    if(cart.length===0){alert("Carrinho vazio!"); return;}
+    let chavePix="81995367131";
+    let valor=total.toFixed(2);
+    let payload=`00020126360014BR.GOV.BCB.PIX0114${chavePix}520400005303986540${valor.replace(".","")}5802BR5920Rdn Store6009Recife62070503***6304`;
+    let qrUrl="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data="+encodeURIComponent(payload);
+    document.getElementById("qrCode").src=qrUrl;
+    document.getElementById("pixCode").innerText=payload;
+    document.getElementById("pixArea").style.display="block";
+    pedidosPendentes++;
+    document.getElementById("pendentes").innerText=pedidosPendentes;
+    cart=[]; total=0; updateCart();
 }
 
-let valor=total.toFixed(2);
-let pixCode=`00020126580014BR.GOV.BCB.PIX0136${chavePix}520400005303986540${valor}5802BR`;
+function copiarPix(){navigator.clipboard.writeText(document.getElementById("pixCode").innerText); alert("PIX copiado!");}
 
-let tela=document.createElement("div");
-tela.style.position="fixed";
-tela.style.top="0";
-tela.style.left="0";
-tela.style.width="100%";
-tela.style.height="100%";
-tela.style.background="black";
-tela.style.color="white";
-tela.style.display="flex";
-tela.style.flexDirection="column";
-tela.style.alignItems="center";
-tela.style.justifyContent="center";
-tela.style.zIndex="9999";
-
-tela.innerHTML=`
-<h2>Pagamento PIX</h2>
-<p>Chave: ${chavePix}</p>
-<p>Valor: R$ ${valor}</p>
-<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${pixCode}">
-<button onclick="confirmarPagamento()">Já paguei</button>
-`;
-
-document.body.appendChild(tela);
-}
+function abrirAdmin(){let senha=prompt("Digite a senha admin:"); if(senha==="rdn123"){document.getElementById("adminPanel").style.display="block";} else {alert("Senha incorreta!");}}
+function fecharAdmin(){document.getElementById("adminPanel").style.display="none";}
 
 function confirmarPagamento(){
-alert("Pagamento confirmado!");
-cart=[];
-total=0;
-updateCart();
-location.reload();
-}
-
-/* ADMIN SECRETO */
-document.addEventListener("keydown",function(e){
-if(e.ctrlKey && e.key==="9"){
-abrirAdmin();
-}
-});
-
-function abrirAdmin(){
-document.getElementById("admin").style.display="block";
-let content=document.getElementById("adminContent");
-content.innerHTML="";
-for(let i=1;i<=10;i++){
-content.innerHTML+=`
-<p>Brainrot ${i} Estoque: ${localStorage.getItem("stock"+i)}
-<button onclick="addStock(${i})">+1</button>
-</p>
-`;
-}
-}
-
-function fecharAdmin(){
-document.getElementById("admin").style.display="none";
-}
-
-function addStock(id){
-let stock=parseInt(localStorage.getItem("stock"+id));
-stock++;
-localStorage.setItem("stock"+id,stock);
-abrirAdmin();
-updateStock(id);
-}
-
-function resetarTudo(){
-localStorage.clear();
-location.reload();
-}
-
-for(let i=1;i<=10;i++){
-updateStock(i);
+    if(pedidosPendentes>0){
+        contador++;
+        localStorage.setItem("contadorCompras",contador);
+        document.getElementById("contador").innerText=contador;
+        pedidosPendentes--;
+        document.getElementById("pendentes").innerText=pedidosPendentes;
+        alert("Pagamento confirmado e contador atualizado!");
+    } else {alert("Nenhum pedido pendente!");}
 }
 </script>
 
