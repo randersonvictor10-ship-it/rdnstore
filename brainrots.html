@@ -5,47 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rdn Store</title>
 
-<!-- ===== FIREBASE ===== -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-
-<script>
-/* 🔴 COLE AQUI SEUS DADOS DO FIREBASE 🔴 */
-const firebaseConfig = {
-  apiKey: "SUA_API_KEY",
-  authDomain: "SEU_DOMINIO.firebaseapp.com",
-  projectId: "SEU_PROJECT_ID",
-  storageBucket: "SEU_PROJECT_ID.appspot.com",
-  messagingSenderId: "ID",
-  appId: "APP_ID"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const storage = firebase.storage();
-</script>
-
 <style>
-/* ===== RESET E FONT ===== */
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
-body{background:#000;color:white;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#000;color:#fff}
 
-/* ===== TOP BAR ===== */
+/* TOP */
 .top-bar{
   background:#8b0000;
   padding:10px;
   text-align:center;
   font-weight:bold;
-  text-transform:uppercase;
-  letter-spacing:1px;
-  box-shadow:0 2px 10px rgba(255,0,0,0.4);
 }
 
-/* ===== HEADER ===== */
+/* HEADER */
 .header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
   padding:15px;
   background:#111;
   border-bottom:2px solid #8b0000;
@@ -54,16 +27,10 @@ body{background:#000;color:white;}
   color:#ff2e2e;
   font-size:26px;
   font-weight:bold;
-  animation:neon 1.5s infinite alternate;
-  text-shadow:0 0 5px red;
   cursor:pointer;
 }
-@keyframes neon{
-  from{text-shadow:0 0 5px red;}
-  to{text-shadow:0 0 20px red,0 0 40px red;}
-}
 
-/* ===== PRODUTOS ===== */
+/* GRID */
 .products{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -76,17 +43,15 @@ body{background:#000;color:white;}
   border-radius:15px;
   overflow:hidden;
   position:relative;
-  box-shadow:0 0 10px rgba(255,0,0,0.3);
 }
 .card img{
   width:100%;
   height:140px;
   object-fit:cover;
-  border-bottom:1px solid #8b0000;
 }
-.card-content{padding:15px;}
-.price{color:#ff2e2e;font-weight:bold;}
-.stock{font-size:12px;margin-top:5px;}
+.card-content{padding:15px}
+.price{color:#ff2e2e;font-weight:bold}
+.stock{font-size:12px;margin-top:5px}
 .buy-btn{
   margin-top:10px;
   width:100%;
@@ -100,7 +65,7 @@ body{background:#000;color:white;}
 }
 .buy-btn:disabled{opacity:.5}
 
-/* SOLD OUT */
+/* ESGOTADO */
 .sold-out{
   position:absolute;
   inset:0;
@@ -108,9 +73,43 @@ body{background:#000;color:white;}
   display:flex;
   justify-content:center;
   align-items:center;
-  color:red;
   font-size:22px;
   font-weight:bold;
+  color:red;
+}
+
+/* ADMIN */
+#adminLogin,#adminPanel{
+  position:fixed;
+  inset:0;
+  background:#000c;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+}
+.admin-box{
+  background:#111;
+  padding:20px;
+  border:2px solid #8b0000;
+  border-radius:12px;
+  width:280px;
+}
+.admin-panel{
+  position:fixed;
+  bottom:10px;
+  left:10px;
+  background:#111;
+  border:2px solid #8b0000;
+  padding:12px;
+  border-radius:12px;
+  width:260px;
+  z-index:999;
+}
+.admin-panel input,.admin-panel select{
+  width:100%;
+  margin:5px 0;
+  padding:6px;
 }
 </style>
 </head>
@@ -118,85 +117,79 @@ body{background:#000;color:white;}
 <body>
 
 <div class="top-bar">Rdn Store Oficial 🔥</div>
-
 <div class="header">
-  <div class="logo">Rdn Store</div>
+  <div class="logo" id="logo">Rdn Store</div>
 </div>
 
 <div class="products" id="products"></div>
 
-<!-- ================= ADMIN LOGIN ================= -->
-<div id="adminLogin" style="display:none;position:fixed;inset:0;background:#000c;z-index:9999;align-items:center;justify-content:center;">
-  <div style="background:#111;padding:20px;border:2px solid #8b0000;border-radius:12px;width:280px;">
-    <h3 style="color:#ff2e2e;text-align:center;">ADMIN</h3>
-    <input id="adminPass" type="password" placeholder="Senha" style="width:100%;padding:8px;margin:10px 0;">
+<!-- LOGIN ADMIN -->
+<div id="adminLogin">
+  <div class="admin-box">
+    <h3 style="text-align:center;color:#ff2e2e">ADMIN</h3>
+    <input type="password" id="adminPass" placeholder="Senha">
     <button class="buy-btn" onclick="loginAdmin()">Entrar</button>
   </div>
 </div>
 
-<!-- ================= ADMIN PANEL ================= -->
-<div id="adminPanel" style="display:none;position:fixed;bottom:10px;left:10px;background:#111;border:2px solid #8b0000;padding:12px;border-radius:12px;width:260px;z-index:9999;">
-  <h3 style="color:#ff2e2e;text-align:center;">ADMIN</h3>
+<!-- PAINEL -->
+<div class="admin-panel" id="adminPanel" style="display:none">
+  <h3 style="text-align:center;color:#ff2e2e">ADMIN</h3>
 
-  <select id="admSelect" style="width:100%;margin:5px 0;"></select>
-  <input id="admNome" placeholder="Nome">
-  <input id="admPreco" type="number" placeholder="Preço">
-  <input id="admEstoque" type="number" placeholder="Estoque">
-  <input id="admImg" type="file" accept="image/*">
+  <select id="selectProd"></select>
+  <input id="nome" placeholder="Nome">
+  <input id="preco" type="number" placeholder="Preço">
+  <input id="estoque" type="number" placeholder="Estoque">
+  <input id="img" type="file" accept="image/*">
 
-  <button class="buy-btn" onclick="criarProduto()">➕ Criar</button>
-  <button class="buy-btn" onclick="editarProduto()">💾 Salvar</button>
-  <button style="width:100%;background:#8b0000;color:white;" onclick="apagarProduto()">🗑 Apagar</button>
+  <button class="buy-btn" onclick="criar()">➕ Criar</button>
+  <button class="buy-btn" onclick="editar()">💾 Salvar</button>
+  <button class="buy-btn" onclick="apagar()">🗑 Apagar</button>
 </div>
 
 <script>
-const SENHA_ADMIN = "rdn555";
-const telefoneWhatsApp = "5581995367131";
-const productsDiv = document.getElementById("products");
+const SENHA = "rdn555";
+const whatsapp = "5581995367131";
 
-/* ===== RENDER PRODUTOS ===== */
+let produtos = JSON.parse(localStorage.getItem("produtos")) || [];
+let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+
+function salvar(){
+  localStorage.setItem("produtos",JSON.stringify(produtos));
+  localStorage.setItem("pedidos",JSON.stringify(pedidos));
+  render();
+  carregarAdmin();
+}
+
 function render(){
-  db.collection("produtos").onSnapshot(snap=>{
-    productsDiv.innerHTML="";
-    snap.forEach(doc=>{
-      const p = doc.data();
-      productsDiv.innerHTML += `
-        <div class="card">
-          ${p.estoque<=0?'<div class="sold-out">ESGOTADO</div>':''}
-          <img src="${p.img}">
-          <div class="card-content">
-            <div>${p.nome}</div>
-            <div class="price">R$${p.preco}</div>
-            <div class="stock">${p.estoque>0?'Restam '+p.estoque:'Produto esgotado'}</div>
-            <button class="buy-btn" ${p.estoque<=0?'disabled':''}
-              onclick="comprar('${doc.id}','${p.nome}',${p.preco})">
-              Comprar
-            </button>
-          </div>
-        </div>
-      `;
-    });
+  const div = document.getElementById("products");
+  div.innerHTML="";
+  produtos.forEach((p,i)=>{
+    div.innerHTML+=`
+    <div class="card">
+      ${p.estoque<=0?'<div class="sold-out">ESGOTADO</div>':''}
+      <img src="${p.img}">
+      <div class="card-content">
+        <div>${p.nome}</div>
+        <div class="price">R$${p.preco}</div>
+        <div class="stock">${p.estoque>0?'Restam '+p.estoque:'Produto esgotado'}</div>
+        <button class="buy-btn" ${p.estoque<=0?'disabled':''}
+          onclick="comprar(${i})">Comprar</button>
+      </div>
+    </div>`;
   });
 }
-render();
 
-/* ===== COMPRAR + HISTÓRICO ===== */
-function comprar(id,nome,preco){
-  db.collection("produtos").doc(id)
-    .update({estoque: firebase.firestore.FieldValue.increment(-1)});
-
-  db.collection("pedidos").add({
-    produto:nome,
-    preco:preco,
-    data:new Date()
-  });
-
-  window.open(`https://wa.me/${telefoneWhatsApp}?text=Pedido:%20${nome}%20R$${preco}`,"_blank");
+function comprar(i){
+  produtos[i].estoque--;
+  pedidos.push({produto:produtos[i].nome,preco:produtos[i].preco,data:new Date()});
+  salvar();
+  window.open(`https://wa.me/${whatsapp}?text=Pedido:%20${produtos[i].nome}`,"_blank");
 }
 
-/* ===== ADMIN ===== */
+/* ADMIN */
 let clicks=0;
-document.querySelector(".logo").onclick=()=>{
+logo.onclick=()=>{
   clicks++;
   if(clicks===5){
     adminLogin.style.display="flex";
@@ -205,51 +198,50 @@ document.querySelector(".logo").onclick=()=>{
 };
 
 function loginAdmin(){
-  if(adminPass.value===SENHA_ADMIN){
+  if(adminPass.value===SENHA){
     adminLogin.style.display="none";
     adminPanel.style.display="block";
     carregarAdmin();
-  } else alert("Senha errada");
+  }else alert("Senha errada");
 }
 
 function carregarAdmin(){
-  admSelect.innerHTML="";
-  db.collection("produtos").get().then(snap=>{
-    snap.forEach(doc=>{
-      admSelect.innerHTML+=`<option value="${doc.id}">${doc.data().nome}</option>`;
+  selectProd.innerHTML="";
+  produtos.forEach((p,i)=>{
+    selectProd.innerHTML+=`<option value="${i}">${p.nome}</option>`;
+  });
+}
+
+function criar(){
+  const file = img.files[0];
+  if(!file) return alert("Selecione uma imagem");
+  const reader = new FileReader();
+  reader.onload=()=>{
+    produtos.push({
+      nome:nome.value,
+      preco:preco.value,
+      estoque:estoque.value,
+      img:reader.result
     });
-  });
+    salvar();
+  };
+  reader.readAsDataURL(file);
 }
 
-function criarProduto(){
-  const file = admImg.files[0];
-  const ref = storage.ref("brainrots/"+Date.now()+file.name);
-  ref.put(file).then(()=>{
-    ref.getDownloadURL().then(url=>{
-      db.collection("produtos").add({
-        nome:admNome.value,
-        preco:+admPreco.value,
-        estoque:+admEstoque.value,
-        img:url
-      });
-      alert("Criado");
-    });
-  });
+function editar(){
+  const i = selectProd.value;
+  produtos[i].nome = nome.value;
+  produtos[i].preco = preco.value;
+  produtos[i].estoque = estoque.value;
+  salvar();
 }
 
-function editarProduto(){
-  db.collection("produtos").doc(admSelect.value).update({
-    nome:admNome.value,
-    preco:+admPreco.value,
-    estoque:+admEstoque.value
-  });
+function apagar(){
+  produtos.splice(selectProd.value,1);
+  salvar();
 }
 
-function apagarProduto(){
-  if(confirm("Apagar?")){
-    db.collection("produtos").doc(admSelect.value).delete();
-  }
-}
+render();
 </script>
 
 </body>
