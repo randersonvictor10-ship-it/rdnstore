@@ -40,7 +40,7 @@ body{background:#000;color:white;}
 
 <div class="products" id="products"></div>
 
-<!-- CARRINHO -->
+<!-- ================== CARRINHO ================== -->
 <div class="cart" id="cart">
   <div class="cart-header">
     <h2>Carrinho</h2>
@@ -55,7 +55,7 @@ body{background:#000;color:white;}
   </button>
 </div>
 
-<!-- CHECKOUT -->
+<!-- ================== CHECKOUT ================== -->
 <div id="checkout" style="
   display:none;
   position:fixed;
@@ -72,6 +72,7 @@ body{background:#000;color:white;}
   <h2 style="color:#ff2e2e;text-align:center;">Finalizar compra</h2>
 
   <div id="checkoutItems" style="margin-top:20px;"></div>
+
   <h3 id="checkoutTotal" style="margin-top:15px;"></h3>
 
   <button onclick="finalizarCompra()" style="
@@ -101,24 +102,26 @@ body{background:#000;color:white;}
 </div>
 
 <script>
-/* ================= VARIÁVEIS ================= */
+/* ================== VARIÁVEIS ================== */
 const productsDiv = document.getElementById("products");
 let cart = [];
 let total = 0;
+
+/* CONFIGURAÇÃO */
 const telefoneWhatsApp = "5581995367131";
 
-/* ESTOQUES INICIAIS */
-const estoques = [1,0,0,0,0,0,0,0,0,0];  
-  
-for (let i = 0; i < 10; i++) {  
-  if (localStorage.getItem("stock"+i) === null) {  
-    localStorage.setItem("stock"+i, estoques[i]);  
-  }  
-}  
+/* ESTOQUE INICIAL */
+const estoques = [1,1,1,1,1,1,1,1,1,1];
+
+for (let i=0; i<10; i++){
+  if(localStorage.getItem("stock"+i) === null){
+    localStorage.setItem("stock"+i, estoques[i]);
+  }
+}
 
 /* PRODUTOS */
 const produtos = [
-  { nome:"la romanticc 1,4b", preco:55, img:"brainrot1.png" },
+  { nome:"Brainrot 1,4b", preco:55, img:"brainrot1.png" },
   { nome:"Brainrot 1,2b", preco:50, img:"brainrot2.png" },
   { nome:"Brainrot 1,0b", preco:45, img:"brainrot3.png" },
   { nome:"Brainrot 900m", preco:40, img:"brainrot4.png" },
@@ -130,15 +133,15 @@ const produtos = [
   { nome:"Brainrot 300m", preco:20, img:"brainrot10.png" }
 ];
 
-/* CRIAR PRODUTOS */
-produtos.forEach((p,i)=>{
+/* ================== CRIAR PRODUTOS ================== */
+produtos.forEach((produto, i) => {
   productsDiv.innerHTML += `
     <div class="card">
       <div class="sold-out" id="sold${i}">ESGOTADO</div>
-      <img src="images/${p.img}">
+      <img src="images/${produto.img}">
       <div class="card-content">
-        <div>${p.nome}</div>
-        <div class="price">R$${p.preco}</div>
+        <div>${produto.nome}</div>
+        <div class="price">R$${produto.preco}</div>
         <div class="stock" id="stock${i}"></div>
         <button class="buy-btn" onclick="buy(${i})">Comprar</button>
       </div>
@@ -147,14 +150,14 @@ produtos.forEach((p,i)=>{
   updateStock(i);
 });
 
-/* ESTOQUE */
+/* ================== ESTOQUE ================== */
 function updateStock(i){
   const stock = +localStorage.getItem("stock"+i);
   const el = document.getElementById("stock"+i);
   const sold = document.getElementById("sold"+i);
 
   if(stock > 0){
-    el.innerText = `Restam ${stock} unidades`;
+    el.innerText = "Restam " + stock + " unidades";
     el.style.color = "#00ff88";
     sold.style.display = "none";
   } else {
@@ -164,7 +167,7 @@ function updateStock(i){
   }
 }
 
-/* COMPRAR (NÃO MEXE NO ESTOQUE) */
+/* ================== COMPRAR ================== */
 function buy(i){
   let stock = +localStorage.getItem("stock"+i);
   if(stock <= 0){
@@ -177,58 +180,84 @@ function buy(i){
   updateCart();
 }
 
-/* CARRINHO */
+/* ================== CARRINHO ================== */
 function updateCart(){
+  const cartItems = document.getElementById("cartItems");
   cartItems.innerHTML = "";
-  cart.forEach((item,idx)=>{
+
+  cart.forEach((item,index)=>{
     cartItems.innerHTML += `
       <div class="cart-item">
         ${item.nome}
-        <button class="remove-btn" onclick="removeItem(${idx})">🗑</button>
-      </div>`;
+        <button class="remove-btn" onclick="removeItem(${index})">🗑</button>
+      </div>
+    `;
   });
-  total.innerText = "Total: R$"+total.toFixed(2);
+
+  document.getElementById("total").innerText = "Total: R$" + total.toFixed(2);
 }
 
-function removeItem(i){
-  total -= cart[i].preco;
-  cart.splice(i,1);
+function removeItem(index){
+  cart.splice(index,1);
   updateCart();
 }
 
-/* CHECKOUT */
+/* ================== CHECKOUT ================== */
 function abrirCheckout(){
-  if(cart.length===0) return alert("Carrinho vazio!");
+  if(cart.length === 0){
+    alert("Carrinho vazio!");
+    return;
+  }
   fecharCarrinho();
-  checkout.style.display="block";
-  checkoutItems.innerHTML="";
-  cart.forEach(i=>{
-    checkoutItems.innerHTML+=`<div>${i.nome} — R$${i.preco}</div>`;
+  const area = document.getElementById("checkoutItems");
+  area.innerHTML = "";
+  cart.forEach(item=>{
+    area.innerHTML += `
+      <div style="background:#111;padding:10px;border-radius:8px;border:1px solid #8b0000;margin-bottom:8px;">
+        ${item.nome} — R$${item.preco}
+      </div>
+    `;
   });
-  checkoutTotal.innerText="Total: R$"+total.toFixed(2);
+  document.getElementById("checkoutTotal").innerText = "Total: R$" + total.toFixed(2);
+  document.getElementById("checkout").style.display = "block";
 }
 
-function fecharCheckout(){ checkout.style.display="none"; }
+function fecharCheckout(){
+  document.getElementById("checkout").style.display = "none";
+}
 
-/* FINALIZAR */
+/* ================== FINALIZAR ================== */
 function finalizarCompra(){
+  if(cart.length===0){ alert("Carrinho vazio!"); return; }
+
+  // Diminuir estoque
   cart.forEach(item=>{
     let s = +localStorage.getItem("stock"+item.id);
     localStorage.setItem("stock"+item.id, s-1);
     updateStock(item.id);
   });
 
-  let msg = "🛒 *NOVO PEDIDO*%0A";
-  cart.forEach(i=> msg+=`• ${i.nome} — R$${i.preco}%0A`);
-  msg+=`%0A💰 Total: R$${total.toFixed(2)}`;
+  // Monta mensagem para WhatsApp
+  const numeroPedido = Date.now();
+  const data = new Date().toLocaleString("pt-BR");
+  let mensagem = `🛒 *NOVO PEDIDO - Rdn Store*%0A`;
+  mensagem += `🆔 Pedido: ${numeroPedido}%0A`;
+  mensagem += `📅 ${data}%0A%0A`;
+  cart.forEach(item=>mensagem+=`• ${item.nome} — R$${item.preco}%0A`);
+  mensagem += `%0A💰 *Total: R$${total.toFixed(2)}*`;
 
-  window.open(`https://wa.me/${telefoneWhatsApp}?text=${msg}`,"_blank");
+  // Abre WhatsApp
+  window.open(`https://wa.me/${telefoneWhatsApp}?text=${mensagem}`,"_blank");
 
-  cart=[]; total=0; updateCart(); fecharCheckout();
+  // Limpar carrinho
+  cart=[];
+  total=0;
+  updateCart();
+  fecharCheckout();
 }
 
-/* UI */
-function toggleCart(){ cartDiv=document.getElementById("cart"); cartDiv.classList.toggle("active"); }
+/* ================== UI ================== */
+function toggleCart(){ document.getElementById("cart").classList.toggle("active"); }
 function fecharCarrinho(){ document.getElementById("cart").classList.remove("active"); }
 </script>
 
