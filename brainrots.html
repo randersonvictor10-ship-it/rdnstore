@@ -9,50 +9,33 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif;}
 body{background:#000;color:white;}
 
-.top-bar{
-  background:#8b0000;padding:10px;text-align:center;font-weight:bold;text-transform:uppercase;letter-spacing:1px;
-}
-.header{
-  display:flex;justify-content:space-between;align-items:center;padding:15px;background:#111;border-bottom:2px solid #8b0000;
-}
-.logo{
-  color:#ff2e2e;font-size:26px;font-weight:bold;animation:neon 1.5s infinite alternate;text-shadow:0 0 5px red;
-}
+.top-bar{background:#8b0000;padding:10px;text-align:center;font-weight:bold;text-transform:uppercase;letter-spacing:1px;box-shadow:0 2px 10px rgba(255,0,0,0.4);}
+.header{display:flex;justify-content:space-between;align-items:center;padding:15px;background:#111;border-bottom:2px solid #8b0000;}
+.logo{color:#ff2e2e;font-size:26px;font-weight:bold;animation:neon 1.5s infinite alternate;text-shadow:0 0 5px red;}
 @keyframes neon{from{text-shadow:0 0 5px red;}to{text-shadow:0 0 20px red,0 0 40px red;}}
 .header button{font-size:24px;background:none;border:none;color:red;cursor:pointer;}
 
-.products{
-  display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px;
-}
-.card{
-  background:#111;border:1px solid #8b0000;border-radius:15px;overflow:hidden;position:relative;box-shadow:0 0 10px rgba(255,0,0,0.3);transition:0.3s;
-}
-.card:hover{box-shadow:0 0 20px rgba(255,0,0,0.7);}
+.products{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px;}
+.card{background:#111;border:1px solid #8b0000;border-radius:15px;overflow:hidden;position:relative;box-shadow:0 0 10px rgba(255,0,0,0.3);}
 .card img{width:100%;height:140px;object-fit:cover;border-bottom:1px solid #8b0000;}
 .card-content{padding:15px;}
 .price{color:#ff2e2e;font-weight:bold;font-size:16px;}
 .stock{font-size:12px;margin-top:5px;}
-.buy-btn{margin-top:10px;width:100%;padding:8px;background:#8b0000;border:none;color:white;border-radius:8px;cursor:pointer;font-weight:bold;transition:0.3s;}
+.buy-btn{margin-top:10px;width:100%;padding:8px;background:#8b0000;border:none;color:white;border-radius:8px;cursor:pointer;font-weight:bold;}
 .buy-btn:hover{background:#ff2e2e;}
 
-.sold-out{
-  position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:none;justify-content:center;align-items:center;color:red;font-size:22px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;
-}
+.sold-out{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:none;justify-content:center;align-items:center;color:red;font-size:22px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;}
 
-.cart{
-  position:fixed;right:-360px;top:0;width:320px;height:100%;background:#111;padding:15px;box-shadow:-2px 0 15px rgba(255,0,0,0.7);transition:0.4s ease;overflow-y:auto;z-index:999;
-}
+.cart{position:fixed;right:-360px;top:0;width:320px;height:100%;background:#111;padding:15px;box-shadow:-2px 0 15px rgba(255,0,0,0.7);transition:0.4s ease;overflow-y:auto;z-index:999;}
 .cart.active{right:0;}
 .cart-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #8b0000;padding-bottom:10px;margin-bottom:10px;}
 .close-btn{background:none;border:none;color:red;font-size:20px;cursor:pointer;}
-.cart-item{display:flex;justify-content:space-between;margin-bottom:10px;background:#1a1a1a;padding:8px;border-radius:8px;border:1px solid #8b0000;transition:0.3s;}
-.cart-item:hover{background:#222;}
+.cart-item{display:flex;justify-content:space-between;margin-bottom:10px;background:#1a1a1a;padding:8px;border-radius:8px;border:1px solid #8b0000;}
 .remove-btn{background:none;border:none;color:red;cursor:pointer;}
 
 #checkout{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:2000;padding:20px;overflow-y:auto;}
 #checkout h2{color:#ff2e2e;text-align:center;margin-bottom:20px;}
-#checkoutItems div{margin-bottom:8px;padding:10px;background:#111;border:1px solid #8b0000;border-radius:8px;transition:0.3s;}
-#checkoutItems div:hover{background:#222;}
+#checkoutItems div{margin-bottom:8px;padding:10px;background:#111;border:1px solid #8b0000;border-radius:8px;}
 #checkoutTotal{margin-top:15px;color:#ff2e2e;font-weight:bold;font-size:18px;}
 #checkout button{width:100%;padding:12px;margin-top:10px;border-radius:10px;font-weight:bold;font-size:16px;border:none;cursor:pointer;}
 #checkout button:nth-child(2){background:#8b0000;color:white;}
@@ -73,7 +56,6 @@ body{background:#000;color:white;}
 
 <div class="products" id="products"></div>
 
-<!-- CARRINHO -->
 <div class="cart" id="cart">
   <div class="cart-header">
     <h2>Carrinho</h2>
@@ -84,7 +66,6 @@ body{background:#000;color:white;}
   <button onclick="abrirCheckout()" class="buy-btn">Ir para compra</button>
 </div>
 
-<!-- CHECKOUT -->
 <div id="checkout">
   <h2>Finalizar compra</h2>
   <div id="checkoutItems"></div>
@@ -94,11 +75,14 @@ body{background:#000;color:white;}
 </div>
 
 <script>
-/* VARIÁVEIS */
+/* ================== VARIÁVEIS ================== */
 const productsDiv = document.getElementById("products");
 let cart = [];
 let total = 0;
 const telefoneWhatsApp = "5581995367131";
+
+// Apenas o primeiro produto tem estoque inicial de 1, os outros podem ter 1 ou 0
+const estoques = [1,0,0,0,0,0,0,0,0,0];
 
 const produtos = [
   { nome:"Brainrot 1,4b", preco:55, img:"brainrot1.png" },
@@ -113,13 +97,14 @@ const produtos = [
   { nome:"Brainrot 300m", preco:20, img:"brainrot10.png" }
 ];
 
-/* Estoque: apenas o primeiro produto em estoque, o resto zerado */
-const estoques = [5,0,0,0,0,0,0,0,0,0];
+/* Inicializa o estoque no localStorage */
 for(let i=0;i<10;i++){
-  localStorage.setItem("stock"+i, estoques[i]);
+  if(localStorage.getItem("stock"+i)===null){
+    localStorage.setItem("stock"+i, estoques[i]);
+  }
 }
 
-/* Criar produtos */
+/* ================== CRIA PRODUTOS ================== */
 produtos.forEach((produto,i)=>{
   productsDiv.innerHTML += `
     <div class="card">
@@ -136,7 +121,7 @@ produtos.forEach((produto,i)=>{
   updateStock(i);
 });
 
-/* FUNÇÕES */
+/* ================== FUNÇÕES ================== */
 function updateStock(i){
   const stock = +localStorage.getItem("stock"+i);
   const el = document.getElementById("stock"+i);
@@ -153,7 +138,7 @@ function updateStock(i){
 }
 
 function buy(i){
-  let stock = +localStorage.getItem("stock"+i);
+  const stock = +localStorage.getItem("stock"+i);
   if(stock<=0){ alert("Produto esgotado!"); return; }
   cart.push({id:i,nome:produtos[i].nome,preco:produtos[i].preco});
   total += produtos[i].preco;
@@ -175,14 +160,8 @@ function updateCart(){
 }
 
 function removeItem(index){
-  const item = cart[index];
-  // devolve estoque caso remover
-  let s = +localStorage.getItem("stock"+item.id);
-  localStorage.setItem("stock"+item.id, s+1);
-  updateStock(item.id);
-
   cart.splice(index,1);
-  total-=item.preco;
+  total = cart.reduce((acc,item)=>acc+item.preco,0);
   updateCart();
 }
 
@@ -206,23 +185,28 @@ function fecharCheckout(){ document.getElementById("checkout").style.display="no
 function finalizarCompra(){
   if(cart.length===0){ alert("Carrinho vazio!"); return; }
 
+  // Diminuir estoque APENAS na finalização
   cart.forEach(item=>{
-    let s=+localStorage.getItem("stock"+item.id);
-    localStorage.setItem("stock"+item.id,s-1);
+    let s = +localStorage.getItem("stock"+item.id);
+    localStorage.setItem("stock"+item.id, s-1);
     updateStock(item.id);
   });
 
-  const numeroPedido=Date.now();
-  const data=new Date().toLocaleString("pt-BR");
-  let mensagem=`🛒 *NOVO PEDIDO - Rdn Store*%0A`;
-  mensagem+=`🆔 Pedido: ${numeroPedido}%0A`;
-  mensagem+=`📅 ${data}%0A%0A`;
-  cart.forEach(item=>mensagem+=`• ${item.nome} — R$${item.preco}%0A`);
-  mensagem+=`%0A💰 *Total: R$${total.toFixed(2)}*`;
+  // Monta mensagem WhatsApp
+  const numeroPedido = Date.now();
+  const data = new Date().toLocaleString("pt-BR");
+  let mensagem = `🛒 *NOVO PEDIDO - Rdn Store*%0A`;
+  mensagem += `🆔 Pedido: ${numeroPedido}%0A`;
+  mensagem += `📅 ${data}%0A%0A`;
+  cart.forEach(item => mensagem += `• ${item.nome} — R$${item.preco}%0A`);
+  mensagem += `%0A💰 *Total: R$${total.toFixed(2)}*`;
 
-  window.open(`https://wa.me/${telefoneWhatsApp}?text=${mensagem}`,"_blank");
+  window.open(`https://wa.me/${telefoneWhatsApp}?text=${mensagem}`, "_blank");
 
-  cart=[]; total=0; updateCart();
+  // Limpar carrinho
+  cart = [];
+  total = 0;
+  updateCart();
   fecharCheckout();
 }
 </script>
