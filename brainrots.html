@@ -7,20 +7,17 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif;}
 body{background:#000;color:white;}
-.top-bar{background:#8b0000;padding:10px;text-align:center;font-weight:bold;text-transform:uppercase;letter-spacing:1px;}
+.top-bar{background:#8b0000;padding:10px;text-align:center;font-weight:bold;}
 .header{display:flex;justify-content:space-between;align-items:center;padding:15px;background:#111;border-bottom:2px solid #8b0000;}
-.logo{color:#ff2e2e;font-size:26px;font-weight:bold;animation:neon 1.5s infinite alternate;text-shadow:0 0 5px red;}
-@keyframes neon{from{text-shadow:0 0 5px red;}to{text-shadow:0 0 20px red,0 0 40px red;}}
-.header button{font-size:24px;background:none;border:none;color:red;cursor:pointer;}
+.logo{color:#ff2e2e;font-size:26px;font-weight:bold;}
 .products{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px;}
 .card{background:#111;border:1px solid #8b0000;border-radius:15px;overflow:hidden;position:relative;}
 .card img{width:100%;height:140px;object-fit:cover;border-bottom:1px solid #8b0000;}
 .card-content{padding:15px;}
-.price{color:#ff2e2e;font-weight:bold;font-size:16px;}
+.price{color:#ff2e2e;font-weight:bold;}
 .stock{font-size:12px;margin-top:5px;}
-.buy-btn{margin-top:10px;width:100%;padding:8px;background:#8b0000;border:none;color:white;border-radius:8px;cursor:pointer;font-weight:bold;}
-.buy-btn:hover{background:#ff2e2e;}
-.sold-out{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:none;justify-content:center;align-items:center;color:red;font-size:22px;font-weight:bold;text-transform:uppercase;}
+.buy-btn{margin-top:10px;width:100%;padding:8px;background:#8b0000;border:none;color:white;border-radius:8px;cursor:pointer;}
+.sold-out{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:none;justify-content:center;align-items:center;color:red;font-size:22px;font-weight:bold;}
 .cart{position:fixed;right:-360px;top:0;width:320px;height:100%;background:#111;padding:15px;box-shadow:-2px 0 15px rgba(255,0,0,0.7);transition:0.4s ease;overflow-y:auto;z-index:999;}
 .cart.active{right:0;}
 .cart-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #8b0000;padding-bottom:10px;margin-bottom:10px;}
@@ -38,8 +35,8 @@ body{background:#000;color:white;}
 #checkout button:nth-child(3):hover{background:#222;}
 </style>
 </head>
-
 <body>
+
 <div class="top-bar">Rdn Store Oficial 🔥</div>
 <div class="header">
   <div class="logo">Rdn Store</div>
@@ -63,7 +60,7 @@ body{background:#000;color:white;}
   <div id="checkoutItems"></div>
   <h3 id="checkoutTotal"></h3>
   <button onclick="finalizarCompra()">Finalizar no WhatsApp</button>
-  <button onclick="fecharCheckout()">Voltar</button>
+  <button onclick="cancelarCheckout()">Voltar</button>
 </div>
 
 <script>
@@ -72,7 +69,7 @@ let cart = [];
 let total = 0;
 const telefoneWhatsApp = "5581995367131";
 
-// APENAS O PRIMEIRO PRODUTO TEM 1, OS OUTROS 0
+// Apenas o primeiro produto tem estoque inicial 1, os outros 0
 const estoques = [1,0,0,0,0,0,0,0,0,0];
 const produtos = [
   { nome:"Brainrot 1,4b", preco:55, img:"brainrot1.png" },
@@ -127,10 +124,27 @@ function updateStock(i){
 }
 
 function buy(i){
-  const stock = +localStorage.getItem("stock"+i);
+  let stock = +localStorage.getItem("stock"+i);
   if(stock<=0){ alert("Produto esgotado!"); return; }
+  
+  // diminui temporariamente para bloquear
+  localStorage.setItem("stock"+i, stock-1);
+  updateStock(i);
+
   cart.push({id:i,nome:produtos[i].nome,preco:produtos[i].preco});
   total += produtos[i].preco;
+  updateCart();
+}
+
+function removeItem(index){
+  const item = cart[index];
+  // devolve estoque se remover
+  let stock = +localStorage.getItem("stock"+item.id);
+  localStorage.setItem("stock"+item.id, stock+1);
+  updateStock(item.id);
+
+  cart.splice(index,1);
+  total = cart.reduce((acc,it)=>acc+it.preco,0);
   updateCart();
 }
 
@@ -148,12 +162,6 @@ function updateCart(){
   document.getElementById("total").innerText="Total: R$"+total.toFixed(2);
 }
 
-function removeItem(index){
-  cart.splice(index,1);
-  total = cart.reduce((acc,item)=>acc+item.preco,0);
-  updateCart();
-}
-
 function toggleCart(){ document.getElementById("cart").classList.toggle("active"); }
 function fecharCarrinho(){ document.getElementById("cart").classList.remove("active"); }
 
@@ -169,15 +177,20 @@ function abrirCheckout(){
   document.getElementById("checkout").style.display="block";
 }
 
-function fecharCheckout(){ document.getElementById("checkout").style.display="none"; }
+function cancelarCheckout(){
+  // devolve estoque temporário
+  cart.forEach(item=>{
+    let stock = +localStorage.getItem("stock"+item.id);
+    localStorage.setItem("stock"+item.id, stock+1);
+    updateStock(item.id);
+  });
+  document.getElementById("checkout").style.display="none";
+}
 
 function finalizarCompra(){
   if(cart.length===0){ alert("Carrinho vazio!"); return; }
-  cart.forEach(item=>{
-    let s = +localStorage.getItem("stock"+item.id);
-    localStorage.setItem("stock"+item.id,s-1);
-    updateStock(item.id);
-  });
+
+  // estoque já foi diminuído temporariamente, mantemos como final
   const numeroPedido = Date.now();
   const data = new Date().toLocaleString("pt-BR");
   let mensagem = `🛒 *NOVO PEDIDO - Rdn Store*%0A`;
@@ -185,13 +198,14 @@ function finalizarCompra(){
   mensagem += `📅 ${data}%0A%0A`;
   cart.forEach(item=>mensagem+=`• ${item.nome} — R$${item.preco}%0A`);
   mensagem += `%0A💰 *Total: R$${total.toFixed(2)}*`;
+
   window.open(`https://wa.me/${telefoneWhatsApp}?text=${mensagem}`,"_blank");
+
   cart = [];
   total = 0;
   updateCart();
-  fecharCheckout();
+  document.getElementById("checkout").style.display="none";
 }
 </script>
-
 </body>
 </html>
