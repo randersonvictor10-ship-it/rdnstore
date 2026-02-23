@@ -108,13 +108,13 @@ let total = 0;
 const telefoneWhatsApp = "5581995367131";
 
 /* ESTOQUES INICIAIS */
-const estoques = [2,1,0,0,0,0,0,0,0,0];
-
-estoques.forEach((s,i)=>{
-  if(localStorage.getItem("stock"+i) === null){
-    localStorage.setItem("stock"+i, s);
-  }
-});
+const estoques = [1,0,0,0,0,0,0,0,0,0];  
+  
+for (let i = 0; i < 10; i++) {  
+  if (localStorage.getItem("stock"+i) === null) {  
+    localStorage.setItem("stock"+i, estoques[i]);  
+  }  
+}  
 
 /* PRODUTOS */
 const produtos = [
