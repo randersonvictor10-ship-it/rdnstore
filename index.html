@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RDN STORE</title>
 <style>
-body {
+body, html {
   margin: 0;
+  padding: 0;
   font-family: Arial, sans-serif;
   background: #000;
   color: #fff;
+  overflow-x: hidden;
 }
 
 /* Cabeçalho */
@@ -17,13 +19,13 @@ header {
   position: fixed;
   top: 0;
   width: 100%;
-  background: #1a0000;
+  background: #140000;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 50px;
   box-shadow: 0 0 15px #ff0000;
-  z-index: 10;
+  z-index: 100;
 }
 header .logo {
   font-size: 28px;
@@ -32,8 +34,8 @@ header .logo {
 }
 header nav a {
   margin-left: 25px;
-  text-decoration: none;
   color: #fff;
+  text-decoration: none;
   font-weight: bold;
   transition: 0.3s;
 }
@@ -41,52 +43,89 @@ header nav a:hover {
   color: #ff004f;
 }
 
-/* Banner */
+/* Banner Principal */
 .banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(90deg, #000, #220000);
   text-align: center;
-  padding-top: 150px;
-  padding-bottom: 100px;
 }
 .banner h1 {
   font-size: 60px;
   color: #ff3300;
   margin-bottom: 20px;
+  animation: slideIn 1s ease-out;
 }
 .banner p {
   font-size: 22px;
   margin-bottom: 30px;
+  animation: fadeIn 2s ease-out;
 }
-.btn-brainrots {
-  display: inline-block;
-  font-size: 24px;
-  padding: 25px 50px;
-  border-radius: 20px;
-  font-weight: bold;
-  text-decoration: none;
+.btn-main {
+  padding: 20px 50px;
+  font-size: 22px;
   color: #fff;
   background: linear-gradient(135deg, #ff004f, #8b0000, #ff3300);
-  transition: transform 0.3s;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
-.btn-brainrots:hover {
+.btn-main:hover {
   transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(255,0,0,0.8);
+}
+
+/* Animações do banner */
+@keyframes slideIn {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Seção Produtos Destaque */
+.produtos-destaque {
+  padding: 60px 50px;
+  text-align: center;
+}
+.produtos-destaque h2 {
+  font-size: 36px;
+  color: #ff3300;
+  margin-bottom: 20px;
+}
+.produtos-destaque p {
+  font-size: 18px;
+  opacity: 0.8;
 }
 
 /* Avaliações */
 .avaliacoes {
-  margin-top: 100px;
   text-align: center;
+  padding: 50px;
 }
 .avaliacoes h2 {
   font-size: 36px;
-  margin-bottom: 20px;
   color: #ff3300;
+  margin-bottom: 20px;
+}
+.avaliacoes p {
+  font-size: 18px;
+  margin: 10px 0;
 }
 
 /* Rodapé */
 footer {
   text-align: center;
-  margin: 50px 0;
-  opacity: 0.7;
+  padding: 30px 20px;
+  background: #0a0000;
+  color: #bbb;
+  font-size: 14px;
 }
 </style>
 </head>
@@ -104,12 +143,17 @@ footer {
 
 <div class="banner">
   <h1>RDN STORE</h1>
-  <p>Os melhores Brainrots estão aqui!</p>
-  <a href="brainrots.html" class="btn-brainrots">Comprar Brainrots</a>
+  <p>Os melhores Brainrots do Roblox — entrega rápida e segura!</p>
+  <a href="brainrots.html" class="btn-main">Ver Brainrots</a>
+</div>
+
+<div class="produtos-destaque">
+  <h2>Destaques</h2>
+  <p>Confira nossos produtos mais procurados!</p>
 </div>
 
 <div class="avaliacoes">
-  <h2>Avaliações de Clientes ⭐⭐⭐⭐⭐</h2>
+  <h2>Avaliações ⭐⭐⭐⭐⭐</h2>
   <p>“Melhor loja de Brainrots do Roblox! Super confiável!”</p>
   <p>“Entrega rápida e produtos incríveis. Recomendo!”</p>
 </div>
