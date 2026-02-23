@@ -30,7 +30,7 @@ body{background:#000;color:#fff}
   cursor:pointer;
 }
 
-/* GRID */
+/* PRODUTOS */
 .products{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -79,7 +79,7 @@ body{background:#000;color:#fff}
 }
 
 /* ADMIN */
-#adminLogin,#adminPanel{
+#adminLogin{
   position:fixed;
   inset:0;
   background:#000c;
@@ -105,6 +105,7 @@ body{background:#000;color:#fff}
   border-radius:12px;
   width:260px;
   z-index:999;
+  display:none;
 }
 .admin-panel input,.admin-panel select{
   width:100%;
@@ -117,6 +118,7 @@ body{background:#000;color:#fff}
 <body>
 
 <div class="top-bar">Rdn Store Oficial 🔥</div>
+
 <div class="header">
   <div class="logo" id="logo">Rdn Store</div>
 </div>
@@ -132,19 +134,25 @@ body{background:#000;color:#fff}
   </div>
 </div>
 
-<!-- PAINEL -->
-<div class="admin-panel" id="adminPanel" style="display:none">
+<!-- PAINEL ADMIN -->
+<div class="admin-panel" id="adminPanel">
   <h3 style="text-align:center;color:#ff2e2e">ADMIN</h3>
 
   <select id="selectProd"></select>
   <input id="nome" placeholder="Nome">
   <input id="preco" type="number" placeholder="Preço">
   <input id="estoque" type="number" placeholder="Estoque">
+
+  <label style="font-size:13px">
+    <input type="checkbox" id="infinito"> Estoque infinito
+  </label>
+
   <input id="img" type="file" accept="image/*">
 
   <button class="buy-btn" onclick="criar()">➕ Criar</button>
   <button class="buy-btn" onclick="editar()">💾 Salvar</button>
   <button class="buy-btn" onclick="apagar()">🗑 Apagar</button>
+  <button class="buy-btn" onclick="sairAdmin()">Sair do admin</button>
 </div>
 
 <script>
@@ -164,16 +172,22 @@ function salvar(){
 function render(){
   const div = document.getElementById("products");
   div.innerHTML="";
+
   produtos.forEach((p,i)=>{
-    div.innerHTML+=`
+    const esgotado = !p.infinito && p.estoque <= 0;
+
+    div.innerHTML += `
     <div class="card">
-      ${p.estoque<=0?'<div class="sold-out">ESGOTADO</div>':''}
+      ${esgotado ? '<div class="sold-out">ESGOTADO</div>' : ''}
       <img src="${p.img}">
       <div class="card-content">
         <div>${p.nome}</div>
         <div class="price">R$${p.preco}</div>
-        <div class="stock">${p.estoque>0?'Restam '+p.estoque:'Produto esgotado'}</div>
-        <button class="buy-btn" ${p.estoque<=0?'disabled':''}
+        <div class="stock">
+          ${p.infinito ? 'Estoque infinito' :
+            (p.estoque > 0 ? 'Restam '+p.estoque : 'Produto esgotado')}
+        </div>
+        <button class="buy-btn" ${esgotado?'disabled':''}
           onclick="comprar(${i})">Comprar</button>
       </div>
     </div>`;
@@ -181,47 +195,67 @@ function render(){
 }
 
 function comprar(i){
-  produtos[i].estoque--;
-  pedidos.push({produto:produtos[i].nome,preco:produtos[i].preco,data:new Date()});
+  if(!produtos[i].infinito){
+    produtos[i].estoque--;
+  }
+
+  pedidos.push({
+    produto: produtos[i].nome,
+    preco: produtos[i].preco,
+    data: new Date().toLocaleString("pt-BR")
+  });
+
   salvar();
-  window.open(`https://wa.me/${whatsapp}?text=Pedido:%20${produtos[i].nome}`,"_blank");
+
+  window.open(
+    `https://wa.me/${whatsapp}?text=Pedido:%20${produtos[i].nome}`,
+    "_blank"
+  );
 }
 
 /* ADMIN */
-let clicks=0;
-logo.onclick=()=>{
+let clicks = 0;
+logo.onclick = ()=>{
   clicks++;
-  if(clicks===5){
-    adminLogin.style.display="flex";
-    clicks=0;
+  if(clicks === 5){
+    adminLogin.style.display = "flex";
+    clicks = 0;
   }
 };
 
 function loginAdmin(){
-  if(adminPass.value===SENHA){
-    adminLogin.style.display="none";
-    adminPanel.style.display="block";
+  if(adminPass.value === SENHA){
+    adminLogin.style.display = "none";
+    adminPanel.style.display = "block";
     carregarAdmin();
-  }else alert("Senha errada");
+  } else {
+    alert("Senha errada");
+  }
+}
+
+function sairAdmin(){
+  adminPanel.style.display = "none";
 }
 
 function carregarAdmin(){
   selectProd.innerHTML="";
   produtos.forEach((p,i)=>{
-    selectProd.innerHTML+=`<option value="${i}">${p.nome}</option>`;
+    selectProd.innerHTML += `<option value="${i}">${p.nome}</option>`;
   });
 }
 
 function criar(){
   const file = img.files[0];
   if(!file) return alert("Selecione uma imagem");
+
   const reader = new FileReader();
-  reader.onload=()=>{
+  reader.onload = ()=>{
     produtos.push({
-      nome:nome.value,
-      preco:preco.value,
-      estoque:estoque.value,
-      img:reader.result
+      nome: nome.value,
+      preco: Number(preco.value),
+      estoque: Number(estoque.value),
+      infinito: infinito.checked,
+      img: reader.result
     });
     salvar();
   };
@@ -231,8 +265,9 @@ function criar(){
 function editar(){
   const i = selectProd.value;
   produtos[i].nome = nome.value;
-  produtos[i].preco = preco.value;
-  produtos[i].estoque = estoque.value;
+  produtos[i].preco = Number(preco.value);
+  produtos[i].estoque = Number(estoque.value);
+  produtos[i].infinito = infinito.checked;
   salvar();
 }
 
