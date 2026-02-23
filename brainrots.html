@@ -62,7 +62,13 @@ const senhaAdmin = "rdn123";
 const telefoneWhatsApp = "5581995367131";
 
 /* ================== PRODUTOS ================== */
-const estoques = [5,1,4,8,2,9,7,1,1,10];
+const estoques = [5,3,10,2,8,6,4,7,1,9];
+
+for (let i = 0; i < 10; i++) {
+  if (localStorage.getItem("stock"+i) === null) {
+    localStorage.setItem("stock"+i, estoques[i]);
+  }
+}
 const produtos = [
   { nome:"Brainrot 1,4b", preco:55, img:"brainrot1.png" },
   { nome:"Brainrot 1,2b", preco:50, img:"brainrot2.png" },
