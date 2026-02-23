@@ -6,126 +6,51 @@
 <title>Rdn Store</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
 body{background:#000;color:#fff}
+.top-bar{background:#8b0000;padding:10px;text-align:center;font-weight:bold}
+.header{padding:15px;background:#111;border-bottom:2px solid #8b0000}
+.logo{color:#ff2e2e;font-size:26px;font-weight:bold;cursor:pointer;text-shadow:0 0 10px red}
 
-/* TOP */
-.top-bar{
-  background:#8b0000;
-  padding:10px;
-  text-align:center;
-  font-weight:bold;
-}
+.products{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:20px}
+.card{background:#111;border:1px solid #8b0000;border-radius:18px;overflow:hidden;position:relative}
+.card img{width:100%;height:150px;object-fit:cover}
+.card-content{padding:14px}
+.price{color:#ff2e2e;font-weight:bold;margin-top:6px}
+.stock{font-size:12px;color:#bbb}
+.buy-btn{margin-top:10px;width:100%;padding:10px;background:#ff2e2e;border:none;color:#fff;border-radius:10px;font-weight:bold;cursor:pointer}
+.buy-btn:disabled{opacity:.5;background:#333}
+.sold-out{position:absolute;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;font-size:22px;color:#ff2e2e}
 
-/* HEADER */
-.header{
-  padding:15px;
-  background:#111;
-  border-bottom:2px solid #8b0000;
-}
-.logo{
-  color:#ff2e2e;
-  font-size:26px;
-  font-weight:bold;
-  cursor:pointer;
-}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999}
+.modal-box{background:#111;border:2px solid #8b0000;padding:20px;border-radius:16px;width:280px;text-align:center}
 
-/* PRODUTOS */
-.products{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px;
-  padding:20px;
-}
-.card{
-  background:#111;
-  border:1px solid #8b0000;
-  border-radius:15px;
-  overflow:hidden;
-  position:relative;
-}
-.card img{
-  width:100%;
-  height:140px;
-  object-fit:cover;
-}
-.card-content{padding:15px}
-.price{color:#ff2e2e;font-weight:bold}
-.stock{font-size:12px;margin-top:5px}
-.buy-btn{
-  margin-top:10px;
-  width:100%;
-  padding:8px;
-  background:#8b0000;
-  border:none;
-  color:white;
-  border-radius:8px;
-  font-weight:bold;
-  cursor:pointer;
-}
-.buy-btn:disabled{opacity:.5}
+#adminLogin{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:1000}
+.admin-box{background:#111;padding:25px;border:2px solid #8b0000;border-radius:16px;width:300px}
 
-/* ESGOTADO */
-.sold-out{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.85);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:22px;
-  font-weight:bold;
-  color:red;
-}
-
-/* ADMIN */
-#adminLogin{
-  position:fixed;
-  inset:0;
-  background:#000c;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:999;
-}
-.admin-box{
-  background:#111;
-  padding:20px;
-  border:2px solid #8b0000;
-  border-radius:12px;
-  width:280px;
-}
-.admin-panel{
-  position:fixed;
-  bottom:10px;
-  left:10px;
-  background:#111;
-  border:2px solid #8b0000;
-  padding:12px;
-  border-radius:12px;
-  width:260px;
-  z-index:999;
-  display:none;
-}
-.admin-panel input,.admin-panel select{
-  width:100%;
-  margin:5px 0;
-  padding:6px;
-}
+.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:14px;border-radius:16px;width:280px;z-index:999;display:none}
+.admin-panel h3{text-align:center;color:#ff2e2e}
+.admin-panel input,.admin-panel select{width:100%;margin:5px 0;padding:8px;border-radius:8px;border:none;background:#000;color:#fff}
+.admin-panel label{font-size:13px;display:flex;gap:6px;align-items:center}
+.small-btn{font-size:12px;padding:6px;margin-top:5px}
 </style>
 </head>
 
 <body>
 
 <div class="top-bar">Rdn Store Oficial 🔥</div>
-
-<div class="header">
-  <div class="logo" id="logo">Rdn Store</div>
-</div>
-
+<div class="header"><div class="logo" id="logo">Rdn Store</div></div>
 <div class="products" id="products"></div>
 
-<!-- LOGIN ADMIN -->
+<div class="modal" id="buyModal">
+  <div class="modal-box">
+    <h3 style="color:#ff2e2e">Finalizar compra</h3>
+    <button class="buy-btn" onclick="finalizar('zap')">WhatsApp</button>
+    <button class="buy-btn" onclick="finalizar('ig')">Instagram</button>
+    <button class="buy-btn small-btn" onclick="buyModal.style.display='none'">Cancelar</button>
+  </div>
+</div>
+
 <div id="adminLogin">
   <div class="admin-box">
     <h3 style="text-align:center;color:#ff2e2e">ADMIN</h3>
@@ -134,150 +59,120 @@ body{background:#000;color:#fff}
   </div>
 </div>
 
-<!-- PAINEL ADMIN -->
 <div class="admin-panel" id="adminPanel">
-  <h3 style="text-align:center;color:#ff2e2e">ADMIN</h3>
+  <h3>ADMIN</h3>
 
   <select id="selectProd"></select>
   <input id="nome" placeholder="Nome">
   <input id="preco" type="number" placeholder="Preço">
   <input id="estoque" type="number" placeholder="Estoque">
+  <label><input type="checkbox" id="infinito"> Estoque infinito</label>
+  <label><input type="checkbox" id="forcarEsgotado"> Forçar esgotado (admin)</label>
+  <input id="img" type="file">
 
-  <label style="font-size:13px">
-    <input type="checkbox" id="infinito"> Estoque infinito
-  </label>
-
-  <input id="img" type="file" accept="image/*">
-
-  <button class="buy-btn" onclick="criar()">➕ Criar</button>
-  <button class="buy-btn" onclick="editar()">💾 Salvar</button>
-  <button class="buy-btn" onclick="apagar()">🗑 Apagar</button>
-  <button class="buy-btn" onclick="sairAdmin()">Sair do admin</button>
+  <button class="buy-btn" onclick="criar()">Criar</button>
+  <button class="buy-btn" onclick="editar()">Salvar</button>
+  <button class="buy-btn" onclick="apagar()">Apagar</button>
+  <button class="buy-btn small-btn" onclick="sairAdmin()">Sair</button>
 </div>
 
 <script>
-const SENHA = "rdn555";
-const whatsapp = "5581995367131";
+const ADMIN_EMAIL="randersonvictor10@gmail.com";
+const ADMIN_SENHA="rdn555";
+const zap="https://wa.me/5581995367131";
+const ig="https://instagram.com/rdn.store.ofc";
 
-let produtos = JSON.parse(localStorage.getItem("produtos")) || [];
-let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+let produtos=JSON.parse(localStorage.produtos||"[]");
+let produtoAtual=null;
 
-function salvar(){
-  localStorage.setItem("produtos",JSON.stringify(produtos));
-  localStorage.setItem("pedidos",JSON.stringify(pedidos));
-  render();
-  carregarAdmin();
-}
+function salvar(){localStorage.produtos=JSON.stringify(produtos);render();carregarAdmin();}
 
 function render(){
-  const div = document.getElementById("products");
-  div.innerHTML="";
-
+  products.innerHTML="";
   produtos.forEach((p,i)=>{
-    const esgotado = !p.infinito && p.estoque <= 0;
-
-    div.innerHTML += `
+    const esgotado=p.forcarEsgotado || (!p.infinito && p.estoque<=0);
+    products.innerHTML+=`
     <div class="card">
-      ${esgotado ? '<div class="sold-out">ESGOTADO</div>' : ''}
+      ${esgotado?'<div class="sold-out">ESGOTADO</div>':''}
       <img src="${p.img}">
       <div class="card-content">
         <div>${p.nome}</div>
         <div class="price">R$${p.preco}</div>
-        <div class="stock">
-          ${p.infinito ? 'Estoque infinito' :
-            (p.estoque > 0 ? 'Restam '+p.estoque : 'Produto esgotado')}
-        </div>
-        <button class="buy-btn" ${esgotado?'disabled':''}
-          onclick="comprar(${i})">Comprar</button>
+        <div class="stock">${p.infinito?'Infinito':'Estoque: '+p.estoque}</div>
+        <button class="buy-btn" ${esgotado?'disabled':''} onclick="abrirCompra(${i})">Comprar</button>
       </div>
     </div>`;
   });
 }
 
-function comprar(i){
-  if(!produtos[i].infinito){
-    produtos[i].estoque--;
-  }
-
-  pedidos.push({
-    produto: produtos[i].nome,
-    preco: produtos[i].preco,
-    data: new Date().toLocaleString("pt-BR")
-  });
-
+function abrirCompra(i){produtoAtual=i;buyModal.style.display="flex";}
+function finalizar(tipo){
+  const p=produtos[produtoAtual];
+  if(!p.infinito)p.estoque--;
   salvar();
-
-  window.open(
-    `https://wa.me/${whatsapp}?text=Pedido:%20${produtos[i].nome}`,
-    "_blank"
-  );
+  window.open(tipo=="zap"?zap:ig,"_blank");
+  buyModal.style.display="none";
 }
 
 /* ADMIN */
-let clicks = 0;
-logo.onclick = ()=>{
-  clicks++;
-  if(clicks === 5){
-    adminLogin.style.display = "flex";
-    clicks = 0;
-  }
-};
+let clicks=0;
+logo.onclick=()=>{if(++clicks==5){adminLogin.style.display="flex";clicks=0}}
 
 function loginAdmin(){
-  if(adminPass.value === SENHA){
-    adminLogin.style.display = "none";
-    adminPanel.style.display = "block";
+  if(adminPass.value===ADMIN_SENHA){
+    adminLogin.style.display="none";
+    adminPanel.style.display="block";
     carregarAdmin();
-  } else {
-    alert("Senha errada");
-  }
+  }else alert("Senha errada");
 }
 
-function sairAdmin(){
-  adminPanel.style.display = "none";
-}
+function sairAdmin(){adminPanel.style.display="none"}
 
 function carregarAdmin(){
   selectProd.innerHTML="";
-  produtos.forEach((p,i)=>{
-    selectProd.innerHTML += `<option value="${i}">${p.nome}</option>`;
-  });
+  produtos.forEach((p,i)=>selectProd.innerHTML+=`<option value="${i}">${p.nome}</option>`);
+}
+
+selectProd.onchange=()=>{
+  const p=produtos[selectProd.value];
+  nome.value=p.nome;
+  preco.value=p.preco;
+  estoque.value=p.estoque;
+  infinito.checked=p.infinito;
+  forcarEsgotado.checked=p.forcarEsgotado;
 }
 
 function criar(){
-  const file = img.files[0];
-  if(!file) return alert("Selecione uma imagem");
-
-  const reader = new FileReader();
-  reader.onload = ()=>{
+  const r=new FileReader();
+  r.onload=()=>{
     produtos.push({
-      nome: nome.value,
-      preco: Number(preco.value),
-      estoque: Number(estoque.value),
-      infinito: infinito.checked,
-      img: reader.result
+      nome:nome.value,
+      preco:+preco.value,
+      estoque:+estoque.value,
+      infinito:infinito.checked,
+      forcarEsgotado:false,
+      img:r.result
     });
     salvar();
-  };
-  reader.readAsDataURL(file);
+  }
+  r.readAsDataURL(img.files[0]);
 }
 
 function editar(){
-  const i = selectProd.value;
-  produtos[i].nome = nome.value;
-  produtos[i].preco = Number(preco.value);
-  produtos[i].estoque = Number(estoque.value);
-  produtos[i].infinito = infinito.checked;
+  const i=selectProd.value;
+  Object.assign(produtos[i],{
+    nome:nome.value,
+    preco:+preco.value,
+    estoque:+estoque.value,
+    infinito:infinito.checked,
+    forcarEsgotado:forcarEsgotado.checked
+  });
   salvar();
 }
 
-function apagar(){
-  produtos.splice(selectProd.value,1);
-  salvar();
-}
+function apagar(){produtos.splice(selectProd.value,1);salvar();}
 
 render();
 </script>
-
 </body>
 </html>
