@@ -79,7 +79,7 @@ const produtos = [1,1,1,1,1,1,1,1,1,1];
 produtos.forEach((produto, i) => {
 
   if (localStorage.getItem("stock"+i) === null) {
-    localStorage.setItem("stock"+i, estoques[i]);
+    localStorage.setItem("stock"+i, estoques[1]);
   }
 
   productsDiv.innerHTML += `
