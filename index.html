@@ -6,63 +6,120 @@
 <title>RDN STORE</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
-
-body{
-  background:radial-gradient(circle at top, #1a0000, #000);
-  color:#fff;
-  text-align:center;
-  overflow-x:hidden;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: radial-gradient(circle at top, #1a0000, #000);
+  color: #fff;
+  overflow-x: hidden;
+  position: relative;
 }
 
-/* animação de entrada */
-@keyframes fadeUp{
-  from{opacity:0; transform:translateY(40px)}
-  to{opacity:1; transform:translateY(0)}
+/* Triângulos flutuantes */
+.triangulo {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(45deg, #ff6600, #ff3300);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  opacity: 0.7;
+  animation-name: flutuar;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  transform-origin: center;
 }
 
-header{
-  padding:40px 20px;
-  animation:fadeUp 1s ease;
+@keyframes flutuar {
+  0% { transform: translateY(0px) rotate(0deg); opacity:0.7; }
+  25% { transform: translateY(-40px) rotate(90deg); opacity:0.9; }
+  50% { transform: translateY(0px) rotate(180deg); opacity:0.7; }
+  75% { transform: translateY(-30px) rotate(270deg); opacity:0.85; }
+  100% { transform: translateY(0px) rotate(360deg); opacity:0.7; }
 }
 
-header img{
-  width:220px;
-  filter:drop-shadow(0 0 25px red);
-  animation:pulse 2s infinite;
+/* Botões */
+.btn {
+  font-size: 22px;
+  padding: 20px 35px;
+  margin: 15px;
+  border-radius: 15px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #fff;
+  display: inline-block;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-@keyframes pulse{
-  0%{transform:scale(1)}
-  50%{transform:scale(1.05)}
-  100%{transform:scale(1)}
+.btn-whatsapp { background: #25D366; }
+.btn-brainrots { background: linear-gradient(90deg, #ff004f, #8b0000); }
+
+.btn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 25px rgba(255,255,255,0.6);
 }
 
-h1{
-  color:#ff0000;
-  margin-top:15px;
-  letter-spacing:3px;
+/* Seção central */
+.main-content {
+  text-align: center;
+  padding-top: 100px;
 }
 
-.badge{
-  display:inline-block;
-  margin-top:10px;
-  padding:6px 18px;
-  border:2px solid red;
-  border-radius:25px;
-  color:#ff4d4d;
-  box-shadow:0 0 15px red;
+h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+  color: #ff3300;
+  text-shadow: 0 0 20px #ff6600;
 }
 
-.section{
-  background:#0b0b0b;
-  margin:25px;
-  padding:25px;
-  border-radius:18px;
-  box-shadow:0 0 30px rgba(255,0,0,.3);
-  animation:fadeUp 1.2s ease;
+p {
+  font-size: 20px;
+  margin-bottom: 30px;
+  opacity: 0.8;
 }
 
+/* Footer */
+footer {
+  text-align: center;
+  margin: 50px 0;
+  opacity: 0.7;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Triângulos flutuantes -->
+<div class="triangulo" style="top:10%; left:5%; animation-duration:12s;"></div>
+<div class="triangulo" style="top:20%; left:15%; animation-duration:16s;"></div>
+<div class="triangulo" style="top:30%; left:25%; animation-duration:10s;"></div>
+<div class="triangulo" style="top:40%; left:35%; animation-duration:18s;"></div>
+<div class="triangulo" style="top:50%; left:45%; animation-duration:14s;"></div>
+<div class="triangulo" style="top:60%; left:55%; animation-duration:12s;"></div>
+<div class="triangulo" style="top:70%; left:65%; animation-duration:17s;"></div>
+<div class="triangulo" style="top:80%; left:75%; animation-duration:15s;"></div>
+<div class="triangulo" style="top:90%; left:85%; animation-duration:13s;"></div>
+<div class="triangulo" style="top:15%; left:90%; animation-duration:11s;"></div>
+<div class="triangulo" style="top:35%; left:10%; animation-duration:19s;"></div>
+<div class="triangulo" style="top:55%; left:20%; animation-duration:16s;"></div>
+<div class="triangulo" style="top:75%; left:40%; animation-duration:14s;"></div>
+<div class="triangulo" style="top:25%; left:60%; animation-duration:12s;"></div>
+<div class="triangulo" style="top:45%; left:80%; animation-duration:18s;"></div>
+
+<!-- Conteúdo principal -->
+<div class="main-content">
+  <h1>RDN STORE</h1>
+  <p>Os melhores Brainrots estão aqui! Clique para comprar e se divertir!</p>
+
+  <!-- Botão ir para página de Brainrots -->
+  <a href="brainrots.html" class="btn btn-brainrots">Comprar Brainrots</a>
+</div>
+
+<footer>
+© 2026 • RDN STORE
+</footer>
+
+</body>
+</html>
 .section h2{
   color:#ff2b2b;
   margin-bottom:10px;
