@@ -52,6 +52,8 @@ header nav a:hover {
   height: 100vh;
   background: linear-gradient(90deg, #000, #220000);
   text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 .banner h1 {
   font-size: 60px;
@@ -89,7 +91,31 @@ header nav a:hover {
   to { opacity: 1; }
 }
 
-/* Seção Produtos Destaque */
+/* Triângulos flutuantes estilo padix */
+.triangulos {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+.triangulo {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(45deg, #ff3300, #ff004f);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  animation: flutuar linear infinite;
+  opacity: 0.8;
+}
+@keyframes flutuar {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-50px) rotate(180deg); }
+  100% { transform: translateY(0) rotate(360deg); }
+}
+
+/* Produtos em destaque */
 .produtos-destaque {
   padding: 60px 50px;
   text-align: center;
@@ -145,6 +171,7 @@ footer {
   <h1>RDN STORE</h1>
   <p>Os melhores Brainrots do Roblox — entrega rápida e segura!</p>
   <a href="brainrots.html" class="btn-main">Ver Brainrots</a>
+  <div class="triangulos" id="triangulos"></div>
 </div>
 
 <div class="produtos-destaque">
@@ -161,6 +188,20 @@ footer {
 <footer>
 © 2026 • RDN STORE
 </footer>
+
+<script>
+// Cria triângulos flutuantes
+const triangulosContainer = document.getElementById('triangulos');
+for(let i=0;i<15;i++){
+  const tri = document.createElement('div');
+  tri.className = 'triangulo';
+  tri.style.top = Math.random()*100 + '%';
+  tri.style.left = Math.random()*100 + '%';
+  tri.style.width = tri.style.height = 15 + Math.random()*20 + 'px';
+  tri.style.animationDuration = 5 + Math.random()*5 + 's';
+  triangulosContainer.appendChild(tri);
+}
+</script>
 
 </body>
 </html>
