@@ -252,6 +252,44 @@ function fecharCarrinho(){
 /* CONTADOR */
 let contador = localStorage.getItem("contadorCompras") || 0;
 document.getElementById("contador").innerText = contador;
+
+/* ================== CHECKOUT ================== */
+function abrirCheckout() {
+  if (cart.length === 0) {
+    alert("Carrinho vazio!");
+    return;
+  }
+
+  fecharCarrinho();
+
+  document.getElementById("checkout").style.display = "block";
+
+  const area = document.getElementById("checkoutItems");
+  area.innerHTML = "";
+
+  cart.forEach(item => {
+    area.innerHTML += `
+      <div style="
+        background:#111;
+        padding:10px;
+        border-radius:8px;
+        margin-bottom:8px;
+        border:1px solid #8b0000;
+      ">
+        ${item.nome} — R$${item.preco}
+      </div>
+    `;
+  });
+
+  document.getElementById("checkoutTotal").innerText =
+    "Total: R$" + total.toFixed(2);
+}
+
+function fecharCheckout() {
+  document.getElementById("checkout").style.display = "none";
+}
+
+  
 </script>
 
 </body>
