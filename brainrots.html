@@ -92,9 +92,10 @@ const precos=[55,50,45,40,35,30,28,25,22,20];
 
 for(let i=1;i<=10;i++){
 
-const estoques = [5,3,10,2,8,6,4,7,1,9];
-  
-if (localStorage.getItem("stock"+i) === null) {
+if(localStorage.getItem("stock"+i)===null){
+localStorage.setItem("stock"+i,5);
+}
+
 productsDiv.innerHTML+=`
 <div class="card">
 <div class="sold-out" id="sold${i}">ESGOTADO</div>
