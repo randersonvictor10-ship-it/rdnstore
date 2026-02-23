@@ -105,33 +105,7 @@ function updateStock(id){
     else{el.innerText="Produto esgotado";el.style.color="red";document.getElementById("sold"+id).style.display="flex";}
 }
 
-    const produtos = [
-  { nome: "Brainrot 1,4b", preco: 55, img: "brainrot1.png", estoque: 5 },
-  { nome: "Brainrot 1,2b", preco: 50, img: "brainrot2.png", estoque: 3 },
-  { nome: "Brainrot Ultra", preco: 80, img: "brainrot3.png", estoque: 2 }
-];
-
-produtos.forEach((produto, index) => {
-
-  if (localStorage.getItem("stock" + index) === null) {
-    localStorage.setItem("stock" + index, produto.estoque);
-  }
-
-  tsDiv.innerHTML += `
-    <div class="card">
-      <img src="images/${produto.img}">
-      <div class="card-content">
-        <div>${produto.nome}</div>
-        <div class="price">R$${produto.preco}</div>
-        <div class="stock" id="stock${index}"></div>
-        <button class="buy-btn" onclick="buy(${index})">Comprar</button>
-      </div>
-    </div>
-  `;
-
-  updateStock(index);
-});
-`; updateStock(i);
+for(let i=1;i<=10;i++) updateStock(i);
 
 function buy(id){
     let stock=parseInt(localStorage.getItem("stock"+id));
