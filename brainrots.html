@@ -177,6 +177,11 @@ function removeItem(index){
     updateCart();
 }
 
+    total -= produtos.find(p => p.nome === nomeProduto).preco;
+    cart.splice(index, 1);
+    updateCart();
+}
+
 /* ================== FINALIZAR ================== */
 function finalizarCompra(){
   if(cart.length === 0){
