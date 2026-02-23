@@ -50,14 +50,17 @@ body{background:#000;color:white;}
 </div>
 
 <script>
+/* ================== VARIÁVEIS ================== */
 const productsDiv = document.getElementById("products");
 let cart = [];
 let total = 0;
+let pedidosPendentes = 0;
 
-/* ========= CONFIG ========= */
-const telefoneWhatsApp = "5581995367131"; // COLOQUE SEU NÚMERO AQUI
+/* 🔒 CONFIG */
+const senhaAdmin = "rdn123";
+const telefoneWhatsApp = "5581995367131";
 
-/* ========= PRODUTOS ========= */
+/* ================== PRODUTOS ================== */
 const estoques = [5,3,10,2,8,6,4,7,1,9];
 const produtos = [
   { nome:"Brainrot 1,4b", preco:55, img:"brainrot1.png" },
@@ -72,7 +75,7 @@ const produtos = [
   { nome:"Brainrot 300m", preco:20, img:"brainrot10.png" }
 ];
 
-/* ========= CRIAR PRODUTOS ========= */
+/* ================== CRIAR PRODUTOS ================== */
 produtos.forEach((produto, i) => {
 
   if (localStorage.getItem("stock"+i) === null) {
@@ -95,7 +98,7 @@ produtos.forEach((produto, i) => {
   updateStock(i);
 });
 
-/* ========= ESTOQUE ========= */
+/* ================== ESTOQUE ================== */
 function updateStock(i){
   const stock = parseInt(localStorage.getItem("stock"+i));
   const el = document.getElementById("stock"+i);
@@ -112,10 +115,9 @@ function updateStock(i){
   }
 }
 
-/* ========= COMPRAR ========= */
+/* ================== COMPRAR ================== */
 function buy(i){
   let stock = parseInt(localStorage.getItem("stock"+i));
-
   if(stock > 0){
     stock--;
     localStorage.setItem("stock"+i, stock);
@@ -132,7 +134,7 @@ function buy(i){
   }
 }
 
-/* ========= CARRINHO ========= */
+/* ================== CARRINHO ================== */
 function updateCart(){
   const cartItems = document.getElementById("cartItems");
   cartItems.innerHTML = "";
@@ -150,11 +152,10 @@ function updateCart(){
     "Total: R$" + total.toFixed(2);
 }
 
-/* ========= REMOVER ITEM (DEVOLVE ESTOQUE) ========= */
+/* 🗑 DEVOLVER ESTOQUE */
 function removeItem(index){
   const item = cart[index];
 
-  // devolver estoque
   let stock = parseInt(localStorage.getItem("stock"+item.id));
   localStorage.setItem("stock"+item.id, stock + 1);
   updateStock(item.id);
@@ -164,9 +165,8 @@ function removeItem(index){
   updateCart();
 }
 
-/* ========= WHATSAPP ========= */
+/* ================== FINALIZAR ================== */
 function finalizarCompra(){
-
   if(cart.length === 0){
     alert("Carrinho vazio!");
     return;
@@ -185,25 +185,61 @@ function finalizarCompra(){
 
   mensagem += `%0A💰 *Total: R$${total.toFixed(2)}*`;
 
-  const url = `https://wa.me/${telefoneWhatsApp}?text=${mensagem}`;
+  window.open(
+    `https://wa.me/${telefoneWhatsApp}?text=${mensagem}`,
+    "_blank"
+  );
 
-  window.open(url, "_blank");
+  pedidosPendentes++;
+  document.getElementById("pendentes").innerText = pedidosPendentes;
 
-  // limpa carrinho depois de enviar
   cart = [];
   total = 0;
   updateCart();
 }
 
-/* ========= CARRINHO UI ========= */
+/* ================== ADMIN ================== */
+function abrirAdmin(){
+  const senha = prompt("Senha admin:");
+  if(senha === senhaAdmin){
+    document.getElementById("adminPanel").style.display = "block";
+  } else {
+    alert("Senha incorreta!");
+  }
+}
+
+function fecharAdmin(){
+  document.getElementById("adminPanel").style.display = "none";
+}
+
+function confirmarPagamento(){
+  if(pedidosPendentes > 0){
+    pedidosPendentes--;
+    document.getElementById("pendentes").innerText = pedidosPendentes;
+
+    let contador = localStorage.getItem("contadorCompras") || 0;
+    contador++;
+    localStorage.setItem("contadorCompras", contador);
+    document.getElementById("contador").innerText = contador;
+
+    alert("Pagamento confirmado!");
+  } else {
+    alert("Nenhum pedido pendente!");
+  }
+}
+
+/* ================== UI ================== */
 function toggleCart(){
   document.getElementById("cart").classList.toggle("active");
 }
-
 function fecharCarrinho(){
   document.getElementById("cart").classList.remove("active");
 }
-    </script>
+
+/* CONTADOR */
+let contador = localStorage.getItem("contadorCompras") || 0;
+document.getElementById("contador").innerText = contador;
+</script>
 
 </body>
 </html>
