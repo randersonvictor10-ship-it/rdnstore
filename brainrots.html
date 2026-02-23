@@ -93,7 +93,7 @@ const precos=[55,50,45,40,35,30,28,25,22,20];
 for(let i=1;i<=10;i++){
 
 if(localStorage.getItem("stock"+i)===null){
-localStorage.setItem("stock"+i,5);
+localStorage.setItem("stock"+i,1);
 }
 
 productsDiv.innerHTML+=`
@@ -129,7 +129,7 @@ for(let i=1;i<=10;i++){updateStock(i);}
 
 function buy(id){
 let stock=parseInt(localStorage.getItem("stock"+id));
-if(stock>0){
+if(stock>1){
 stock--;
 localStorage.setItem("stock"+id,stock);
 updateStock(id);
