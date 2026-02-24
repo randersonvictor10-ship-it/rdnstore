@@ -52,11 +52,12 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;transition:
 .small-btn{font-size:11px;padding:4px;margin-top:4px;cursor:pointer;}
 
 /* HISTÓRICO */
-#historico{max-height:100px;overflow-y:auto;background:#111;border:1px solid #8b0000;padding:6px;border-radius:6px;margin-top:6px;font-size:11px;color:#fff;}
+#historico{max-height:100px;overflow-y:auto;background:#111;border:1px solid #8b0000;padding:6px;border-radius:6px;margin-top:6px;font-size:11px;color:#fff;cursor:pointer;}
 #historico-btn{padding:4px 6px;font-size:11px;margin-top:4px;background:#8b0000;border:none;color:white;border-radius:6px;cursor:pointer;}
 
-/* HISTÓRICO EDITÁVEL */
-#editarHistorico input,#editarHistorico select{width:48%;margin:2px 1%;padding:4px;font-size:11px;}
+/* EDITAR HISTÓRICO */
+#editarHistorico{display:none;margin-top:6px;}
+#editarHistorico input{width:48%;margin:2px 1%;padding:4px;font-size:11px;}
 
 /* AVALIAÇÕES MINÍMAS */
 #avaliacoes{margin:5px;padding:2px;text-align:left;font-size:7px;line-height:1;color:#ff5555;overflow-y:auto;}
@@ -119,12 +120,12 @@ body::before{
   <button class="buy-btn" onclick="apagar()">Apagar</button>
   <button class="buy-btn small-btn" onclick="sairAdmin()">Sair</button>
 
-  <h4 style="color:#ff2e2e;margin-top:8px;">Histórico de Vendas (<span id="contRef">0</span>)</h4>
+  <h4 style="color:#ff2e2e;margin-top:8px;">Histórico de Vendas (<span id="contRef" onclick="toggleEditarHistorico()" style="cursor:pointer">0</span>)</h4>
   <button id="historico-btn" onclick="zerarHistorico()">Zerar Histórico</button>
   <div id="historico"></div>
 
   <!-- EDITAR HISTÓRICO -->
-  <div id="editarHistorico" style="margin-top:6px;">
+  <div id="editarHistorico">
     <select id="selectHistorico"></select>
     <input type="text" id="editarProduto" placeholder="Produto">
     <input type="number" id="editarPreco" placeholder="Preço">
@@ -226,6 +227,7 @@ function apagar(){produtos.splice(selectProd.value,1);salvar();}
 
 // HISTÓRICO
 const selectHistorico = document.getElementById("selectHistorico");
+const editarHistoricoDiv = document.getElementById("editarHistorico");
 const editarProduto = document.getElementById("editarProduto");
 const editarPreco = document.getElementById("editarPreco");
 const editarData = document.getElementById("editarData");
@@ -237,6 +239,15 @@ function atualizarHistorico(){
   selectHistorico.innerHTML = "";
   historico.forEach((h,i)=> selectHistorico.innerHTML += `<option value="${i}">${h.data} - ${h.produto}</option>`);
   if(historico.length > 0) preencherCamposHistorico();
+}
+
+// Função para abrir/fechar painel de edição do histórico clicando na contagem
+function toggleEditarHistorico(){
+  if(editarHistoricoDiv.style.display === "none" || editarHistoricoDiv.style.display === ""){
+    editarHistoricoDiv.style.display="block";
+  }else{
+    editarHistoricoDiv.style.display="none";
+  }
 }
 
 selectHistorico.onchange = preencherCamposHistorico;
