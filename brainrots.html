@@ -131,6 +131,13 @@ let historico=JSON.parse(localStorage.historico||"[]");
 let produtoAtual=null;
 let cupomAtivo=false;
 
+// Criar produtos padrão 15x
+if(produtos.length<15){
+  for(let i=produtos.length;i<15;i++){
+    produtos.push({nome:"Produto "+(i+1),preco:10+i,estoque:10,infinito:false,forcarEsgotado:false,img:"https://via.placeholder.com/150"});
+  }
+}
+
 // Funções principais
 function salvar(){
   localStorage.produtos=JSON.stringify(produtos);
@@ -221,11 +228,11 @@ function atualizarHistorico(){
   historico.forEach((h,i)=>{
     const div = document.createElement('div');
     div.innerHTML = `<span>${h.data} - ${h.produto} - R$ </span>`;
-    const inputPreco = document.createElement('input');
-    inputPreco.type='number';
-    inputPreco.value=h.preco;
-    inputPreco.onchange=()=>{historico[i].preco=+inputPreco.value;salvar();}
-    div.appendChild(inputPreco);
+    const inputQtd = document.createElement('input');
+    inputQtd.type='number';
+    inputQtd.value=h.preco;
+    inputQtd.onchange=()=>{historico[i].preco=+inputQtd.value;salvar();}
+    div.appendChild(inputQtd);
     historicoDiv.appendChild(div);
   });
 }
