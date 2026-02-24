@@ -5,158 +5,455 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rdn Store</title>
 
-<!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#000;color:#fff}
+/* ===== RESET E FONT ===== */
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif;}
+body{background:#000;color:white;}
+
+/* ===== TOP BAR ===== */
+.top-bar{
+  background:#8b0000;
+  padding:10px;
+  text-align:center;
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  box-shadow:0 2px 10px rgba(255,0,0,0.4);
+}
 
 /* ===== HEADER ===== */
-.top-bar{background:#8b0000;padding:10px;text-align:center;font-weight:bold}
-.header{display:flex;justify-content:space-between;align-items:center;padding:15px;background:#111;border-bottom:2px solid #8b0000}
-.logo{color:#ff2e2e;font-size:26px;font-weight:bold;text-shadow:0 0 10px red}
-
-/* ===== ADMIN BTN ===== */
-#adminBtn{
-  position:fixed;
-  bottom:15px;
-  right:15px;
-  background:#8b0000;
-  padding:10px 14px;
-  border-radius:50%;
-  font-size:18px;
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px;
+  background:#111;
+  border-bottom:2px solid #8b0000;
+}
+.logo{
+  color:#ff2e2e;
+  font-size:26px;
+  font-weight:bold;
+  animation:neon 1.5s infinite alternate;
+  text-shadow:0 0 5px red;
+}
+@keyframes neon{
+  from{text-shadow:0 0 5px red;}
+  to{text-shadow:0 0 20px red,0 0 40px red;}
+}
+.header button{
+  font-size:24px;
+  background:none;
+  border:none;
+  color:red;
   cursor:pointer;
-  box-shadow:0 0 15px red;
-  z-index:999;
 }
 
 /* ===== PRODUTOS ===== */
-.products{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:20px}
-.card{background:#111;border:1px solid #8b0000;border-radius:15px;overflow:hidden;transition:.3s}
-.card:hover{box-shadow:0 0 20px red}
-.card img{width:100%;height:140px;object-fit:cover}
-.card-content{padding:12px}
-.price{color:#ff2e2e;font-weight:bold}
-.buy-btn{margin-top:8px;width:100%;padding:8px;background:#8b0000;border:none;color:#fff;border-radius:8px}
-
-/* ===== POPUP ===== */
-.popup,.admin{
-  position:fixed;inset:0;
-  background:rgba(0,0,0,.8);
-  display:none;justify-content:center;align-items:center;
-  z-index:2000
+.products{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  padding:20px;
 }
-.box{
+.card{
+  background:#111;
+  border:1px solid #8b0000;
+  border-radius:15px;
+  overflow:hidden;
+  position:relative;
+  box-shadow:0 0 10px rgba(255,0,0,0.3);
+  transition:0.3s;
+}
+.card:hover{
+  box-shadow:0 0 20px rgba(255,0,0,0.7);
+}
+.card img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+  border-bottom:1px solid #8b0000;
+}
+.card-content{
+  padding:15px;
+}
+.price{color:#ff2e2e;font-weight:bold;font-size:16px;}
+.stock{font-size:12px;margin-top:5px;}
+.buy-btn{
+  margin-top:10px;
+  width:100%;
+  padding:8px;
+  background:#8b0000;
+  border:none;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.3s;
+}
+.buy-btn:hover{background:#ff2e2e;}
+
+/* ===== SOLD OUT ===== */
+.sold-out{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.85);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  color:red;
+  font-size:22px;
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+/* ===== CARRINHO ===== */
+.cart{
+  position:fixed;
+  right:-360px;
+  top:0;
+  width:320px;
+  height:100%;
+  background:#111;
+  padding:15px;
+  box-shadow:-2px 0 15px rgba(255,0,0,0.7);
+  transition:0.4s ease;
+  overflow-y:auto;
+  z-index:999;
+}
+.cart.active{right:0;}
+.cart-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #8b0000;
+  padding-bottom:10px;
+  margin-bottom:10px;
+}
+.close-btn{
+  background:none;
+  border:none;
+  color:red;
+  font-size:20px;
+  cursor:pointer;
+}
+.cart-item{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:10px;
+  background:#1a1a1a;
+  padding:8px;
+  border-radius:8px;
+  border:1px solid #8b0000;
+  transition:0.3s;
+}
+.cart-item:hover{
+  background:#222;
+}
+.remove-btn{
+  background:none;
+  border:none;
+  color:red;
+  cursor:pointer;
+}
+
+/* ===== CHECKOUT ===== */
+#checkout{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#000;
+  z-index:2000;
+  padding:20px;
+  overflow-y:auto;
+}
+#checkout h2{color:#ff2e2e;text-align:center;margin-bottom:20px;}
+#checkoutItems div{
+  margin-bottom:8px;
+  padding:10px;
+  background:#111;
+  border:1px solid #8b0000;
+  border-radius:8px;
+  transition:0.3s;
+}
+#checkoutItems div:hover{
+  background:#222;
+}
+#checkoutTotal{margin-top:15px;color:#ff2e2e;font-weight:bold;font-size:18px;}
+#checkout button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border-radius:10px;
+  font-weight:bold;
+  font-size:16px;
+  border:none;
+  cursor:pointer;
+}
+#checkout button:nth-child(2){background:#8b0000;color:white;}
+#checkout button:nth-child(3){background:#111;color:white;border:1px solid #8b0000;}
+#checkout button:nth-child(2):hover{background:#ff2e2e;}
+#checkout button:nth-child(3):hover{background:#222;}
+
+/* ===== POP-UP COMPRA ===== */
+#buyPopup{
+  display:none;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
   background:#111;
   border:2px solid #8b0000;
-  border-radius:15px;
   padding:20px;
-  width:90%;max-width:400px;
-  animation:pop .3s
+  border-radius:12px;
+  z-index:3000;
 }
-@keyframes pop{from{transform:scale(.7)}to{transform:scale(1)}}
-.box button{width:100%;margin-top:10px;padding:10px;border:none;border-radius:8px}
-
-/* ===== ADMIN ===== */
-.admin .box{max-width:600px}
-input,select{width:100%;padding:8px;margin-top:5px;background:#000;border:1px solid #8b0000;color:#fff;border-radius:6px}
+#buyPopup button{
+  margin-top:10px;
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+  color:white;
+  transition:0.3s;
+}
+#buyPopup button.whatsapp{background:#25D366;}
+#buyPopup button.instagram{background:#C13584;}
+#buyPopup button:hover{opacity:0.9;}
 </style>
 </head>
-
 <body>
 
 <div class="top-bar">Rdn Store Oficial 🔥</div>
-<div class="header"><div class="logo">Rdn Store</div></div>
+
+<div class="header">
+  <div class="logo">Rdn Store</div>
+  <button onclick="toggleCart()">🛒</button>
+  <button onclick="toggleAdmin()">⚙️</button>
+</div>
 
 <div class="products" id="products"></div>
 
-<!-- BOTÃO ADMIN -->
-<div id="adminBtn" onclick="openAdmin()">⚙</div>
-
-<!-- POPUP COMPRA -->
-<div class="popup" id="buyPopup">
-  <div class="box">
-    <h3 id="buyTitle"></h3>
-    <button onclick="buyZap()">WhatsApp</button>
-    <button onclick="buyInsta()">Instagram</button>
-    <button onclick="closeBuy()">Cancelar</button>
+<!-- CARRINHO -->
+<div class="cart" id="cart">
+  <div class="cart-header">
+    <h2>Carrinho</h2>
+    <button class="close-btn" onclick="fecharCarrinho()">✖</button>
   </div>
+  <div id="cartItems"></div>
+  <h3 id="total">Total: R$0</h3>
+  <button onclick="abrirCheckout()" class="buy-btn">Ir para compra</button>
+</div>
+
+<!-- CHECKOUT -->
+<div id="checkout">
+  <h2>Finalizar compra</h2>
+  <div id="checkoutItems"></div>
+  <h3 id="checkoutTotal"></h3>
+  <button onclick="finalizarCompra()">Finalizar no WhatsApp</button>
+  <button onclick="fecharCheckout()">Voltar</button>
+</div>
+
+<!-- POP-UP COMPRA -->
+<div id="buyPopup">
+  <h3>Escolha onde comprar</h3>
+  <button class="whatsapp" id="buyWhatsApp">WhatsApp</button>
+  <button class="instagram" id="buyInstagram">Instagram</button>
+  <button onclick="closeBuyPopup()">Cancelar</button>
 </div>
 
 <!-- ADMIN -->
-<div class="admin" id="admin">
-  <div class="box">
-    <h2>Admin</h2>
-    <div id="adminArea"></div>
-    <button onclick="logout()">Sair</button>
-    <button onclick="closeAdmin()">Fechar</button>
-  </div>
+<div id="adminPanel" style="display:none;position:fixed;top:10%;left:10%;width:80%;height:80%;background:#111;border:2px solid #ff2e2e;padding:20px;overflow-y:auto;z-index:4000;border-radius:12px;">
+  <h2 style="color:#ff2e2e;">Admin Rdn Store</h2>
+  <button onclick="closeAdmin()" style="float:right;">✖ Fechar</button>
+  <h3>Produtos</h3>
+  <div id="adminProducts"></div>
+  <h3>Histórico de vendas</h3>
+  <div id="adminHistory" style="max-height:200px;overflow-y:auto;"></div>
+</div>
+
+<!-- AVALIAÇÕES -->
+<div id="reviews" style="padding:15px;background:#111;margin-top:20px;">
+  <h3 style="color:#ff2e2e;">Avaliações</h3>
+  <div id="reviewsList" style="font-size:12px;"></div>
+  <input type="text" id="reviewInput" placeholder="Seu nome" style="width:100%;margin-top:5px;padding:5px;border-radius:5px;border:none;">
+  <input type="text" id="reviewText" placeholder="Sua avaliação" style="width:100%;margin-top:5px;padding:5px;border-radius:5px;border:none;">
+  <button onclick="addReview()" style="margin-top:5px;width:100%;padding:8px;background:#8b0000;border:none;color:white;border-radius:5px;">Enviar Avaliação</button>
 </div>
 
 <script>
-// ===== CONFIG FIREBASE (COLOQUE O SEU) =====
-firebase.initializeApp({
-  apiKey: "SUA_API_KEY",
-  authDomain: "SEU_DOMINIO.firebaseapp.com",
-  projectId: "SEU_PROJECT_ID"
-});
+const productsDiv=document.getElementById("products");
+const telefoneWhatsApp="5581995367131";
+let cart=[];
+let total=0;
 
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-const ADMIN_EMAIL = "randersonvictor10@gmail.com";
-const telefone = "5581995367131";
-let produtoAtual = null;
-
-// ===== PRODUTOS =====
-const produtos = [
- {nome:"Brainrot 1.4b",preco:55,img:"images/brainrot1.png",estoque:1},
- {nome:"Brainrot 1.2b",preco:50,img:"images/brainrot2.png",estoque:1}
+// Estoque inicial
+let estoques=[1,1,1,1,1,1,1,1,1,1];
+const produtos=[
+  {nome:"Brainrot 1,4b",preco:55,img:"brainrot1.png"},
+  {nome:"Brainrot 1,2b",preco:50,img:"brainrot2.png"},
+  {nome:"Brainrot 1,0b",preco:45,img:"brainrot3.png"},
+  {nome:"Brainrot 900m",preco:40,img:"brainrot4.png"},
+  {nome:"Brainrot 800m",preco:35,img:"brainrot5.png"},
+  {nome:"Brainrot 700m",preco:30,img:"brainrot6.png"},
+  {nome:"Brainrot 600m",preco:28,img:"brainrot7.png"},
+  {nome:"Brainrot 500m",preco:25,img:"brainrot8.png"},
+  {nome:"Brainrot 400m",preco:22,img:"brainrot9.png"},
+  {nome:"Brainrot 300m",preco:20,img:"brainrot10.png"}
 ];
 
-const div = document.getElementById("products");
-produtos.forEach((p,i)=>{
-  div.innerHTML+=`
-  <div class="card">
-    <img src="${p.img}">
-    <div class="card-content">
-      <div>${p.nome}</div>
-      <div class="price">R$${p.preco}</div>
-      <button class="buy-btn" onclick="openBuy(${i})">Comprar</button>
+// Inicializar produtos
+produtos.forEach((produto,i)=>{
+  productsDiv.innerHTML+=`
+    <div class="card">
+      <div class="sold-out" id="sold${i}">ESGOTADO</div>
+      <img src="images/${produto.img}">
+      <div class="card-content">
+        <div>${produto.nome}</div>
+        <div class="price">R$${produto.preco}</div>
+        <div class="stock" id="stock${i}"></div>
+        <button class="buy-btn" onclick="openBuyPopup(${i})">Comprar</button>
+      </div>
     </div>
-  </div>`;
+  `;
+  updateStock(i);
 });
 
-// ===== COMPRA =====
-function openBuy(i){
-  produtoAtual = produtos[i];
-  document.getElementById("buyTitle").innerText = produtoAtual.nome+" - R$"+produtoAtual.preco;
-  document.getElementById("buyPopup").style.display="flex";
-}
-function closeBuy(){buyPopup.style.display="none"}
-function buyZap(){
-  let msg=`🛒 ${produtoAtual.nome} - R$${produtoAtual.preco}`;
-  window.open(`https://wa.me/${telefone}?text=${encodeURIComponent(msg)}`);
-}
-function buyInsta(){
-  window.open("https://instagram.com/rdn.store.ofc");
-}
-
-// ===== ADMIN =====
-function openAdmin(){
-  auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-}
-auth.onAuthStateChanged(u=>{
-  if(u && u.email===ADMIN_EMAIL){
-    admin.style.display="flex";
-    adminArea.innerHTML="<p>Admin logado ✔</p>";
+// Funções estoque e cart
+function updateStock(i){
+  const stockEl=document.getElementById("stock"+i);
+  const soldEl=document.getElementById("sold"+i);
+  let stock=estoques[i];
+  if(stock===-1){
+    stockEl.innerText="∞";
+    stockEl.style.color="#00ff88";
+    soldEl.style.display="none";
+  } else if(stock>0){
+    stockEl.innerText="Restam "+stock+" unidades";
+    stockEl.style.color="#00ff88";
+    soldEl.style.display="none";
+  } else {
+    stockEl.innerText="Produto esgotado";
+    stockEl.style.color="red";
+    soldEl.style.display="flex";
   }
-});
-function closeAdmin(){admin.style.display="none"}
-function logout(){auth.signOut();closeAdmin()}
+}
+
+function openBuyPopup(i){
+  window.currentBuy=i;
+  document.getElementById("buyPopup").style.display="block";
+}
+function closeBuyPopup(){ document.getElementById("buyPopup").style.display="none"; }
+
+document.getElementById("buyWhatsApp").onclick=function(){
+  const i=window.currentBuy;
+  const produto=produtos[i];
+  const mensagem=`🛒 Pedido: ${produto.nome} — R$${produto.preco.toFixed(2)}`;
+  window.open(`https://wa.me/${telefoneWhatsApp}?text=${encodeURIComponent(mensagem)}`,"_blank");
+}
+document.getElementById("buyInstagram").onclick=function(){
+  const i=window.currentBuy;
+  const produto=produtos[i];
+  const mensagem=`🛒 Pedido: ${produto.nome} — R$${produto.preco.toFixed(2)}`;
+  window.open(`https://www.instagram.com/direct/t/rdn.store.ofc/?text=${encodeURIComponent(mensagem)}`,"_blank");
+}
+
+// Carrinho
+function toggleCart(){ document.getElementById("cart").classList.toggle("active"); }
+function fecharCarrinho(){ document.getElementById("cart").classList.remove("active"); }
+function abrirCheckout(){
+  if(cart.length===0){ alert("Carrinho vazio!"); return; }
+  fecharCarrinho();
+  const area=document.getElementById("checkoutItems");
+  area.innerHTML="";
+  cart.forEach(item=>{
+    area.innerHTML+=`<div>${item.nome} — R$${item.preco}</div>`;
+  });
+  document.getElementById("checkoutTotal").innerText="Total: R$"+total.toFixed(2);
+  document.getElementById("checkout").style.display="block";
+}
+function fecharCheckout(){ document.getElementById("checkout").style.display="none"; }
+function finalizarCompra(){
+  alert("Pedido enviado!"); // aqui poderia abrir WhatsApp direto
+  cart=[]; total=0;
+}
+
+// Admin
+function toggleAdmin(){ document.getElementById("adminPanel").style.display="block"; }
+function closeAdmin(){ document.getElementById("adminPanel").style.display="none"; }
+const adminProducts=document.getElementById("adminProducts");
+function refreshAdminProducts(){
+  adminProducts.innerHTML="";
+  produtos.forEach((p,i)=>{
+    adminProducts.innerHTML+=`
+      <div>
+        ${p.nome} - R$${p.preco} - Estoque: ${estoques[i]===-1?'∞':estoques[i]}
+        <button onclick="editProduct(${i})">Editar</button>
+        <button onclick="esgotar(${i})">Esgotado</button>
+        <button onclick="estoqueInfinito(${i})">∞</button>
+      </div>
+    `;
+  });
+}
+refreshAdminProducts();
+
+function editProduct(i){
+  const novoNome=prompt("Nome:",produtos[i].nome);
+  const novoPreco=parseFloat(prompt("Preço:",produtos[i].preco));
+  if(novoNome) produtos[i].nome=novoNome;
+  if(!isNaN(novoPreco)) produtos[i].preco=novoPreco;
+  refreshAdminProducts();
+  updateStock(i);
+}
+function esgotar(i){ estoques[i]=0; updateStock(i); refreshAdminProducts(); }
+function estoqueInfinito(i){ estoques[i]=-1; updateStock(i); refreshAdminProducts(); }
+
+// Avaliações
+const reviewsList=document.getElementById("reviewsList");
+let reviews=[
+  {nome:"Ana",texto:"Excelente loja! ⭐⭐⭐⭐⭐"},
+  {nome:"Bruno",texto:"Produto chegou rápido! ⭐⭐⭐⭐⭐"},
+  {nome:"Carla",texto:"Muito bom! ⭐⭐⭐⭐⭐"},
+  {nome:"Diego",texto:"Adorei a compra! ⭐⭐⭐⭐"},
+  {nome:"Eva",texto:"Recomendo demais! ⭐⭐⭐⭐⭐"},
+  {nome:"Felipe",texto:"Top demais! ⭐⭐⭐⭐⭐"},
+  {nome:"Gabriela",texto:"Show de loja! ⭐⭐⭐⭐"},
+  {nome:"Henrique",texto:"Amei! ⭐⭐⭐⭐⭐"},
+  {nome:"Isabela",texto:"Perfeito! ⭐⭐⭐⭐⭐"},
+  {nome:"João",texto:"Vale a pena! ⭐⭐⭐⭐"},
+  {nome:"Karla",texto:"Produto ótimo! ⭐⭐⭐⭐⭐"},
+  {nome:"Lucas",texto:"Adorei a experiência! ⭐⭐⭐⭐"},
+  {nome:"Mariana",texto:"Excelente! ⭐⭐⭐⭐⭐"},
+  {nome:"Nicolas",texto:"Muito bom mesmo! ⭐⭐⭐⭐⭐"},
+  {nome:"Olivia",texto:"Recomendo! ⭐⭐⭐⭐⭐"}
+];
+function renderReviews(){
+  reviewsList.innerHTML="";
+  reviews.forEach(r=>{
+    reviewsList.innerHTML+=`<div><strong>${r.nome}:</strong> ${r.texto}</div>`;
+  });
+}
+renderReviews();
+
+function addReview(){
+  const nome=document.getElementById("reviewInput").value;
+  const texto=document.getElementById("reviewText").value;
+  if(nome && texto){
+    reviews.push({nome,texto});
+    renderReviews();
+    document.getElementById("reviewInput").value="";
+    document.getElementById("reviewText").value="";
+  } else alert("Preencha nome e avaliação!");
+}
 </script>
 
 </body>
