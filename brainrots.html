@@ -6,68 +6,43 @@
 <title>Rdn Store</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
-body{background:#000;color:white;overflow-x:hidden;position:relative;transition:0.3s;}
-.top-bar{background:#8b0000;padding:12px;text-align:center;font-weight:bold;font-size:18px;text-shadow:0 0 8px red;transition:0.3s;}
+body{background:#000;color:white;overflow-x:hidden;position:relative;}
+.top-bar{background:#8b0000;padding:12px;text-align:center;font-weight:bold;font-size:18px;text-shadow:0 0 8px red;}
 .header{display:flex;justify-content:space-between;align-items:center;padding:15px;background:#111;border-bottom:2px solid #8b0000;}
-.logo{color:#ff2e2e;font-size:28px;font-weight:bold;cursor:pointer;text-shadow:0 0 10px red;animation:neon 1.5s infinite alternate;transition:0.3s;}
+.logo{color:#ff2e2e;font-size:28px;font-weight:bold;cursor:pointer;text-shadow:0 0 10px red;animation:neon 1.5s infinite alternate;}
 @keyframes neon{0%{text-shadow:0 0 5px red;}50%{text-shadow:0 0 15px red,0 0 25px red;}100%{text-shadow:0 0 20px red,0 0 40px red;}}
 
-/* CUPOM PEQUENO */
-#cupom-container{position:absolute;top:60px;right:20px;display:flex;gap:6px;}
-#cupom-container input{padding:4px;border-radius:4px;border:none;width:80px;font-size:10px;}
-#cupom-container button{padding:4px;border-radius:4px;border:none;background:#ff2e2e;color:white;font-size:10px;cursor:pointer;transition:0.3s;}
-#cupom-container button:hover{box-shadow:0 0 10px #ff2e2e,0 0 20px #ff2e2e;}
-#cupomMsg{color:#ff2e2e;font-size:10px;align-self:center;margin-left:4px;}
-
-/* PRODUTOS 2X2 */
+/* Produtos 2x2 */
 .products{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:15px;}
-.card{background:#111;border:1px solid #8b0000;border-radius:15px;overflow:hidden;position:relative;box-shadow:0 0 10px rgba(255,0,0,0.4);transition:0.3s;}
-.card:hover{box-shadow:0 0 25px rgba(255,0,0,0.8);animation:cardGlow 1.2s infinite alternate;}
-@keyframes cardGlow{0%{box-shadow:0 0 15px rgba(255,0,0,0.6);}100%{box-shadow:0 0 30px rgba(255,0,0,1);}}
-.card img{width:100%;height:140px;object-fit:cover;border-bottom:1px solid #8b0000;transition:0.3s;}
+.card{background:#111;border:1px solid #8b0000;border-radius:15px;overflow:hidden;position:relative;box-shadow:0 0 10px rgba(255,0,0,0.4);}
+.card img{width:100%;height:140px;object-fit:cover;border-bottom:1px solid #8b0000;}
 .card-content{padding:10px;}
 .price{color:#ff2e2e;font-weight:bold;font-size:14px;margin-top:4px;}
 .stock{font-size:10px;margin-top:2px;color:#00ff88;}
-.buy-btn{margin-top:6px;width:100%;padding:6px;background:#8b0000;border:none;color:white;border-radius:6px;cursor:pointer;font-weight:bold;transition:0.3s;font-size:12px;}
-.buy-btn:hover{background:#ff2e2e;box-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e;animation:pulseBtn 1s infinite alternate;}
-@keyframes pulseBtn{0%{box-shadow:0 0 10px #ff2e2e;}100%{box-shadow:0 0 25px #ff5555,0 0 40px #ff2e2e;}}
+.buy-btn{margin-top:6px;width:100%;padding:6px;background:#8b0000;border:none;color:white;border-radius:6px;cursor:pointer;font-weight:bold;font-size:12px;}
+.buy-btn:hover{background:#ff2e2e;box-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e;}
 .buy-btn:disabled{opacity:0.5;background:#333;}
 .sold-out{position:absolute;inset:0;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;font-size:16px;color:#ff2e2e;font-weight:bold;text-transform:uppercase;}
 
-/* MODAL COMPRA */
-.modal{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:999;transition:0.3s;}
-.modal-box{background:#111;border:2px solid #8b0000;padding:18px;border-radius:14px;width:260px;text-align:center;animation:fadeIn 0.3s;}
-@keyframes fadeIn{0%{opacity:0;transform:scale(0.9);}100%{opacity:1;transform:scale(1);}}
+/* Modal */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:999;}
+.modal-box{background:#111;border:2px solid #8b0000;padding:18px;border-radius:14px;width:260px;text-align:center;}
 
-/* ADMIN */
-#adminLogin{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:1000;transition:0.3s;}
+/* Admin */
+#adminLogin{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:1000;}
 .admin-box{background:#111;padding:22px;border:2px solid #8b0000;border-radius:14px;width:280px;text-align:center;}
 .admin-box input{width:100%;padding:6px;margin:6px 0;border-radius:6px;border:none;background:#000;color:white;}
 
-/* ADMIN PANEL */
-.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:10px;border-radius:14px;width:320px;z-index:999;display:none;transition:0.3s;}
-.admin-panel h3{text-align:center;color:#ff2e2e;margin-bottom:6px;}
+/* Admin Panel */
+.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:10px;border-radius:14px;width:320px;z-index:999;display:none;}
 .admin-panel input,.admin-panel select{width:100%;margin:4px 0;padding:6px;border-radius:6px;border:none;background:#000;color:#fff;}
 .admin-panel label{font-size:12px;display:flex;gap:6px;align-items:center;margin:3px 0;}
 .small-btn{font-size:11px;padding:4px;margin-top:4px;cursor:pointer;}
 
-/* HISTÓRICO */
-#historico{max-height:100px;overflow-y:auto;background:#111;border:1px solid #8b0000;padding:6px;border-radius:6px;margin-top:6px;font-size:11px;color:#fff;cursor:pointer;}
-#historico-btn{padding:4px 6px;font-size:11px;margin-top:4px;background:#8b0000;border:none;color:white;border-radius:6px;cursor:pointer;}
-
-/* EDITAR HISTÓRICO */
-#editarHistorico{display:none;margin-top:6px;}
-#editarHistorico input{width:48%;margin:2px 1%;padding:4px;font-size:11px;}
-
-/* AVALIAÇÕES MINÍMAS */
-#avaliacoes{margin:5px;padding:2px;text-align:left;font-size:7px;line-height:1;color:#ff5555;overflow-y:auto;}
-#avaliacoes .avaliacao{margin-bottom:2px;}
-#avaliacoes .avaliacao strong{color:#ff2e2e;}
-
-/* FUNDO */
-body::before{
-  content:"";position:fixed;inset:0;background:url('');background-size:cover;background-position:center;opacity:0.05;z-index:-1;
-}
+/* Histórico editável */
+#historico{max-height:150px;overflow-y:auto;background:#111;border:1px solid #8b0000;padding:6px;border-radius:6px;margin-top:6px;font-size:12px;cursor:pointer;}
+#historico div{padding:2px 4px;margin:2px 0;border-bottom:1px solid #222;}
+#historico input{width:50px;background:#000;color:white;border:none;border-bottom:1px solid #ff2e2e;}
 </style>
 </head>
 <body>
@@ -77,7 +52,7 @@ body::before{
   <div class="logo" id="logo">Rdn Store</div>
 </div>
 
-<!-- CUPOM -->
+<!-- Cupom -->
 <div id="cupom-container">
   <input type="text" id="cupomInput" placeholder="Cupom">
   <button onclick="aplicarCupom()">OK</button>
@@ -86,7 +61,7 @@ body::before{
 
 <div class="products" id="products"></div>
 
-<!-- MODAL COMPRA -->
+<!-- Modal compra -->
 <div class="modal" id="buyModal">
   <div class="modal-box">
     <h3 style="color:#ff2e2e">Finalizar compra</h3>
@@ -96,7 +71,7 @@ body::before{
   </div>
 </div>
 
-<!-- ADMIN LOGIN -->
+<!-- Admin -->
 <div id="adminLogin">
   <div class="admin-box">
     <h3 style="color:#ff2e2e">ADMIN</h3>
@@ -105,7 +80,6 @@ body::before{
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
 <div class="admin-panel" id="adminPanel">
   <h3>ADMIN</h3>
   <select id="selectProd"></select>
@@ -120,22 +94,10 @@ body::before{
   <button class="buy-btn" onclick="apagar()">Apagar</button>
   <button class="buy-btn small-btn" onclick="sairAdmin()">Sair</button>
 
-  <h4 style="color:#ff2e2e;margin-top:8px;">Histórico de Vendas (<span id="contRef" onclick="toggleEditarHistorico()" style="cursor:pointer">0</span>)</h4>
+  <h4 style="color:#ff2e2e;margin-top:8px;">Histórico de Vendas (<span id="contRef">0</span>)</h4>
   <button id="historico-btn" onclick="zerarHistorico()">Zerar Histórico</button>
   <div id="historico"></div>
-
-  <!-- EDITAR HISTÓRICO -->
-  <div id="editarHistorico">
-    <select id="selectHistorico"></select>
-    <input type="text" id="editarProduto" placeholder="Produto">
-    <input type="number" id="editarPreco" placeholder="Preço">
-    <input type="text" id="editarData" placeholder="Data">
-    <button class="buy-btn small-btn" onclick="salvarEdicaoHistorico()">Salvar Alteração</button>
-  </div>
 </div>
-
-<!-- AVALIAÇÕES -->
-<div id="avaliacoes"></div>
 
 <script>
 const ADMIN_SENHA="randerson555";
@@ -147,11 +109,10 @@ let historico=JSON.parse(localStorage.historico||"[]");
 let produtoAtual=null;
 let cupomAtivo=false;
 
-// FUNÇÕES PRINCIPAIS
 function salvar(){
   localStorage.produtos=JSON.stringify(produtos);
   localStorage.historico=JSON.stringify(historico);
-  render();carregarAdmin();atualizarHistorico();
+  render();carregarAdmin();
 }
 
 function render(){
@@ -172,28 +133,31 @@ function render(){
         </div>
       </div>`;
   });
+  atualizarHistorico();
 }
 
 function abrirCompra(i){produtoAtual=i;buyModal.style.display="flex";}
 function finalizar(tipo){
   const p=produtos[produtoAtual];
   if(!p.infinito)p.estoque--;
+  let precoVenda = p.preco;
+  if(cupomAtivo) precoVenda = (p.preco*0.95).toFixed(2);
   const data=new Date().toLocaleString();
-  historico.push({produto:p.nome,preco:p.preco,data});
+  historico.push({produto:p.nome,preco:precoVenda,data});
   salvar();
-  const msg=`🛒 Produto: ${p.nome} - R$${p.preco} - ${data}`;
+  const msg=`🛒 Produto: ${p.nome} - R$${precoVenda} - ${data}`;
   window.open(tipo==="zap"?`${zap}?text=${encodeURIComponent(msg)}`:`${ig}`,"_blank");
   buyModal.style.display="none";
 }
 
-// CUPOM
+// Cupom
 function aplicarCupom(){
   const c=cupomInput.value.trim().toUpperCase();
-  if(c==="RDN5"){cupomAtivo=true;cupomMsg.innerText="5% OFF aplicado";render();}
-  else{cupomAtivo=false;cupomMsg.innerText="Cupom inválido";render();}
+  if(c==="RDN5"){cupomAtivo=true;document.getElementById('cupomMsg').innerText="5% OFF aplicado";render();}
+  else{cupomAtivo=false;document.getElementById('cupomMsg').innerText="Cupom inválido";render();}
 }
 
-// ADMIN
+// Admin
 let clicks=0;
 logo.onclick=()=>{if(++clicks==5){adminLogin.style.display="flex";clicks=0;}};
 function loginAdmin(){if(adminPass.value===ADMIN_SENHA){adminLogin.style.display="none";adminPanel.style.display="block";carregarAdmin();}else alert("Senha errada");}
@@ -202,7 +166,6 @@ function sairAdmin(){adminPanel.style.display="none";adminPass.value="";}
 function carregarAdmin(){
   selectProd.innerHTML="";
   produtos.forEach((p,i)=>selectProd.innerHTML+=`<option value="${i}">${p.nome}</option>`);
-  atualizarHistorico();
 }
 
 selectProd.onchange=()=>{
@@ -225,85 +188,32 @@ function criar(){
 function editar(){const i=selectProd.value;Object.assign(produtos[i],{nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:forcarEsgotado.checked});salvar();}
 function apagar(){produtos.splice(selectProd.value,1);salvar();}
 
-// HISTÓRICO
-const selectHistorico = document.getElementById("selectHistorico");
-const editarHistoricoDiv = document.getElementById("editarHistorico");
-const editarProduto = document.getElementById("editarProduto");
-const editarPreco = document.getElementById("editarPreco");
-const editarData = document.getElementById("editarData");
-
+// Histórico editável diretamente
+const historicoDiv = document.getElementById('historico');
 function atualizarHistorico(){
-  contRef.innerText = historico.length;
-  document.getElementById("historico").innerHTML = historico.map(h => `${h.data} - ${h.produto} - R$${h.preco}`).join("<br>") || "Nenhuma venda ainda";
-  
-  selectHistorico.innerHTML = "";
-  historico.forEach((h,i)=> selectHistorico.innerHTML += `<option value="${i}">${h.data} - ${h.produto}</option>`);
-  if(historico.length > 0) preencherCamposHistorico();
+  document.getElementById('contRef').innerText = historico.length;
+  historicoDiv.innerHTML = "";
+  historico.forEach((h,i)=>{
+    const div = document.createElement('div');
+    div.innerHTML = `<span>${h.data} - ${h.produto} - R$<span class="preco">${h.preco}</span></span>`;
+    div.onclick = ()=>{
+      const input = document.createElement('input');
+      input.type='number';
+      input.value=h.preco;
+      input.onblur=()=>{
+        historico[i].preco = +input.value;
+        salvar();
+      };
+      div.innerHTML = '';
+      div.appendChild(input);
+      input.focus();
+    };
+    historicoDiv.appendChild(div);
+  });
 }
 
-// Função para abrir/fechar painel de edição do histórico clicando na contagem
-function toggleEditarHistorico(){
-  if(editarHistoricoDiv.style.display === "none" || editarHistoricoDiv.style.display === ""){
-    editarHistoricoDiv.style.display="block";
-  }else{
-    editarHistoricoDiv.style.display="none";
-  }
-}
-
-selectHistorico.onchange = preencherCamposHistorico;
-function preencherCamposHistorico(){
-  const h = historico[selectHistorico.value];
-  if(!h) return;
-  editarProduto.value = h.produto;
-  editarPreco.value = h.preco;
-  editarData.value = h.data;
-}
-
-function salvarEdicaoHistorico(){
-  const i = selectHistorico.value;
-  if(historico[i]){
-    historico[i].produto = editarProduto.value;
-    historico[i].preco = +editarPreco.value;
-    historico[i].data = editarData.value;
-    salvar();
-    alert("Histórico atualizado!");
-  }
-}
-
-function zerarHistorico(){
-  if(confirm("Deseja realmente zerar o histórico?")){
-    historico=[];
-    salvar();
-  }
-}
-
-// AVALIAÇÕES
-const avals=[
-  {nome:"Lucas",msg:"Excelente loja, recomendo!"},
-  {nome:"Ana",msg:"Entrega rápida e confiável."},
-  {nome:"Carlos",msg:"Produtos de ótima qualidade."},
-  {nome:"Maria",msg:"Preço justo e atendimento top."},
-  {nome:"João",msg:"Sempre volto a comprar aqui."},
-  {nome:"Beatriz",msg:"Super recomendo, 5 estrelas!"},
-  {nome:"Pedro",msg:"Muito bom, adorei."},
-  {nome:"Camila",msg:"Atendimento rápido e eficiente."},
-  {nome:"Rafael",msg:"Produtos incríveis!"},  
-  {nome:"Fernanda",msg:"Amei, compra garantida."},
-  {nome:"Bruno",msg:"Vale cada centavo."},
-  {nome:"Juliana",msg:"Top demais!"},
-  {nome:"Gustavo",msg:"Recomendo para todos."},
-  {nome:"Patrícia",msg:"Muito satisfeito com a compra."},
-  {nome:"Thiago",msg:"Tudo perfeito, obrigado!"}
-];
-function renderAvaliacoes(){
-  avaliacoes.innerHTML="";
-  avals.forEach(a=>avaliacoes.innerHTML+=`<div class="avaliacao"><strong>${a.nome}:</strong> ${a.msg}</div>`);
-}
-
-// INICIAL
+function zerarHistorico(){if(confirm("Deseja realmente zerar o histórico?")){historico=[];salvar();}}
 render();
-renderAvaliacoes();
 </script>
-
 </body>
 </html>
