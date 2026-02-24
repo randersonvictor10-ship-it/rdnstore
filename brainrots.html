@@ -41,15 +41,16 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
 .admin-box input{width:100%;padding:6px;margin:6px 0;border-radius:6px;border:none;background:#000;color:white;}
 
 /* ADMIN PANEL */
-.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:12px;border-radius:16px;width:360px;z-index:999;display:none;}
+.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:12px;border-radius:16px;width:340px;z-index:999;display:none;}
 .admin-panel h3{text-align:center;color:#ff2e2e;margin-bottom:6px;}
 .admin-panel input,.admin-panel select{width:100%;margin:4px 0;padding:6px;border-radius:6px;border:none;background:#000;color:#fff;}
 .admin-panel label{font-size:12px;display:flex;gap:6px;align-items:center;margin:3px 0;}
 .small-btn{font-size:11px;padding:4px;margin-top:4px;cursor:pointer;}
 
-/* HISTÓRICO VENDAS MANUAL */
+/* HISTÓRICO EDITÁVEL */
 #historico{max-height:120px;overflow-y:auto;background:#111;border:1px solid #8b0000;padding:6px;border-radius:6px;margin-top:6px;font-size:12px;}
-#historico div{padding:2px 4px;margin:2px 0;border-bottom:1px solid #222;display:flex;gap:4px;align-items:center;}
+#historico div{padding:2px 4px;margin:2px 0;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center;}
+#historico input{width:50px;background:#000;color:white;border:none;border-bottom:1px solid #ff2e2e;}
 
 /* AVALIAÇÕES MINÍMAS */
 #avaliacoes{margin:10px;padding:5px;text-align:left;font-size:7px;line-height:1;color:#ff5555;overflow-y:auto;}
@@ -112,7 +113,8 @@ body::before{
   <button class="buy-btn" onclick="apagar()">Apagar</button>
   <button class="buy-btn small-btn" onclick="sairAdmin()">Sair</button>
 
-  <h4 style="color:#ff2e2e;margin-top:8px;">Vendas (manual)</h4>
+  <h4 style="color:#ff2e2e;margin-top:8px;">Histórico de Vendas (<span id="contRef">0</span>)</h4>
+  <button class="buy-btn small-btn" onclick="zerarHistorico()">Zerar Histórico</button>
   <div id="historico"></div>
 </div>
 
@@ -125,17 +127,23 @@ const zap="https://wa.me/5581995367131";
 const ig="https://instagram.com/rdn.store.ofc";
 
 let produtos=JSON.parse(localStorage.produtos||"[]");
-let historico=JSON.parse(localStorage.historico||"[{vendas:0}]");
+let historico=JSON.parse(localStorage.historico||"[]");
 let produtoAtual=null;
 let cupomAtivo=false;
 
-// RENDER PRODUTOS
-function salvar(){localStorage.produtos=JSON.stringify(produtos);localStorage.historico=JSON.stringify(historico);render();carregarAdmin();renderHistorico();}
+// Funções principais
+function salvar(){
+  localStorage.produtos=JSON.stringify(produtos);
+  localStorage.historico=JSON.stringify(historico);
+  render();carregarAdmin();
+}
+
+// Render produtos
 function render(){
   products.innerHTML="";
   produtos.forEach((p,i)=>{
-    const esgotado=p.forcarEsgotado||(!p.infinito&&p.estoque<=0);
-    let precoFinal=p.preco;
+    const esgotado=p.forcarEsgotado || (!p.infinito && p.estoque<=0);
+    let precoFinal = p.preco;
     if(cupomAtivo) precoFinal=(p.preco*0.95).toFixed(2);
     products.innerHTML+=`
       <div class="card">
@@ -149,62 +157,82 @@ function render(){
         </div>
       </div>`;
   });
+  atualizarHistorico();
 }
 
-// MODAL COMPRA
+// Modal compra
 function abrirCompra(i){produtoAtual=i;buyModal.style.display="flex";}
 function finalizar(tipo){
   const p=produtos[produtoAtual];
   if(!p.infinito)p.estoque--;
-  let precoVenda=p.preco;if(cupomAtivo)precoVenda=(p.preco*0.95).toFixed(2);
-  const msg=`🛒 Produto: ${p.nome} - R$${precoVenda}`;
+  let precoVenda = p.preco;
+  if(cupomAtivo) precoVenda=(p.preco*0.95).toFixed(2);
+  const data=new Date().toLocaleString();
+  historico.push({produto:p.nome,preco:precoVenda,data});
+  salvar();
+  const msg=`🛒 Produto: ${p.nome} - R$${precoVenda} - ${data}`;
   window.open(tipo==="zap"?`${zap}?text=${encodeURIComponent(msg)}`:`${ig}`,"_blank");
   buyModal.style.display="none";
 }
 
-// CUPOM
+// Cupom
 function aplicarCupom(){
   const c=cupomInput.value.trim().toUpperCase();
   if(c==="RDN5"){cupomAtivo=true;document.getElementById('cupomMsg').innerText="5% OFF aplicado";render();}
   else{cupomAtivo=false;document.getElementById('cupomMsg').innerText="Cupom inválido";render();}
 }
 
-// ADMIN
+// Admin
 let clicks=0;
 logo.onclick=()=>{if(++clicks==5){adminLogin.style.display="flex";clicks=0;}};
-function loginAdmin(){if(adminPass.value===ADMIN_SENHA){adminLogin.style.display="none";adminPanel.style.display="block";carregarAdmin();renderHistorico();}else alert("Senha errada");}
+function loginAdmin(){if(adminPass.value===ADMIN_SENHA){adminLogin.style.display="none";adminPanel.style.display="block";carregarAdmin();}else alert("Senha errada");}
 function sairAdmin(){adminPanel.style.display="none";adminPass.value="";}
 
+function carregarAdmin(){
+  selectProd.innerHTML="";
+  produtos.forEach((p,i)=>selectProd.innerHTML+=`<option value="${i}">${p.nome}</option>`);
+}
+
 // Admin CRUD
-function carregarAdmin(){selectProd.innerHTML="";produtos.forEach((p,i)=>selectProd.innerHTML+=`<option value="${i}">${p.nome}</option>`);}
-selectProd.onchange=()=>{const p=produtos[selectProd.value];nome.value=p.nome;preco.value=p.preco;estoque.value=p.estoque;infinito.checked=p.infinito;forcarEsgotado.checked=p.forcarEsgotado;}
-function criar(){const r=new FileReader();r.onload=()=>{produtos.push({nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:false,img:r.result});salvar();}r.readAsDataURL(img.files[0]);}
+selectProd.onchange=()=>{
+  const p=produtos[selectProd.value];
+  nome.value=p.nome;
+  preco.value=p.preco;
+  estoque.value=p.estoque;
+  infinito.checked=p.infinito;
+  forcarEsgotado.checked=p.forcarEsgotado;
+}
+function criar(){
+  const r=new FileReader();
+  r.onload=()=>{
+    produtos.push({nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:false,img:r.result});
+    salvar();
+  }
+  r.readAsDataURL(img.files[0]);
+}
 function editar(){const i=selectProd.value;Object.assign(produtos[i],{nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:forcarEsgotado.checked});salvar();}
 function apagar(){produtos.splice(selectProd.value,1);salvar();}
 
-// HISTÓRICO MANUAL (apenas vendas)
-function renderHistorico(){
-  const hist=document.getElementById('historico');
-  hist.innerHTML="";
+// Histórico manual
+const historicoDiv = document.getElementById('historico');
+function atualizarHistorico(){
+  document.getElementById('contRef').innerText = historico.length;
+  historicoDiv.innerHTML="";
   historico.forEach((h,i)=>{
-    const div=document.createElement('div');
-    div.innerHTML=`Vendas: <span id="vendas${i}" style="cursor:pointer;color:#ff2e2e">${h.vendas}</span>`;
-    div.querySelector('span').onclick=()=>{
-      const input=document.createElement('input');
-      input.type="number";
-      input.value=h.vendas;
-      input.style.width="50px";
-      input.onchange=()=>{historico[i].vendas=+input.value;salvar();};
-      div.innerHTML="Vendas: ";
-      div.appendChild(input);
-    };
-    hist.appendChild(div);
+    const div = document.createElement('div');
+    div.innerHTML = `<span>${h.data} - ${h.produto} - R$ </span>`;
+    const inputPreco = document.createElement('input');
+    inputPreco.type='number';
+    inputPreco.value=h.preco;
+    inputPreco.onchange=()=>{historico[i].preco=+inputPreco.value;salvar();}
+    div.appendChild(inputPreco);
+    historicoDiv.appendChild(div);
   });
 }
-function adicionarHistorico(){historico.push({vendas:0});renderHistorico();}
-function removerLinha(i){historico.splice(i,1);renderHistorico();salvar();}
 
-// AVALIAÇÕES
+function zerarHistorico(){if(confirm("Deseja realmente zerar o histórico?")){historico=[];salvar();}}
+
+// Avaliações
 const avals=[
   {nome:"Lucas",msg:"Excelente loja, recomendo!"},
   {nome:"Ana",msg:"Entrega rápida e confiável."},
@@ -222,12 +250,14 @@ const avals=[
   {nome:"Patrícia",msg:"Muito satisfeito com a compra."},
   {nome:"Thiago",msg:"Tudo perfeito, obrigado!"}
 ];
-function renderAvaliacoes(){avaliacoes.innerHTML="";avals.forEach(a=>avaliacoes.innerHTML+=`<div class="avaliacao"><strong>${a.nome}:</strong> ${a.msg}</div>`);}
+function renderAvaliacoes(){
+  avaliacoes.innerHTML="";
+  avals.forEach(a=>avaliacoes.innerHTML+=`<div class="avaliacao"><strong>${a.nome}:</strong> ${a.msg}</div>`);
+}
 
-// INICIAL
+// Inicial
 render();
 renderAvaliacoes();
-renderHistorico();
 </script>
 
 </body>
