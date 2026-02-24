@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RDN Store</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{background:#000;color:white;overflow-x:hidden;position:relative;}
+.top-bar{background:#8b0000;padding:12px;text-align:center;font-weight:bold;font-size:18px;text-shadow:0 0 8px red;}
+.header{display:flex;justify-content:space-between;align-items:center;padding:15px;background:#111;border-bottom:2px solid #8b0000;}
+.logo{color:#ff2e2e;font-size:28px;font-weight:bold;cursor:pointer;text-shadow:0 0 10px red;animation:neon 1.5s infinite alternate;}
+@keyframes neon{0%{text-shadow:0 0 5px red;}50%{text-shadow:0 0 15px red,0 0 25px red;}100%{text-shadow:0 0 20px red,0 0 40px red;}}
+
+/* CUPOM */
+#cupom-container{position:absolute;top:60px;right:20px;display:flex;gap:6px;}
+#cupom-container input{padding:4px;border-radius:4px;border:none;width:80px;font-size:10px;}
+#cupom-container button{padding:4px;border-radius:4px;border:none;background:#ff2e2e;color:white;font-size:10px;cursor:pointer;}
+#cupomMsg{color:#ff2e2e;font-size:10px;align-self:center;margin-left:4px;}
+
+/* PRODUTOS GRID */
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:18px;padding:20px;}
+.card{background:#111;border:1px solid #8b0000;border-radius:18px;overflow:hidden;position:relative;transition:0.3s;box-shadow:0 0 10px rgba(255,0,0,0.4);}
+.card:hover{box-shadow:0 0 20px rgba(255,0,0,0.8);}
+.card img{width:100%;height:150px;object-fit:cover;border-bottom:1px solid #8b0000;}
+.card-content{padding:14px;}
+.price{color:#ff2e2e;font-weight:bold;margin-top:6px;font-size:14px;}
+.stock{font-size:12px;color:#00ff88;margin-top:2px;}
+.buy-btn{margin-top:10px;width:100%;padding:8px;background:#8b0000;border:none;color:white;border-radius:10px;font-weight:bold;cursor:pointer;font-size:12px;transition:0.3s;}
+.buy-btn:hover{background:#ff2e2e;box-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e;}
+.buy-btn:disabled{opacity:0.5;background:#333;}
+.sold-out{position:absolute;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;font-size:20px;color:#ff2e2e;font-weight:bold;}
+
+/* MODAL COMPRA */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999;}
+.modal-box{background:#111;border:2px solid #8b0000;padding:20px;border-radius:16px;width:280px;text-align:center;}
+
+/* ADMIN LOGIN */
+#adminLogin{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:1000;}
+.admin-box{background:#111;padding:25px;border:2px solid #8b0000;border-radius:16px;width:300px;text-align:center;}
+.admin-box input{width:100%;padding:6px;margin:6px 0;border-radius:6px;border:none;background:#000;color:white;}
+
+/* ADMIN PANEL */
+.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:12px;border-radius:16px;width:340px;z-index:999;display:none;}
+.admin-panel h3{text-align:center;color:#ff2e2e;margin-bottom:6px;}
+.admin-panel input,.admin-panel select{width:100%;margin:4px 0;padding:6px;border-radius:6px;border:none;background:#000;color:#fff;}
+.admin-panel label{font-size:12px;display:flex;gap:6px;align-items:center;margin:3px 0;}
+.small-btn{font-size:11px;padding:4px;margin-top:4px;cursor:pointer;}
+
+/* HISTÓRICO */
+#historico{max-height:120px;overflow-y:auto;background:#111;border:1px solid #8b0000;padding:6px;border-radius:6px;margin-top:6px;font-size:12px;}
+#historico div{padding:2px 4px;margin:2px 0;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center;}
+#historico input{width:50px;background:#000;color:white;border:none;border-bottom:1px solid #ff2e2e;}
+
+/* AVALIAÇÕES */
+#avaliacoes{margin:10px;padding:5px;text-align:left;font-size:7px;line-height:1;color:#ff5555;overflow-y:auto;}
+#avaliacoes .avaliacao{margin-bottom:2px;}
+#avaliacoes .avaliacao strong{color:#ff2e2e;}
+</style>
+</head>
+<body>
+
+<div class="top-bar">Rdn Store Oficial 🔥</div>
+<div class="header">
+  <div class="logo" id="logo">Rdn Store</div>
+</div>
+
+<!-- CUPOM -->
+<div id="cupom-container">
+  <input type="text" id="cupomInput" placeholder="Cupom">
+  <button onclick="aplicarCupom()">OK</button>
+  <span id="cupomMsg"></span>
+</div>
+
+<div class="products" id="products"></div>
+
+<!-- MODAL COMPRA -->
+<div class="modal" id="buyModal">
+  <div class="modal-box">
+    <h3 style="color:#ff2e2e">Finalizar compra</h3>
+    <button class="buy-btn" onclick="finalizar('zap')">WhatsApp</button>
+    <button class="buy-btn" onclick="finalizar('ig')">Instagram</button>
+    <button class="buy-btn small-btn" onclick="buyModal.style.display='none'">Cancelar</button>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div id="adminLogin">
+  <div class="admin-box">
+    <h3 style="color:#ff2e2e">ADMIN</h3>
+    <input type="password" id="adminPass" placeholder="Senha">
+    <button class="buy-btn" onclick="loginAdmin()">Entrar</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-panel" id="adminPanel">
+  <h3>ADMIN</h3>
+  <select id="selectProd"></select>
+  <input id="nome" placeholder="Nome do produto">
+  <input id="preco" type="number" placeholder="Preço">
+  <input id="estoque" type="number" placeholder="Estoque">
+  <label><input type="checkbox" id="infinito"> Estoque infinito</label>
+  <label><input type="checkbox" id="forcarEsgotado"> Forçar esgotado</label>
+  <input id="img" type="file">
+  <button class="buy-btn" onclick="criar()">Criar</button>
+  <button class="buy-btn" onclick="editar()">Salvar</button>
+  <button class="buy-btn" onclick="apagar()">Apagar</button>
+  <button class="buy-btn small-btn" onclick="sairAdmin()">Sair</button>
+
+  <h4 style="color:#ff2e2e;margin-top:8px;">Histórico de Vendas (<span id="contRef">0</span>)</h4>
+  <button class="buy-btn small-btn" onclick="zerarHistorico()">Zerar Histórico</button>
+  <div id="historico"></div>
+</div>
+
+<!-- AVALIAÇÕES -->
+<div id="avaliacoes"></div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "COLOQUE_AQUI",
+  authDomain: "COLOQUE_AQUI",
+  databaseURL: "COLOQUE_AQUI",
+  projectId: "COLOQUE_AQUI",
+  storageBucket: "COLOQUE_AQUI",
+  messagingSenderId: "COLOQUE_AQUI",
+  appId: "COLOQUE_AQUI"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+const ADMIN_SENHA="randerson555";
+const zap="https://wa.me/5581995367131";
+const ig="https://instagram.com/rdn.store.ofc";
+let produtos=[], historico=[], produtoAtual=null, cupomAtivo=false;
+
+// Render produtos
+function render(){
+  products.innerHTML="";
+  produtos.forEach((p,i)=>{
+    const esgotado=p.forcarEsgotado || p.estoque<=0;
+    let precoFinal = p.preco;
+    if(cupomAtivo) precoFinal=(p.preco*0.95).toFixed(2);
+    products.innerHTML+=`
+      <div class="card">
+        ${esgotado?'<div class="sold-out">ESGOTADO</div>':''}
+        <img src="${p.img}">
+        <div class="card-content">
+          <div>${p.nome}</div>
+          <div class="price">R$${precoFinal}</div>
+          <div class="stock">Stock: ${p.estoque}</div>
+          <button class="buy-btn" ${esgotado?'disabled':''} onclick="abrirCompra(${i})">Comprar</button>
+        </div>
+      </div>`;
+  });
+  atualizarHistorico();
+}
+
+// Atualizar histórico
+function atualizarHistorico(){
+  document.getElementById('contRef').innerText = historico.length;
+  historicoDiv.innerHTML="";
+  historico.forEach((h,i)=>{
+    const div = document.createElement('div');
+    div.innerHTML = `<span>${h.data} - ${h.produto} - R$ </span>`;
+    const inputPreco = document.createElement('input');
+    inputPreco.type='number';
+    inputPreco.value=h.preco;
+    div.appendChild(inputPreco);
+    historicoDiv.appendChild(div);
+  });
+}
+
+// Comprar
+function abrirCompra(i){produtoAtual=i;buyModal.style.display="flex";}
+function finalizar(tipo){
+  const p=produtos[produtoAtual];
+  if(!p.infinito)p.estoque--;
+  let precoVenda = p.preco;
+  if(cupomAtivo) precoVenda=(p.preco*0.95).toFixed(2);
+  const data=new Date().toLocaleString();
+  db.ref('historico').push({produto:p.nome, preco:precoVenda, data});
+  db.ref('produtos/'+produtoAtual+'/estoque').set(p.estoque);
+  const msg=`🛒 Produto: ${p.nome} - R$${precoVenda} - ${data}`;
+  window.open(tipo==="zap"?`${zap}?text=${encodeURIComponent(msg)}`:`${ig}`,"_blank");
+  buyModal.style.display="none";
+}
+
+// Cupom
+function aplicarCupom(){
+  const c=cupomInput.value.trim().toUpperCase();
+  if(c==="RDN5"){cupomAtivo=true;document.getElementById('cupomMsg').innerText="5% OFF aplicado";render();}
+  else{cupomAtivo=false;document.getElementById('cupomMsg').innerText="Cupom inválido";render();}
+}
+
+// Admin
+let clicks=0;
+logo.onclick=()=>{if(++clicks==5){adminLogin.style.display="flex";clicks=0;}};
+function loginAdmin(){if(adminPass.value===ADMIN_SENHA){adminLogin.style.display="none";adminPanel.style.display="block";}else alert("Senha errada");}
+function sairAdmin(){adminPanel.style.display="none";adminPass.value="";}
+
+// CRUD Admin
+function criar(){
+  const r=new FileReader();
+  r.onload=()=>{
+    db.ref('produtos').push({
+      nome:nome.value,
+      preco:+preco.value,
+      estoque:+estoque.value,
+      infinito:infinito.checked,
+      forcarEsgotado:forcarEsgotado.checked,
+      img:r.result
+    });
+  }
+  r.readAsDataURL(img.files[0]);
+}
+function editar(){
+  const i=selectProd.value;
+  db.ref('produtos/'+i).update({
+    nome:nome.value,
+    preco:+preco.value,
+    estoque:+estoque.value,
+    infinito:infinito.checked,
+    forcarEsgotado:forcarEsgotado.checked
+  });
+}
+function apagar(){db.ref('produtos/'+selectProd.value).remove();}
+
+// Realtime updates
+db.ref('produtos').on('value', snap=>{
+  produtos = [];
+  snap.forEach(child=>produtos.push({...child.val(), key: child.key}));
+  render();
+});
+db.ref('historico').on('value', snap=>{
+  historico = [];
+  snap.forEach(child=>historico.push(child.val()));
+  atualizarHistorico();
+});
+</script>
+</body>
+</html>
