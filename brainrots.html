@@ -6,21 +6,103 @@
 <title>RDN STORE - Brainrots</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
-body{background:#000;color:white;overflow-x:hidden;position:relative;}
-.header{display:flex;justify-content:space-between;align-items:center;padding:15px;background:#111;border-bottom:2px solid #8b0000;}
-.logo{color:#ff2e2e;font-size:28px;font-weight:bold;cursor:pointer;text-shadow:0 0 10px red;}
-.products{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;padding:20px;}
-.card{background:#111;border:2px solid #8b0000;border-radius:18px;overflow:hidden;position:relative;transition:0.3s;box-shadow:0 0 8px rgba(255,0,0,0.5);}
-.card:hover{box-shadow:0 0 20px rgba(255,0,0,0.8);}
-.card img{width:100%;height:150px;object-fit:cover;border-bottom:1px solid #8b0000;}
-.card-content{padding:12px;}
-.price{color:#ff2e2e;font-weight:bold;margin-top:6px;font-size:14px;}
-.buy-btn{margin-top:10px;width:100%;padding:8px;background:#8b0000;border:none;color:white;border-radius:10px;font-weight:bold;cursor:pointer;font-size:12px;transition:0.3s;}
-.buy-btn:hover{background:#ff2e2e;box-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e;}
-.sold-out{position:absolute;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;font-size:20px;color:#ff2e2e;font-weight:bold;}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999;}
-.modal-box{background:#111;border:2px solid #8b0000;padding:20px;border-radius:16px;width:280px;text-align:center;}
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg, #000000, #1a1a1a);
+  color: white;
+  overflow-x: hidden;
+}
+.header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px;
+  background:#111;
+  border-bottom:2px solid #8b0000;
+}
+.logo {
+  font-size:28px;
+  font-weight:bold;
+  color:#ff2e2e;
+  text-shadow:0 0 10px red;
+  cursor:pointer;
+}
+.products {
+  display:grid;
+  grid-template-columns: repeat(4,1fr);
+  gap:15px;
+  padding:20px;
+}
+.card {
+  background:#111;
+  border:2px solid #8b0000;
+  border-radius:16px;
+  overflow:hidden;
+  position:relative;
+  transition:0.3s;
+  box-shadow:0 0 10px rgba(255,0,0,0.4);
+}
+.card:hover {
+  box-shadow:0 0 20px rgba(255,0,0,0.8);
+  border-color:#ff2e2e;
+}
+.card img {
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  border-bottom:1px solid #8b0000;
+}
+.card-content {
+  padding:12px;
+}
+.price { color:#ff2e2e; font-weight:bold; margin-top:6px; }
+.stock { font-size:12px; color:#fff; margin-top:2px; }
+.buy-btn {
+  margin-top:10px;
+  width:100%;
+  padding:8px;
+  background:#8b0000;
+  border:none;
+  color:white;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:12px;
+  transition:0.3s;
+}
+.buy-btn:hover {
+  background:#ff2e2e;
+  box-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e;
+}
+.modal {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+}
+.modal-box {
+  background:#111;
+  border:2px solid #8b0000;
+  padding:20px;
+  border-radius:16px;
+  width:280px;
+  text-align:center;
+}
+.sold-out {
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+  color:#ff2e2e;
+  font-weight:bold;
+}
 </style>
 </head>
 <body>
@@ -29,9 +111,11 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
   <div class="logo">RDN STORE - Brainrots</div>
 </div>
 
-<div class="products" id="products"></div>
+<div class="products" id="products">
+  <!-- Produtos carregam aqui -->
+</div>
 
-<!-- MODAL COMPRA -->
+<!-- Modal Compra -->
 <div class="modal" id="buyModal">
   <div class="modal-box">
     <h3 style="color:#ff2e2e">Finalizar compra</h3>
@@ -59,51 +143,46 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// WhatsApp / Instagram
 const zap = "https://wa.me/5581995367131";
 const ig = "https://instagram.com/rdn.store.ofc";
 
 let produtos = [];
 let produtoAtual = null;
-
-// Render produtos
 const productsDiv = document.getElementById("products");
 
+// Render produtos
 function render() {
   productsDiv.innerHTML = "";
   produtos.forEach((p,i)=>{
-    const esgotado = false; // sempre mostra stock 1
-    productsDiv.innerHTML+=`
+    productsDiv.innerHTML += `
       <div class="card">
-        ${esgotado?'<div class="sold-out">ESGOTADO</div>':''}
         <img src="${p.img}" alt="${p.nome}">
         <div class="card-content">
           <div>${p.nome}</div>
           <div class="price">R$${p.preco}</div>
           <div class="stock">Stock: 1</div>
-          <button class="buy-btn" ${esgotado?'disabled':''} onclick="abrirCompra(${i})">Comprar</button>
+          <button class="buy-btn" onclick="abrirCompra(${i})">Comprar</button>
         </div>
-      </div>`;
+      </div>
+    `;
   });
 }
 
 // Modal compra
-function abrirCompra(i){produtoAtual=i;buyModal.style.display="flex";}
+window.abrirCompra = function(i){ produtoAtual=i; buyModal.style.display='flex'; }
 window.finalizar = function(tipo){
   const p = produtos[produtoAtual];
   const msg = `🛒 Produto: ${p.nome} - R$${p.preco}`;
-  if(tipo==="zap") window.open(`${zap}?text=${encodeURIComponent(msg)}`, "_blank");
-  else window.open(ig,"_blank");
-  buyModal.style.display="none";
+  if(tipo==='zap') window.open(`${zap}?text=${encodeURIComponent(msg)}`,'_blank');
+  else window.open(ig,'_blank');
+  buyModal.style.display='none';
 }
 
-// Firebase listener
+// Firebase listener para tempo real
 const produtosRef = ref(db,"produtos");
 onValue(produtosRef,(snapshot)=>{
   produtos = [];
-  snapshot.forEach(snap=>{
-    produtos.push(snap.val());
-  });
+  snapshot.forEach(snap => produtos.push(snap.val()));
   render();
 });
 </script>
