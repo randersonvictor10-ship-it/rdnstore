@@ -6,7 +6,6 @@
 <title>RDN STORE - Brainrots</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-/* === RESET / BODY === */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 body{background:#000;color:white;overflow-x:hidden;position:relative;}
 .top-bar{background:#8b0000;padding:12px;text-align:center;font-weight:bold;font-size:18px;text-shadow:0 0 8px red;}
@@ -14,42 +13,44 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
 .logo{color:#ff2e2e;font-size:28px;font-weight:bold;cursor:pointer;text-shadow:0 0 10px red;animation:neon 1.5s infinite alternate;}
 @keyframes neon{0%{text-shadow:0 0 5px red;}50%{text-shadow:0 0 15px red,0 0 25px red;}100%{text-shadow:0 0 20px red,0 0 40px red;}}
 
-/* === GRID PRODUTOS === */
-.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:18px;padding:20px;}
-.card{background:#111;border:2px solid #8b0000;border-radius:16px;overflow:hidden;position:relative;transition:0.3s;box-shadow:0 0 10px rgba(255,0,0,0.4);}
+/* PRODUTOS GRID */
+.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:20px;padding:20px;}
+.card{background:#111;border:2px solid #8b0000;border-radius:18px;overflow:hidden;position:relative;transition:0.3s;box-shadow:0 0 10px rgba(255,0,0,0.4);}
 .card:hover{box-shadow:0 0 20px rgba(255,0,0,0.8);}
-.card img{width:100%;height:150px;object-fit:cover;border-bottom:1px solid #8b0000;}
+.card img{width:100%;height:150px;object-fit:cover;border-bottom:2px solid #8b0000;}
 .card-content{padding:12px;text-align:center;}
-.price{color:#ff2e2e;font-weight:bold;margin-top:6px;font-size:14px;}
-.buy-btn{margin-top:10px;width:100%;padding:8px;background:#8b0000;border:none;color:white;border-radius:10px;font-weight:bold;cursor:pointer;transition:0.3s;}
+.card-content .price{color:#ff2e2e;font-weight:bold;margin-top:6px;font-size:14px;}
+.card-content .stock{font-size:12px;color:#ff2e2e;margin-top:4px;}
+.buy-btn{margin-top:8px;width:100%;padding:8px;background:#8b0000;border:none;color:white;border-radius:10px;font-weight:bold;cursor:pointer;font-size:12px;transition:0.3s;}
 .buy-btn:hover{background:#ff2e2e;box-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e;}
-.sold-out{position:absolute;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;font-size:20px;color:#ff2e2e;font-weight:bold;}
+.buy-btn:disabled{opacity:0.5;background:#333;}
+.sold-out{position:absolute;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;font-size:18px;color:#ff2e2e;font-weight:bold;}
 
-/* === MODAL COMPRA === */
+/* MODAL COMPRA */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999;}
 .modal-box{background:#111;border:2px solid #8b0000;padding:20px;border-radius:16px;width:280px;text-align:center;}
-.modal-box .buy-btn{margin:5px 0;}
 
-/* === ADMIN PANEL === */
+/* ADMIN LOGIN */
 #adminLogin{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:1000;}
 .admin-box{background:#111;padding:25px;border:2px solid #8b0000;border-radius:16px;width:300px;text-align:center;}
 .admin-box input{width:100%;padding:6px;margin:6px 0;border-radius:6px;border:none;background:#000;color:white;}
-#adminPanel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:12px;border-radius:16px;width:340px;z-index:999;display:none;}
-#adminPanel h3{text-align:center;color:#ff2e2e;margin-bottom:6px;}
-#adminPanel input,#adminPanel select{width:100%;margin:4px 0;padding:6px;border-radius:6px;border:none;background:#000;color:#fff;}
-#adminPanel label{font-size:12px;display:flex;gap:6px;align-items:center;margin:3px 0;}
+
+/* ADMIN PANEL */
+.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:12px;border-radius:16px;width:340px;z-index:999;display:none;}
+.admin-panel h3{text-align:center;color:#ff2e2e;margin-bottom:6px;}
+.admin-panel input,.admin-panel select{width:100%;margin:4px 0;padding:6px;border-radius:6px;border:none;background:#000;color:#fff;}
+.admin-panel label{font-size:12px;display:flex;gap:6px;align-items:center;margin:3px 0;}
 .small-btn{font-size:11px;padding:4px;margin-top:4px;cursor:pointer;}
+
+/* HISTÓRICO */
 #historico{max-height:120px;overflow-y:auto;background:#111;border:1px solid #8b0000;padding:6px;border-radius:6px;margin-top:6px;font-size:12px;}
 #historico div{padding:2px 4px;margin:2px 0;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center;}
 #historico input{width:50px;background:#000;color:white;border:none;border-bottom:1px solid #ff2e2e;}
-
-/* FUNDO OPCIONAL */
-body::before{content:"";position:fixed;inset:0;background:url('');background-size:cover;background-position:center;opacity:0.05;z-index:-1;}
 </style>
 </head>
 <body>
 
-<div class="top-bar">RDN STORE Oficial 🔥</div>
+<div class="top-bar">RDN STORE - Brainrots 🔥</div>
 <div class="header">
   <div class="logo" id="logo">RDN STORE</div>
 </div>
@@ -59,9 +60,9 @@ body::before{content:"";position:fixed;inset:0;background:url('');background-siz
 <!-- MODAL COMPRA -->
 <div class="modal" id="buyModal">
   <div class="modal-box">
-    <h3 style="color:#ff2e2e">Finalizar Compra</h3>
-    <button class="buy-btn" onclick="finalizarCompra('zap')">WhatsApp</button>
-    <button class="buy-btn" onclick="finalizarCompra('ig')">Instagram</button>
+    <h3 style="color:#ff2e2e">Finalizar compra</h3>
+    <button class="buy-btn" onclick="finalizar('zap')">WhatsApp</button>
+    <button class="buy-btn" onclick="finalizar('ig')">Instagram</button>
     <button class="buy-btn small-btn" onclick="buyModal.style.display='none'">Cancelar</button>
   </div>
 </div>
@@ -76,129 +77,109 @@ body::before{content:"";position:fixed;inset:0;background:url('');background-siz
 </div>
 
 <!-- ADMIN PANEL -->
-<div id="adminPanel">
-  <h3>ADMIN</h3>
+<div class="admin-panel" id="adminPanel">
+  <h3>ADMIN PANEL</h3>
   <input id="nome" placeholder="Nome do produto">
   <input id="preco" type="number" placeholder="Preço">
   <input id="img" type="file">
-  <button class="buy-btn" onclick="criarProduto()">Criar Produto</button>
+  <button class="buy-btn" onclick="criar()">Criar</button>
   <button class="buy-btn small-btn" onclick="sairAdmin()">Sair</button>
 
-  <h4 style="color:#ff2e2e;margin-top:8px;">Histórico de Vendas (<span id="contRef">0</span>)</h4>
+  <h4 style="color:#ff2e2e;margin-top:8px;">Histórico de Vendas</h4>
   <div id="historico"></div>
 </div>
 
 <script type="module">
-// CONFIG FIREBASE
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
-import { getDatabase, ref, push, set, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
+// Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyAkOwU1T92cz1stmo1-VwcXE_nIDp-sk-M",
   authDomain: "rdn-store.firebaseapp.com",
-  databaseURL: "https://rdn-store-default-rtdb.firebaseio.com",
+  databaseURL: "https://rdn-store-default-rtdb.firebaseio.com/",
   projectId: "rdn-store",
   storageBucket: "rdn-store.appspot.com",
   messagingSenderId: "29377893404",
   appId: "1:29377893404:web:927e49e5f97c0f2368bbd9"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-const ADMIN_SENHA = "randerson555";
-const zap = "https://wa.me/5581995367131";
-const ig = "https://instagram.com/rdn.store.ofc";
-
+// Estado global
+let produtos = [];
 let produtoAtual = null;
 
-// ADMIN FUNC
-document.getElementById('logo').onclick = (() => {
-  let clicks = 0;
-  return () => {
-    if (++clicks === 5) document.getElementById('adminLogin').style.display='flex';
-  }
-})();
-
-function loginAdmin() {
-  if(document.getElementById('adminPass').value === ADMIN_SENHA){
-    document.getElementById('adminLogin').style.display='none';
-    document.getElementById('adminPanel').style.display='block';
-    carregarProdutosAdmin();
-  } else alert("Senha errada");
+// Renderizar produtos
+function renderProdutos(){
+  const container = document.getElementById('products');
+  container.innerHTML='';
+  produtos.forEach((p,i)=>{
+    container.innerHTML+=`
+      <div class="card">
+        <img src="${p.img}">
+        <div class="card-content">
+          <div>${p.nome}</div>
+          <div class="price">R$${p.preco}</div>
+          <div class="stock">Stock: 1</div>
+          <button class="buy-btn" onclick="abrirCompra(${i})">Comprar</button>
+        </div>
+      </div>
+    `;
+  });
 }
 
-function sairAdmin() {
-  document.getElementById('adminPanel').style.display='none';
-  document.getElementById('adminPass').value='';
+// Modal compra
+window.abrirCompra=(i)=>{produtoAtual=i;buyModal.style.display='flex';}
+window.finalizar=(tipo)=>{
+  const p = produtos[produtoAtual];
+  const msg = `🛒 Produto: ${p.nome} - R$${p.preco}`;
+  if(tipo==='zap') window.open(`https://wa.me/5581995367131?text=${encodeURIComponent(msg)}`,'_blank');
+  else window.open(`https://instagram.com/rdn.store.ofc`,'_blank');
+  buyModal.style.display='none';
 }
 
-// CRIAR PRODUTO
-function criarProduto() {
-  const nome = document.getElementById('nome').value;
-  const preco = parseFloat(document.getElementById('preco').value);
-  const imgFile = document.getElementById('img').files[0];
-  if(!nome || !preco || !imgFile) return alert("Preencha tudo");
+// Admin
+const ADMIN_SENHA="randerson555";
+let clicks=0;
+document.getElementById('logo').onclick=()=>{
+  if(++clicks===5){document.getElementById('adminLogin').style.display='flex';clicks=0;}
+}
+window.loginAdmin=()=>{
+  if(adminPass.value===ADMIN_SENHA){
+    adminLogin.style.display='none';
+    adminPanel.style.display='block';
+    carregarAdmin();
+  }else alert('Senha errada');
+}
+window.sairAdmin=()=>{adminPanel.style.display='none';}
 
+// CRUD Firebase
+window.criar=()=>{
+  const nomeVal = nome.value;
+  const precoVal = preco.value;
+  const file = img.files[0];
+  if(!nomeVal||!precoVal||!file) return alert("Preencha tudo");
   const reader = new FileReader();
-  reader.onload = () => {
-    const prodRef = push(ref(db,'produtos'));
-    set(prodRef,{
-      nome,
-      preco,
-      img: reader.result,
-      estoque:1
+  reader.onload=()=>{
+    push(ref(db,'produtos'),{
+      nome:nomeVal,
+      preco:precoVal,
+      img:reader.result
     });
+    nome.value=''; preco.value=''; img.value='';
   }
-  reader.readAsDataURL(imgFile);
+  reader.readAsDataURL(file);
 }
 
-// LISTAR PRODUTOS EM TEMPO REAL
-const productsDiv = document.getElementById('products');
-onValue(ref(db,'produtos'), snapshot=>{
-  productsDiv.innerHTML='';
-  snapshot.forEach(child=>{
-    const p = child.val();
-    const key = child.key;
-    const card = document.createElement('div');
-    card.className='card';
-    card.innerHTML=`
-      <img src="${p.img}">
-      <div class="card-content">
-        <div>${p.nome}</div>
-        <div class="price">R$${p.preco.toFixed(2)}</div>
-        <button class="buy-btn" onclick="abrirCompra('${key}')">Comprar</button>
-      </div>`;
-    productsDiv.appendChild(card);
+// Receber produtos em tempo real
+onValue(ref(db,'produtos'),(snapshot)=>{
+  produtos = [];
+  snapshot.forEach(s=>{
+    produtos.push(s.val());
   });
+  renderProdutos();
 });
-
-// MODAL COMPRA
-function abrirCompra(key){produtoAtual=key;document.getElementById('buyModal').style.display='flex';}
-function finalizarCompra(tipo){
-  const prodRef = ref(db,'produtos/'+produtoAtual);
-  onValue(prodRef,snapshot=>{
-    const p = snapshot.val();
-    const msg=`🛒 Produto: ${p.nome} - R$${p.preco.toFixed(2)}`;
-    window.open(tipo==="zap"?`${zap}?text=${encodeURIComponent(msg)}`:ig,"_blank");
-  },{onlyOnce:true});
-  document.getElementById('buyModal').style.display='none';
-}
-
-// HISTÓRICO (apenas registro local do admin)
-function carregarProdutosAdmin(){
-  const historicoDiv = document.getElementById('historico');
-  historicoDiv.innerHTML='';
-  onValue(ref(db,'produtos'), snapshot=>{
-    historicoDiv.innerHTML='';
-    snapshot.forEach(child=>{
-      const p = child.val();
-      const div = document.createElement('div');
-      div.textContent = `${p.nome} - R$${p.preco.toFixed(2)}`;
-      historicoDiv.appendChild(div);
-    });
-  });
-}
 </script>
 
 </body>
