@@ -4,27 +4,34 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RDN STORE - Brainrots</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-body {background:#000;color:white;font-family:Arial,sans-serif;overflow-x:hidden;margin:0;}
-.header{padding:15px;text-align:center;font-size:24px;font-weight:bold;color:#ff2e2e;text-shadow:0 0 10px red;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{background:#000;color:white;overflow-x:hidden;position:relative;}
+.header{display:flex;justify-content:space-between;align-items:center;padding:15px;background:#111;border-bottom:2px solid #8b0000;}
+.logo{color:#ff2e2e;font-size:28px;font-weight:bold;cursor:pointer;text-shadow:0 0 10px red;}
 .products{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;padding:20px;}
-.card{background:#111;border:2px solid #8b0000;border-radius:15px;overflow:hidden;position:relative;transition:0.3s;}
-.card img{width:100%;height:150px;object-fit:cover;border-bottom:2px solid #8b0000;}
-.card-content{padding:10px;}
-.price{color:#ff2e2e;font-weight:bold;margin-top:5px;}
-.stock{color:#00ff88;margin-top:2px;font-size:12px;}
-.buy-btn{margin-top:10px;width:100%;padding:8px;background:#8b0000;border:none;color:white;border-radius:10px;font-weight:bold;cursor:pointer;transition:0.3s;}
+.card{background:#111;border:2px solid #8b0000;border-radius:18px;overflow:hidden;position:relative;transition:0.3s;box-shadow:0 0 8px rgba(255,0,0,0.5);}
+.card:hover{box-shadow:0 0 20px rgba(255,0,0,0.8);}
+.card img{width:100%;height:150px;object-fit:cover;border-bottom:1px solid #8b0000;}
+.card-content{padding:12px;}
+.price{color:#ff2e2e;font-weight:bold;margin-top:6px;font-size:14px;}
+.buy-btn{margin-top:10px;width:100%;padding:8px;background:#8b0000;border:none;color:white;border-radius:10px;font-weight:bold;cursor:pointer;font-size:12px;transition:0.3s;}
 .buy-btn:hover{background:#ff2e2e;box-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e;}
+.sold-out{position:absolute;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;font-size:20px;color:#ff2e2e;font-weight:bold;}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999;}
 .modal-box{background:#111;border:2px solid #8b0000;padding:20px;border-radius:16px;width:280px;text-align:center;}
 </style>
 </head>
 <body>
 
-<div class="header">RDN STORE - Brainrots 🔥</div>
+<div class="header">
+  <div class="logo">RDN STORE - Brainrots</div>
+</div>
+
 <div class="products" id="products"></div>
 
-<!-- Modal Compra -->
+<!-- MODAL COMPRA -->
 <div class="modal" id="buyModal">
   <div class="modal-box">
     <h3 style="color:#ff2e2e">Finalizar compra</h3>
@@ -34,8 +41,8 @@ body {background:#000;color:white;font-family:Arial,sans-serif;overflow-x:hidden
   </div>
 </div>
 
-<!-- Firebase -->
 <script type="module">
+// Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-database.js";
 
@@ -44,57 +51,61 @@ const firebaseConfig = {
   authDomain: "rdn-store.firebaseapp.com",
   databaseURL: "https://rdn-store-default-rtdb.firebaseio.com",
   projectId: "rdn-store",
-  storageBucket: "rdn-store.firebasestorage.app",
+  storageBucket: "rdn-store.appspot.com",
   messagingSenderId: "29377893404",
-  appId: "1:29377893404:web:927e49e5f97c0f2368bbd9",
-  measurementId: "G-CQWRHTJB29"
+  appId: "1:29377893404:web:927e49e5f97c0f2368bbd9"
 };
 
-// Inicializa Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// Links de compra
+// WhatsApp / Instagram
 const zap = "https://wa.me/5581995367131";
 const ig = "https://instagram.com/rdn.store.ofc";
 
-// Referência produtos no DB
-const produtosRef = ref(db, "produtos");
-const productsDiv = document.getElementById("products");
+let produtos = [];
 let produtoAtual = null;
 
-// Renderiza produtos em tempo real
-onValue(produtosRef, (snapshot) => {
-  const data = snapshot.val() || [];
-  productsDiv.innerHTML = "";
-  Object.keys(data).forEach((key,i)=>{
-    const p = data[key];
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <img src="${p.img}">
-      <div class="card-content">
-        <div>${p.nome}</div>
-        <div class="price">R$${p.preco}</div>
-        <div class="stock">Stock: 1</div>
-        <button class="buy-btn" onclick="abrirCompra('${key}')">Comprar</button>
-      </div>
-    `;
-    productsDiv.appendChild(card);
-  });
-});
+// Render produtos
+const productsDiv = document.getElementById("products");
 
-// Modal
-const buyModal = document.getElementById("buyModal");
-function abrirCompra(key){produtoAtual=key;buyModal.style.display="flex";}
-function finalizar(tipo){
-  if(!produtoAtual) return;
-  produtosRef.child(produtoAtual);
-  buyModal.style.display="none";
-  const msg = `🛒 Produto comprado: ${produtoAtual}`;
-  if(tipo==="zap"){window.open(`${zap}?text=${encodeURIComponent(msg)}`,"_blank");}
-  else{window.open(ig,"_blank");}
+function render() {
+  productsDiv.innerHTML = "";
+  produtos.forEach((p,i)=>{
+    const esgotado = false; // sempre mostra stock 1
+    productsDiv.innerHTML+=`
+      <div class="card">
+        ${esgotado?'<div class="sold-out">ESGOTADO</div>':''}
+        <img src="${p.img}" alt="${p.nome}">
+        <div class="card-content">
+          <div>${p.nome}</div>
+          <div class="price">R$${p.preco}</div>
+          <div class="stock">Stock: 1</div>
+          <button class="buy-btn" ${esgotado?'disabled':''} onclick="abrirCompra(${i})">Comprar</button>
+        </div>
+      </div>`;
+  });
 }
+
+// Modal compra
+function abrirCompra(i){produtoAtual=i;buyModal.style.display="flex";}
+window.finalizar = function(tipo){
+  const p = produtos[produtoAtual];
+  const msg = `🛒 Produto: ${p.nome} - R$${p.preco}`;
+  if(tipo==="zap") window.open(`${zap}?text=${encodeURIComponent(msg)}`, "_blank");
+  else window.open(ig,"_blank");
+  buyModal.style.display="none";
+}
+
+// Firebase listener
+const produtosRef = ref(db,"produtos");
+onValue(produtosRef,(snapshot)=>{
+  produtos = [];
+  snapshot.forEach(snap=>{
+    produtos.push(snap.val());
+  });
+  render();
+});
 </script>
 
 </body>
