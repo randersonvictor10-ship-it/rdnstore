@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rdn Store</title>
 <style>
-/* RESET & FONTE */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 body{background:#000;color:white;overflow-x:hidden;position:relative;}
 .top-bar{background:#8b0000;padding:12px;text-align:center;font-weight:bold;font-size:18px;text-shadow:0 0 8px red;}
@@ -42,14 +41,15 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
 .admin-box{background:#111;padding:22px;border:2px solid #8b0000;border-radius:14px;width:280px;text-align:center;}
 .admin-box input{width:100%;padding:6px;margin:6px 0;border-radius:6px;border:none;background:#000;color:white;}
 
-.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:10px;border-radius:14px;width:280px;z-index:999;display:none;}
+.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:10px;border-radius:14px;width:300px;z-index:999;display:none;}
 .admin-panel h3{text-align:center;color:#ff2e2e;margin-bottom:6px;}
 .admin-panel input,.admin-panel select{width:100%;margin:4px 0;padding:6px;border-radius:6px;border:none;background:#000;color:#fff;}
 .admin-panel label{font-size:12px;display:flex;gap:6px;align-items:center;margin:3px 0;}
 .small-btn{font-size:11px;padding:4px;margin-top:4px;cursor:pointer;}
 
 /* HISTÓRICO */
-#historico{display:none;max-height:150px;overflow-y:auto;background:#111;border:1px solid #8b0000;padding:6px;border-radius:6px;margin-top:6px;font-size:11px;color:#fff;}
+#historico{max-height:100px;overflow-y:auto;background:#111;border:1px solid #8b0000;padding:6px;border-radius:6px;margin-top:6px;font-size:11px;color:#fff;}
+#historico-btn{padding:4px 6px;font-size:11px;margin-top:4px;background:#8b0000;border:none;color:white;border-radius:6px;cursor:pointer;}
 
 /* AVALIAÇÕES MINÍMAS */
 #avaliacoes{margin:5px;padding:2px;text-align:left;font-size:7px;line-height:1;color:#ff5555;overflow-y:auto;}
@@ -113,6 +113,7 @@ body::before{
   <button class="buy-btn small-btn" onclick="sairAdmin()">Sair</button>
 
   <h4 style="color:#ff2e2e;margin-top:8px;">Histórico de Vendas (<span id="contRef">0</span>)</h4>
+  <button id="historico-btn" onclick="zerarHistorico()">Zerar Histórico</button>
   <div id="historico"></div>
 </div>
 
@@ -120,21 +121,22 @@ body::before{
 <div id="avaliacoes"></div>
 
 <script>
-// VARIÁVEIS
 const ADMIN_SENHA="randerson555";
 const zap="https://wa.me/5581995367131";
 const ig="https://instagram.com/rdn.store.ofc";
+
 let produtos=JSON.parse(localStorage.produtos||"[]");
 let historico=JSON.parse(localStorage.historico||"[]");
 let produtoAtual=null;
 let cupomAtivo=false;
 
-// FUNÇÕES
+// FUNÇÕES PRINCIPAIS
 function salvar(){
   localStorage.produtos=JSON.stringify(produtos);
   localStorage.historico=JSON.stringify(historico);
   render();carregarAdmin();atualizarHistorico();
 }
+
 function render(){
   products.innerHTML="";
   produtos.forEach((p,i)=>{
@@ -210,6 +212,12 @@ function apagar(){produtos.splice(selectProd.value,1);salvar();}
 function atualizarHistorico(){
   contRef.innerText=historico.length;
   document.getElementById("historico").innerHTML=historico.map(h=>`${h.data} - ${h.produto} - R$${h.preco}`).join("<br>")||"Nenhuma venda ainda";
+}
+function zerarHistorico(){
+  if(confirm("Deseja realmente zerar o histórico?")){
+    historico=[];
+    salvar();
+  }
 }
 
 // AVALIAÇÕES
