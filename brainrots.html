@@ -6,56 +6,79 @@
 <title>Rdn Store</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#000;color:#fff;overflow-x:hidden;}
+body{background:#000;color:#fff;overflow-x:hidden;position:relative}
+
+/* FUNDO COM OPACIDADE */
 body::before{
   content:"";position:fixed;inset:0;z-index:-1;
   background:url('LINK_DA_SUA_IMAGEM_DO_BONECO') no-repeat center/cover;
-  opacity:0.08;
+  opacity:0.08;animation:moveBG 20s linear infinite;
 }
+@keyframes moveBG{0%{background-position:0 0}100%{background-position:200px 0}}
 
-/* TOP BAR */
-.top-bar{background:#8b0000;padding:12px;text-align:center;font-weight:bold;font-size:16px;letter-spacing:1px;animation:neonTop 1.5s infinite alternate;}
+/* TOP BAR NEON */
+.top-bar{
+  background:#8b0000;padding:12px;text-align:center;font-weight:bold;font-size:16px;letter-spacing:1px;
+  animation:neonTop 1.5s infinite alternate;
+}
 @keyframes neonTop{from{text-shadow:0 0 5px red;}to{text-shadow:0 0 20px red,0 0 40px red;}}
 
 /* HEADER */
 .header{padding:15px;background:#111;border-bottom:2px solid #8b0000;display:flex;justify-content:center;position:relative}
-.logo{color:#ff2e2e;font-size:28px;font-weight:bold;cursor:pointer;text-shadow:0 0 10px red;transition:0.3s;}
-.logo:hover{transform:scale(1.05);text-shadow:0 0 20px red,0 0 40px red}
+.logo{
+  color:#ff2e2e;font-size:28px;font-weight:bold;cursor:pointer;text-shadow:0 0 10px red;
+  transition:0.3s;animation:pulseLogo 2s infinite;
+}
+.logo:hover{transform:scale(1.1);}
+@keyframes pulseLogo{0%{text-shadow:0 0 10px red}50%{text-shadow:0 0 20px red,0 0 40px red}100%{text-shadow:0 0 10px red}}
 
 /* PRODUTOS 2x2 */
 .products{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px}
-.card{background:#111;border:1px solid #8b0000;border-radius:18px;overflow:hidden;position:relative;transition:0.3s;animation:fadeIn 0.8s ease;}
-.card:hover{box-shadow:0 0 20px red;}
-.card img{width:100%;height:150px;object-fit:cover}
+.card{
+  background:#111;border:1px solid #8b0000;border-radius:18px;overflow:hidden;position:relative;transition:0.3s;
+  animation:fadeIn 0.8s ease;
+}
+.card:hover{box-shadow:0 0 25px red;transform:rotateZ(1deg) scale(1.03);}
+.card img{width:100%;height:150px;object-fit:cover;transition:0.4s;}
+.card img:hover{transform:scale(1.05);}
 .card-content{padding:14px}
 .price{color:#ff2e2e;font-weight:bold;margin-top:6px;font-size:15px}
 .stock{font-size:12px;color:#bbb}
-.buy-btn{margin-top:10px;width:100%;padding:10px;background:#ff2e2e;border:none;color:#fff;border-radius:10px;font-weight:bold;cursor:pointer;transition:0.3s}
-.buy-btn:hover{background:#8b0000;transform:scale(1.03);}
+.buy-btn{
+  margin-top:10px;width:100%;padding:10px;background:#ff2e2e;border:none;color:#fff;
+  border-radius:10px;font-weight:bold;cursor:pointer;transition:0.4s;animation:glowBtn 2s infinite alternate;
+}
+.buy-btn:hover{background:#8b0000;transform:scale(1.05);}
+@keyframes glowBtn{0%{box-shadow:0 0 5px red}50%{box-shadow:0 0 15px red,0 0 30px red}100%{box-shadow:0 0 5px red}}
 
 /* SOLD OUT */
 .sold-out{position:absolute;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;font-size:20px;color:#ff2e2e;font-weight:bold;letter-spacing:1px}
 
-/* MODAL DE COMPRA */
+/* MODAL COMPRA */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999}
-.modal-box{background:#111;border:2px solid #8b0000;padding:20px;border-radius:16px;width:280px;text-align:center;animation:popIn 0.5s ease}
+.modal-box{
+  background:#111;border:2px solid #8b0000;padding:20px;border-radius:16px;width:280px;text-align:center;animation:popIn 0.5s ease;
+}
 .modal-box h3{color:#ff2e2e;margin-bottom:10px}
 
-/* ADMIN */
-.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:14px;border-radius:16px;width:280px;z-index:999;display:none;animation:fadeIn 0.5s;}
-.admin-panel h3{text-align:center;color:#ff2e2e}
+/* ADMIN PANEL */
+.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:14px;border-radius:16px;width:320px;z-index:999;display:none;animation:fadeIn 0.5s;}
+.admin-panel h3{text-align:center;color:#ff2e2e;margin-bottom:8px;}
 .admin-panel input,.admin-panel select{width:100%;margin:5px 0;padding:8px;border-radius:8px;border:none;background:#000;color:#fff}
 .admin-panel label{font-size:13px;display:flex;gap:6px;align-items:center}
 .small-btn{font-size:12px;padding:6px;margin-top:5px}
 
+/* HISTORICO DE VENDAS */
+#history{max-height:100px;overflow-y:auto;margin-top:10px;background:#111;border:1px solid #8b0000;padding:8px;border-radius:10px;font-size:10px;color:#ccc}
+#history div{margin-bottom:4px;line-height:1.2}
+
 /* AVALIACOES */
-.reviews{padding:10px;margin-top:20px;max-height:150px;overflow-y:auto;font-size:9px;color:#ccc;border-top:1px solid #8b0000}
-.reviews div{margin-bottom:4px;line-height:1.1;}
+#reviews{padding:10px; max-width:400px; margin:10px auto; font-size:10px; color:#fff; background:#111; border:1px solid #8b0000; border-radius:10px; max-height:200px; overflow-y:auto;}
 
 /* ANIMAÇÕES */
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 @keyframes popIn{from{opacity:0;transform:scale(0.8);}to{opacity:1;transform:scale(1);}}
-@keyframes neonTop{from{text-shadow:0 0 5px red;}to{text-shadow:0 0 20px red,0 0 40px red;}}
+@keyframes moveBG{0%{background-position:0 0}100%{background-position:200px 0}}
 </style>
 </head>
 <body>
@@ -74,7 +97,7 @@ body::before{
   </div>
 </div>
 
-<!-- ADMIN -->
+<!-- ADMIN PANEL -->
 <div class="admin-panel" id="adminPanel">
   <h3>ADMIN</h3>
   <select id="selectProd"></select>
@@ -88,40 +111,44 @@ body::before{
   <button class="buy-btn" onclick="editar()">Salvar</button>
   <button class="buy-btn" onclick="apagar()">Apagar</button>
   <button class="buy-btn small-btn" onclick="sairAdmin()">Sair</button>
+  <h3>Histórico de vendas</h3>
+  <div id="history"></div>
 </div>
 
 <!-- AVALIACOES -->
-<div class="reviews" id="reviews"></div>
+<div id="reviews"></div>
+<div style="padding:15px; max-width:400px; margin:auto; font-size:10px; color:#fff;">
+  <input type="text" id="nomeReview" placeholder="Seu nome" style="width:100%; margin-bottom:5px; padding:6px; border-radius:6px; border:none; background:#111; color:#fff;">
+  <input type="text" id="textoReview" placeholder="Escreva sua avaliação" style="width:100%; margin-bottom:5px; padding:6px; border-radius:6px; border:none; background:#111; color:#fff;">
+  <button onclick="enviarReview()" class="buy-btn" style="width:100%; padding:6px; font-size:10px;">Enviar avaliação</button>
+</div>
 
 <script>
-// CONFIGURAÇÕES
 const ADMIN_SENHA="randerson555";
 const zap="https://wa.me/5581995367131";
 const ig="https://instagram.com/rdn.store.ofc";
 let produtos=JSON.parse(localStorage.produtos||"[]");
+let vendas=JSON.parse(localStorage.vendas||"[]");
+let avaliacoes=JSON.parse(localStorage.avaliacoes||"[]");
 let produtoAtual=null;
 
-// FAKE AVALIACOES
-const avaliacoes=[
+// FAKES
+const avaliacoesFake=[
   {nome:"João","texto":"Ótima loja! Produtos entregues rápido."},
   {nome:"Maria","texto":"Preço justo e atendimento top."},
   {nome:"Lucas","texto":"Recomendo a todos meus amigos."},
   {nome:"Ana","texto":"Muito confiável e segura."},
   {nome:"Pedro","texto":"Adorei o Brainrot 1,4b!"},
-  {nome:"Carla","texto":"Super satisfeito com a compra."},
-  {nome:"Rafael","texto":"Entrega rápida e atendimento ótimo."},
-  {nome:"Beatriz","texto":"Gostei muito, voltarei a comprar."},
-  {nome:"Diego","texto":"Produtos de qualidade, recomendo."},
-  {nome:"Camila","texto":"Excelente loja, tudo certo."},
-  {nome:"Felipe","texto":"Muito bom, preço excelente."},
-  {nome:"Juliana","texto":"Amei a experiência de compra."},
-  {nome:"Gustavo","texto":"Muito satisfeito com tudo."},
-  {nome:"Larissa","texto":"Brainrots de ótima qualidade."},
-  {nome:"Fernando","texto":"Atendimento rápido e eficiente."}
+  {nome:"Camila","texto":"Compra fácil e rápida."},
+  {nome:"Rafael","texto":"Produto incrível."},
+  {nome:"Bianca","texto":"Chegou antes do esperado."},
+  {nome:"Felipe","texto":"Suporte nota 10."},
+  {nome:"Larissa","texto":"Voltarei a comprar com certeza."}
 ];
 
 // RENDER
-function salvar(){localStorage.produtos=JSON.stringify(produtos);render();carregarAdmin();renderReviews();}
+function salvar(){localStorage.produtos=JSON.stringify(produtos);localStorage.vendas=JSON.stringify(vendas);localStorage.avaliacoes=JSON.stringify(avaliacoes);render();carregarAdmin();renderVendas();renderReviews();}
+
 function render(){
   products.innerHTML="";
   produtos.forEach((p,i)=>{
@@ -139,30 +166,25 @@ function render(){
       </div>`;
   });
 }
-function renderReviews(){
-  const r=reviews;
-  r.innerHTML="";
-  avaliacoes.forEach(a=>r.innerHTML+=`<div><b>${a.nome}:</b> ${a.texto}</div>`);
-}
 
 // MODAL COMPRA
-function abrirCompra(i){produtoAtual=i;buyModal.style.display="flex";}
+function abrirCompra(i){produtoAtual=i;buyModal.style.display='flex';}
 function finalizar(tipo){
   const p=produtos[produtoAtual];
-  if(!p.infinito) p.estoque--;
+  const hora=new Date().toLocaleString("pt-BR");
+  if(!p.infinito)p.estoque--;
+  vendas.push({produto:p.nome,preco:p.preco,hora});
   salvar();
-  const data=new Date().toLocaleString("pt-BR");
-  const texto=`🛒 Quero comprar *${p.nome}* — R$${p.preco}\n📅 ${data}`;
-  if(tipo==='zap') window.open(zap+encodeURIComponent(texto),"_blank");
-  else window.open(ig,"_blank");
+  const msg=`🛒 Produto: ${p.nome} — R$${p.preco} \nHora: ${hora}`;
+  if(tipo=="zap"){window.open(zap+"?text="+encodeURIComponent(msg),"_blank")}
+  else{window.open(ig,"_blank")}
   buyModal.style.display='none';
 }
 
-// ADMIN (5 cliques na logo)
+// ADMIN
 let clicks=0;
-logo.onclick=()=>{if(++clicks===5){let senha=prompt("Digite a senha do admin:");if(senha===ADMIN_SENHA){adminPanel.style.display='block';}else alert("Senha incorreta");clicks=0}}
+logo.onclick=()=>{if(++clicks==5){let s=prompt("Senha Admin:"); if(s===ADMIN_SENHA){adminPanel.style.display='block';clicks=0}else alert("Senha incorreta");}}
 
-// ADMIN FUNCTIONS
 function sairAdmin(){adminPanel.style.display='none'}
 function carregarAdmin(){
   selectProd.innerHTML="";
@@ -173,23 +195,32 @@ selectProd.onchange=()=>{
   nome.value=p.nome; preco.value=p.preco; estoque.value=p.estoque;
   infinito.checked=p.infinito; forcarEsgotado.checked=p.forcarEsgotado;
 }
+
+// CRUD PRODUTOS
 function criar(){
   const r=new FileReader();
-  r.onload=()=>{
-    produtos.push({nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:false,img:r.result});
-    salvar();
-  }
-  r.readAsDataURL(img.files[0]);
+  r.onload=()=>{produtos.push({nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:false,img:r.result}); salvar();}
+  if(img.files[0]) r.readAsDataURL(img.files[0]);
 }
-function editar(){
-  const i=selectProd.value;
-  Object.assign(produtos[i],{nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:forcarEsgotado.checked});
+function editar(){const i=selectProd.value;Object.assign(produtos[i],{nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:forcarEsgotado.checked}); salvar();}
+function apagar(){produtos.splice(selectProd.value,1); salvar();}
+
+// HISTÓRICO DE VENDAS
+function renderVendas(){history.innerHTML="";vendas.forEach(v=>history.innerHTML+=`<div>${v.hora}: ${v.produto} — R$${v.preco}</div>`);}
+
+// AVALIACOES
+function renderReviews(){reviews.innerHTML="";avaliacoesFake.concat(avaliacoes).forEach(a=>reviews.innerHTML+=`<div><b>${a.nome}:</b> ${a.texto}</div>`);}
+function enviarReview(){
+  const n=document.getElementById("nomeReview").value.trim();
+  const t=document.getElementById("textoReview").value.trim();
+  if(!n||!t){alert("Preencha nome e avaliação"); return;}
+  avaliacoes.push({nome:n,texto:t});
+  document.getElementById("nomeReview").value=""; document.getElementById("textoReview").value="";
   salvar();
 }
-function apagar(){produtos.splice(selectProd.value,1);salvar();}
 
 // INIT
-render();renderReviews();carregarAdmin();
+render(); renderVendas(); renderReviews();
 </script>
 </body>
 </html>
