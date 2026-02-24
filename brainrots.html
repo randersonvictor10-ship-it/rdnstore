@@ -41,7 +41,7 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
 .admin-box{background:#111;padding:22px;border:2px solid #8b0000;border-radius:14px;width:280px;text-align:center;}
 .admin-box input{width:100%;padding:6px;margin:6px 0;border-radius:6px;border:none;background:#000;color:white;}
 
-.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:10px;border-radius:14px;width:300px;z-index:999;display:none;}
+.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:10px;border-radius:14px;width:320px;z-index:999;display:none;}
 .admin-panel h3{text-align:center;color:#ff2e2e;margin-bottom:6px;}
 .admin-panel input,.admin-panel select{width:100%;margin:4px 0;padding:6px;border-radius:6px;border:none;background:#000;color:#fff;}
 .admin-panel label{font-size:12px;display:flex;gap:6px;align-items:center;margin:3px 0;}
@@ -50,6 +50,9 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
 /* HISTÓRICO */
 #historico{max-height:100px;overflow-y:auto;background:#111;border:1px solid #8b0000;padding:6px;border-radius:6px;margin-top:6px;font-size:11px;color:#fff;}
 #historico-btn{padding:4px 6px;font-size:11px;margin-top:4px;background:#8b0000;border:none;color:white;border-radius:6px;cursor:pointer;}
+
+/* HISTÓRICO EDITÁVEL */
+#editarHistorico input,#editarHistorico select{width:48%;margin:2px 1%;padding:4px;font-size:11px;}
 
 /* AVALIAÇÕES MINÍMAS */
 #avaliacoes{margin:5px;padding:2px;text-align:left;font-size:7px;line-height:1;color:#ff5555;overflow-y:auto;}
@@ -115,6 +118,15 @@ body::before{
   <h4 style="color:#ff2e2e;margin-top:8px;">Histórico de Vendas (<span id="contRef">0</span>)</h4>
   <button id="historico-btn" onclick="zerarHistorico()">Zerar Histórico</button>
   <div id="historico"></div>
+
+  <!-- EDITAR HISTÓRICO -->
+  <div id="editarHistorico" style="margin-top:6px;">
+    <select id="selectHistorico"></select>
+    <input type="text" id="editarProduto" placeholder="Produto">
+    <input type="number" id="editarPreco" placeholder="Preço">
+    <input type="text" id="editarData" placeholder="Data">
+    <button class="buy-btn small-btn" onclick="salvarEdicaoHistorico()">Salvar Alteração</button>
+  </div>
 </div>
 
 <!-- AVALIAÇÕES -->
@@ -209,10 +221,40 @@ function editar(){const i=selectProd.value;Object.assign(produtos[i],{nome:nome.
 function apagar(){produtos.splice(selectProd.value,1);salvar();}
 
 // HISTÓRICO
+const selectHistorico = document.getElementById("selectHistorico");
+const editarProduto = document.getElementById("editarProduto");
+const editarPreco = document.getElementById("editarPreco");
+const editarData = document.getElementById("editarData");
+
 function atualizarHistorico(){
-  contRef.innerText=historico.length;
-  document.getElementById("historico").innerHTML=historico.map(h=>`${h.data} - ${h.produto} - R$${h.preco}`).join("<br>")||"Nenhuma venda ainda";
+  contRef.innerText = historico.length;
+  document.getElementById("historico").innerHTML = historico.map(h => `${h.data} - ${h.produto} - R$${h.preco}`).join("<br>") || "Nenhuma venda ainda";
+  
+  selectHistorico.innerHTML = "";
+  historico.forEach((h,i)=> selectHistorico.innerHTML += `<option value="${i}">${h.data} - ${h.produto}</option>`);
+  if(historico.length > 0) preencherCamposHistorico();
 }
+
+selectHistorico.onchange = preencherCamposHistorico;
+function preencherCamposHistorico(){
+  const h = historico[selectHistorico.value];
+  if(!h) return;
+  editarProduto.value = h.produto;
+  editarPreco.value = h.preco;
+  editarData.value = h.data;
+}
+
+function salvarEdicaoHistorico(){
+  const i = selectHistorico.value;
+  if(historico[i]){
+    historico[i].produto = editarProduto.value;
+    historico[i].preco = +editarPreco.value;
+    historico[i].data = editarData.value;
+    salvar();
+    alert("Histórico atualizado!");
+  }
+}
+
 function zerarHistorico(){
   if(confirm("Deseja realmente zerar o histórico?")){
     historico=[];
