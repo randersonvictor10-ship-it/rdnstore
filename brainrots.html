@@ -32,10 +32,16 @@ body{background:#000;color:#fff}
 .admin-panel label{font-size:13px;display:flex;gap:6px;align-items:center}
 .small-btn{font-size:12px;padding:6px;margin-top:5px}
 
-#reviews{padding:15px;background:#111;margin:20px;border-top:2px solid #8b0000;border-radius:10px;font-size:12px}
-#reviews h3{color:#ff2e2e;margin-bottom:6px}
-.review-item{border-bottom:1px solid #8b0000;padding:4px 0}
+#adminLogin{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:1000}
+.admin-box{background:#111;padding:25px;border:2px solid #8b0000;border-radius:16px;width:300px;text-align:center}
+
+#reviews{font-size:10px;margin-top:30px;background:#111;padding:10px;border-top:2px solid #8b0000;border-radius:10px}
+#reviews h3{color:#ff2e2e;margin-bottom:4px;font-size:12px}
+.review-item{border-bottom:1px solid #8b0000;padding:2px 0}
 .review-item:last-child{border:none}
+#reviews input{padding:4px;font-size:10px;border-radius:6px;border:none;background:#000;color:#fff;margin:2px 2px 0 0}
+#reviews button{padding:4px;font-size:10px;border-radius:6px;background:#ff2e2e;color:#fff;border:none;cursor:pointer;margin-top:2px}
+#reviews div.flex{display:flex;gap:4px;margin-top:2px}
 </style>
 </head>
 <body>
@@ -51,6 +57,15 @@ body{background:#000;color:#fff}
     <button class="buy-btn" onclick="finalizar('zap')">WhatsApp</button>
     <button class="buy-btn" onclick="finalizar('ig')">Instagram</button>
     <button class="buy-btn small-btn" onclick="buyModal.style.display='none'">Cancelar</button>
+  </div>
+</div>
+
+<!-- LOGIN ADMIN -->
+<div id="adminLogin">
+  <div class="admin-box">
+    <h3 style="color:#ff2e2e">ADMIN</h3>
+    <input type="password" id="adminPass" placeholder="Senha">
+    <button class="buy-btn" onclick="loginAdmin()">Entrar</button>
   </div>
 </div>
 
@@ -72,15 +87,18 @@ body{background:#000;color:#fff}
 
 <!-- AVALIAÇÕES -->
 <div id="reviews">
-  <h3>Avaliações</h3>
-  <div id="reviewsList"></div>
-  <input type="text" id="reviewInput" placeholder="Seu nome">
-  <input type="text" id="reviewText" placeholder="Sua avaliação">
-  <button onclick="addReview()" class="buy-btn small-btn">Enviar Avaliação</button>
+  <h3>Comentários dos clientes</h3>
+  <div id="reviewsList" style="max-height:150px;overflow-y:auto"></div>
+  <div class="flex">
+    <input type="text" id="reviewInput" placeholder="Seu nome">
+    <input type="text" id="reviewText" placeholder="Comentário">
+    <button onclick="addReview()">Enviar</button>
+  </div>
 </div>
 
 <script>
 // CONFIGURAÇÕES
+const ADMIN_SENHA="randerson555";
 const zap="https://wa.me/5581995367131";
 const ig="https://instagram.com/rdn.store.ofc";
 let produtos=JSON.parse(localStorage.produtos||"[]");
@@ -89,13 +107,15 @@ let produtoAtual=null;
 // AVALIAÇÕES FAKE
 let reviews=JSON.parse(localStorage.reviews||"[]");
 if(reviews.length===0){
-  const fakeNames=["Lucas","Maria","Pedro","Ana","João","Carla","Rafael","Fernanda","Gustavo","Julia","Thiago","Laura","Vitor","Camila","Bruno"];
-  fakeNames.forEach(n=>reviews.push({nome:n,texto:"Excelente loja! ⭐⭐⭐⭐⭐"}));
+  const nomes=["Lucas","Maria","Pedro","Ana","João","Carla","Rafael","Fernanda","Gustavo","Julia","Thiago","Laura","Vitor","Camila","Bruno"];
+  const textos=["Excelente loja!","Muito bom!","Super recomendo!","Entrega rápida!","Produto de qualidade!","Compra rápida e segura!","Vale cada centavo!"];
+  nomes.forEach(n=>reviews.push({nome:n,texto:textos[Math.floor(Math.random()*textos.length)]}));
   localStorage.reviews=JSON.stringify(reviews);
 }
 function renderReviews(){
   reviewsList.innerHTML="";
   reviews.forEach(r=>reviewsList.innerHTML+=`<div class="review-item"><strong>${r.nome}:</strong> ${r.texto}</div>`);
+  reviewsList.scrollTop = reviewsList.scrollHeight;
 }
 function addReview(){
   if(!reviewInput.value||!reviewText.value) return;
@@ -130,21 +150,32 @@ function render(){
 function abrirCompra(i){produtoAtual=i;buyTitle.innerText=`${produtos[i].nome} — R$${produtos[i].preco}`;buyModal.style.display="flex";}
 function finalizar(tipo){
   const p=produtos[produtoAtual];
-  if(!p.infinito) p.estoque--;
+  if(!p.infinito)p.estoque--;
   salvar();
-  let msg=`🛒 Pedido: ${p.nome} — R$${p.preco}`;
+  const msg=`🛒 Pedido: ${p.nome} — R$${p.preco}`;
   window.open(tipo=="zap"?`${zap}?text=${encodeURIComponent(msg)}`:`${ig}?text=${encodeURIComponent(msg)}`,"_blank");
   buyModal.style.display="none";
 }
 
 // ADMIN
 let clicks=0;
-logo.onclick=()=>{if(++clicks==5){adminPanel.style.display="block";clicks=0;carregarAdmin();}};
+logo.onclick=()=>{
+  if(++clicks==5){
+    adminLogin.style.display="flex";clicks=0;
+  }
+};
+function loginAdmin(){
+  if(adminPass.value===ADMIN_SENHA){
+    adminLogin.style.display="none";
+    adminPanel.style.display="block";
+    carregarAdmin();
+  } else alert("Senha errada!");
+}
 function sairAdmin(){adminPanel.style.display="none";}
 function carregarAdmin(){
   selectProd.innerHTML="";
   produtos.forEach((p,i)=>selectProd.innerHTML+=`<option value="${i}">${p.nome}</option>`);
-  if(produtos.length>0) selectProd.value=0; preencherCampos(0);
+  if(produtos.length>0) preencherCampos(0);
 }
 function preencherCampos(i){
   const p=produtos[i];
