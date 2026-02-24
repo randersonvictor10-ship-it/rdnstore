@@ -4,227 +4,77 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rdn Store</title>
-
 <style>
-/* ===== RESET ===== */
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
-body{
-  background:#0d0d0d url('COLE_AQUI_O_LINK_DA_IMAGEM_DO_BONECO') no-repeat center bottom;
-  background-size:contain;
-  color:#fff;
-  line-height:1.2;
-  overflow-x:hidden;
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#000;color:#fff;overflow-x:hidden;}
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;
+  background:url('LINK_DA_SUA_IMAGEM_DO_BONECO') no-repeat center/cover;
+  opacity:0.08;
 }
 
-/* ===== TOP BAR ===== */
-.top-bar{
-  background:#8b0000;
-  padding:12px;
-  text-align:center;
-  font-weight:bold;
-  text-transform:uppercase;
-  letter-spacing:2px;
-  box-shadow:0 2px 15px rgba(255,0,0,0.6);
-  animation:topBarGlow 1.5s infinite alternate;
-}
-@keyframes topBarGlow{
-  0%{box-shadow:0 2px 15px rgba(255,0,0,0.6);}
-  50%{box-shadow:0 2px 20px rgba(255,0,0,0.8);}
-  100%{box-shadow:0 2px 25px rgba(255,0,0,1);}
-}
+/* TOP BAR */
+.top-bar{background:#8b0000;padding:12px;text-align:center;font-weight:bold;font-size:16px;letter-spacing:1px;animation:neonTop 1.5s infinite alternate;}
+@keyframes neonTop{from{text-shadow:0 0 5px red;}to{text-shadow:0 0 20px red,0 0 40px red;}}
 
-/* ===== HEADER ===== */
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px;
-  background:#111;
-  border-bottom:2px solid #8b0000;
-  animation:headerPulse 2s infinite;
-}
-@keyframes headerPulse{
-  0%,100%{border-color:#8b0000;}
-  50%{border-color:#ff2e2e;}
-}
-.logo{
-  color:#ff2e2e;
-  font-size:28px;
-  font-weight:bold;
-  cursor:pointer;
-  text-shadow:0 0 5px #ff2e2e,0 0 10px red,0 0 20px #ff4d4d;
-  animation:neon 1.5s infinite alternate;
-}
-@keyframes neon{
-  0%{text-shadow:0 0 5px #ff2e2e;}
-  50%{text-shadow:0 0 20px #ff2e2e,0 0 40px #ff0000;}
-  100%{text-shadow:0 0 25px #ff4d4d,0 0 50px red;}
-}
+/* HEADER */
+.header{padding:15px;background:#111;border-bottom:2px solid #8b0000;display:flex;justify-content:center;position:relative}
+.logo{color:#ff2e2e;font-size:28px;font-weight:bold;cursor:pointer;text-shadow:0 0 10px red;transition:0.3s;}
+.logo:hover{transform:scale(1.05);text-shadow:0 0 20px red,0 0 40px red}
 
-/* ===== PRODUTOS 2x2 ===== */
-.products{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px;
-  padding:20px;
-}
-.card{
-  background:#111;
-  border:2px solid #8b0000;
-  border-radius:18px;
-  overflow:hidden;
-  position:relative;
-  box-shadow:0 0 10px rgba(255,0,0,0.4);
-  transition:0.4s;
-  animation:cardFloat 3s infinite alternate;
-}
-@keyframes cardFloat{
-  0%{transform:translateY(0);}
-  50%{transform:translateY(-5px);}
-  100%{transform:translateY(0);}
-}
-.card:hover{
-  box-shadow:0 0 30px rgba(255,0,0,0.9),0 0 50px rgba(255,0,0,0.7);
-  transform:scale(1.05);
-}
-.card img{
-  width:100%;
-  height:150px;
-  object-fit:cover;
-  border-bottom:2px solid #8b0000;
-  transition:0.3s;
-}
-.card img:hover{
-  transform:scale(1.1) rotate(-2deg);
-}
-.card-content{
-  padding:15px;
-  animation:fadeIn 1s;
-}
-.price{
-  color:#ff2e2e;
-  font-weight:bold;
-  font-size:16px;
-  margin-top:5px;
-}
-.stock{
-  font-size:12px;
-  margin-top:5px;
-  color:#00ff88;
-}
-.buy-btn{
-  margin-top:10px;
-  width:100%;
-  padding:8px;
-  background:#8b0000;
-  border:none;
-  color:white;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:bold;
-  transition:0.3s;
-  animation:buttonPulse 2s infinite;
-}
-.buy-btn:hover{
-  background:#ff2e2e;
-  box-shadow:0 0 15px #ff2e2e,0 0 30px red,0 0 50px #ff4d4d;
-}
-@keyframes buttonPulse{
-  0%,100%{transform:scale(1);}
-  50%{transform:scale(1.05);}
-}
+/* PRODUTOS 2x2 */
+.products{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px}
+.card{background:#111;border:1px solid #8b0000;border-radius:18px;overflow:hidden;position:relative;transition:0.3s;animation:fadeIn 0.8s ease;}
+.card:hover{box-shadow:0 0 20px red;}
+.card img{width:100%;height:150px;object-fit:cover}
+.card-content{padding:14px}
+.price{color:#ff2e2e;font-weight:bold;margin-top:6px;font-size:15px}
+.stock{font-size:12px;color:#bbb}
+.buy-btn{margin-top:10px;width:100%;padding:10px;background:#ff2e2e;border:none;color:#fff;border-radius:10px;font-weight:bold;cursor:pointer;transition:0.3s}
+.buy-btn:hover{background:#8b0000;transform:scale(1.03);}
 
-/* ===== SOLD OUT ===== */
-.sold-out{
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.85);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:red;
-  font-size:22px;
-  font-weight:bold;
-  text-transform:uppercase;
-  letter-spacing:1px;
-  animation:blink 1s infinite;
-}
-@keyframes blink{
-  0%,50%,100%{opacity:1;}
-  25%,75%{opacity:0;}
-}
+/* SOLD OUT */
+.sold-out{position:absolute;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;font-size:20px;color:#ff2e2e;font-weight:bold;letter-spacing:1px}
 
-/* ===== MODAL ===== */
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.95);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:999;
-}
-.modal-box{
-  background:#111;
-  border:2px solid #8b0000;
-  padding:20px;
-  border-radius:16px;
-  width:300px;
-  text-align:center;
-  animation:popup 0.3s;
-}
-@keyframes popup{
-  0%{transform:scale(0.8);opacity:0;}
-  100%{transform:scale(1);opacity:1;}
-}
+/* MODAL DE COMPRA */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999}
+.modal-box{background:#111;border:2px solid #8b0000;padding:20px;border-radius:16px;width:280px;text-align:center;animation:popIn 0.5s ease}
+.modal-box h3{color:#ff2e2e;margin-bottom:10px}
 
-/* ===== ADMIN PANEL ===== */
-.admin-panel{
-  position:fixed;
-  bottom:15px;
-  left:15px;
-  background:#111;
-  border:2px solid #8b0000;
-  padding:14px;
-  border-radius:16px;
-  width:280px;
-  z-index:999;
-  display:none;
-}
-.admin-panel h3{text-align:center;color:#ff2e2e;}
-.admin-panel input,.admin-panel select{
-  width:100%;
-  margin:5px 0;
-  padding:8px;
-  border-radius:8px;
-  border:none;
-  background:#000;
-  color:#fff;
-}
-.admin-panel label{font-size:13px;display:flex;gap:6px;align-items:center;}
-.small-btn{font-size:12px;padding:6px;margin-top:5px;}
+/* ADMIN */
+.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:14px;border-radius:16px;width:280px;z-index:999;display:none;animation:fadeIn 0.5s;}
+.admin-panel h3{text-align:center;color:#ff2e2e}
+.admin-panel input,.admin-panel select{width:100%;margin:5px 0;padding:8px;border-radius:8px;border:none;background:#000;color:#fff}
+.admin-panel label{font-size:13px;display:flex;gap:6px;align-items:center}
+.small-btn{font-size:12px;padding:6px;margin-top:5px}
+
+/* AVALIACOES */
+.reviews{padding:10px;margin-top:20px;max-height:150px;overflow-y:auto;font-size:9px;color:#ccc;border-top:1px solid #8b0000}
+.reviews div{margin-bottom:4px;line-height:1.1;}
+
+/* ANIMAÇÕES */
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+@keyframes popIn{from{opacity:0;transform:scale(0.8);}to{opacity:1;transform:scale(1);}}
+@keyframes neonTop{from{text-shadow:0 0 5px red;}to{text-shadow:0 0 20px red,0 0 40px red;}}
 </style>
 </head>
-
 <body>
+
 <div class="top-bar">Rdn Store Oficial 🔥</div>
 <div class="header"><div class="logo" id="logo">Rdn Store</div></div>
 <div class="products" id="products"></div>
 
-<!-- MODAL DE COMPRA -->
+<!-- MODAL COMPRA -->
 <div class="modal" id="buyModal">
   <div class="modal-box">
-    <h3 style="color:#ff2e2e">Finalizar compra</h3>
+    <h3>Finalizar compra</h3>
     <button class="buy-btn" onclick="finalizar('zap')">WhatsApp</button>
     <button class="buy-btn" onclick="finalizar('ig')">Instagram</button>
     <button class="buy-btn small-btn" onclick="buyModal.style.display='none'">Cancelar</button>
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
+<!-- ADMIN -->
 <div class="admin-panel" id="adminPanel">
   <h3>ADMIN</h3>
   <select id="selectProd"></select>
@@ -240,97 +90,106 @@ body{
   <button class="buy-btn small-btn" onclick="sairAdmin()">Sair</button>
 </div>
 
-<script>
-const ADMIN_SENHA="randerson555";
-const zap="https://wa.me/5581995367131?text=";
-const ig="https://instagram.com/rdn.store.ofc?text=";
+<!-- AVALIACOES -->
+<div class="reviews" id="reviews"></div>
 
+<script>
+// CONFIGURAÇÕES
+const ADMIN_SENHA="randerson555";
+const zap="https://wa.me/5581995367131";
+const ig="https://instagram.com/rdn.store.ofc";
 let produtos=JSON.parse(localStorage.produtos||"[]");
 let produtoAtual=null;
 
-function salvar(){localStorage.produtos=JSON.stringify(produtos);render();carregarAdmin();}
+// FAKE AVALIACOES
+const avaliacoes=[
+  {nome:"João","texto":"Ótima loja! Produtos entregues rápido."},
+  {nome:"Maria","texto":"Preço justo e atendimento top."},
+  {nome:"Lucas","texto":"Recomendo a todos meus amigos."},
+  {nome:"Ana","texto":"Muito confiável e segura."},
+  {nome:"Pedro","texto":"Adorei o Brainrot 1,4b!"},
+  {nome:"Carla","texto":"Super satisfeito com a compra."},
+  {nome:"Rafael","texto":"Entrega rápida e atendimento ótimo."},
+  {nome:"Beatriz","texto":"Gostei muito, voltarei a comprar."},
+  {nome:"Diego","texto":"Produtos de qualidade, recomendo."},
+  {nome:"Camila","texto":"Excelente loja, tudo certo."},
+  {nome:"Felipe","texto":"Muito bom, preço excelente."},
+  {nome:"Juliana","texto":"Amei a experiência de compra."},
+  {nome:"Gustavo","texto":"Muito satisfeito com tudo."},
+  {nome:"Larissa","texto":"Brainrots de ótima qualidade."},
+  {nome:"Fernando","texto":"Atendimento rápido e eficiente."}
+];
+
+// RENDER
+function salvar(){localStorage.produtos=JSON.stringify(produtos);render();carregarAdmin();renderReviews();}
 function render(){
-  const products=document.getElementById("products");
   products.innerHTML="";
   produtos.forEach((p,i)=>{
     const esgotado=p.forcarEsgotado || (!p.infinito && p.estoque<=0);
     products.innerHTML+=`
-    <div class="card">
-      ${esgotado?'<div class="sold-out">ESGOTADO</div>':''}
-      <img src="${p.img}">
-      <div class="card-content">
-        <div>${p.nome}</div>
-        <div class="price">R$${p.preco}</div>
-        <div class="stock">${p.infinito?'Infinito':'Estoque: '+p.estoque}</div>
-        <button class="buy-btn" ${esgotado?'disabled':''} onclick="abrirCompra(${i})">Comprar</button>
-      </div>
-    </div>`;
+      <div class="card">
+        ${esgotado?'<div class="sold-out">ESGOTADO</div>':''}
+        <img src="${p.img}">
+        <div class="card-content">
+          <div>${p.nome}</div>
+          <div class="price">R$${p.preco}</div>
+          <div class="stock">${p.infinito?'Infinito':'Estoque: '+p.estoque}</div>
+          <button class="buy-btn" ${esgotado?'disabled':''} onclick="abrirCompra(${i})">Comprar</button>
+        </div>
+      </div>`;
   });
 }
+function renderReviews(){
+  const r=reviews;
+  r.innerHTML="";
+  avaliacoes.forEach(a=>r.innerHTML+=`<div><b>${a.nome}:</b> ${a.texto}</div>`);
+}
 
-function abrirCompra(i){produtoAtual=i;document.getElementById('buyModal').style.display='flex';}
+// MODAL COMPRA
+function abrirCompra(i){produtoAtual=i;buyModal.style.display="flex";}
 function finalizar(tipo){
   const p=produtos[produtoAtual];
-  if(!p.infinito)p.estoque--;
+  if(!p.infinito) p.estoque--;
   salvar();
-  const texto=`🛒 Quero comprar ${p.nome} — R$${p.preco}`;
-  window.open(tipo=="zap"?zap+encodeURIComponent(texto):ig+encodeURIComponent(texto),"_blank");
-  document.getElementById('buyModal').style.display='none';
+  const data=new Date().toLocaleString("pt-BR");
+  const texto=`🛒 Quero comprar *${p.nome}* — R$${p.preco}\n📅 ${data}`;
+  if(tipo==='zap') window.open(zap+encodeURIComponent(texto),"_blank");
+  else window.open(ig,"_blank");
+  buyModal.style.display='none';
 }
 
-/* ADMIN */
+// ADMIN (5 cliques na logo)
 let clicks=0;
-document.getElementById("logo").onclick=()=>{
-  if(++clicks==5){
-    const senha=prompt("Digite a senha do admin:");
-    if(senha===ADMIN_SENHA){document.getElementById('adminPanel').style.display='block';carregarAdmin();}
-    else alert("Senha incorreta!");
-    clicks=0;
-  }
-}
-function sairAdmin(){document.getElementById('adminPanel').style.display='none'}
+logo.onclick=()=>{if(++clicks===5){let senha=prompt("Digite a senha do admin:");if(senha===ADMIN_SENHA){adminPanel.style.display='block';}else alert("Senha incorreta");clicks=0}}
+
+// ADMIN FUNCTIONS
+function sairAdmin(){adminPanel.style.display='none'}
 function carregarAdmin(){
-  const selectProd=document.getElementById('selectProd');
   selectProd.innerHTML="";
   produtos.forEach((p,i)=>selectProd.innerHTML+=`<option value="${i}">${p.nome}</option>`);
 }
-document.getElementById('selectProd').onchange=()=>{
-  const p=produtos[document.getElementById('selectProd').value];
-  document.getElementById('nome').value=p.nome;
-  document.getElementById('preco').value=p.preco;
-  document.getElementById('estoque').value=p.estoque;
-  document.getElementById('infinito').checked=p.infinito;
-  document.getElementById('forcarEsgotado').checked=p.forcarEsgotado;
+selectProd.onchange=()=>{
+  const p=produtos[selectProd.value];
+  nome.value=p.nome; preco.value=p.preco; estoque.value=p.estoque;
+  infinito.checked=p.infinito; forcarEsgotado.checked=p.forcarEsgotado;
 }
 function criar(){
   const r=new FileReader();
   r.onload=()=>{
-    produtos.push({
-      nome:document.getElementById('nome').value,
-      preco:+document.getElementById('preco').value,
-      estoque:+document.getElementById('estoque').value,
-      infinito:document.getElementById('infinito').checked,
-      forcarEsgotado:false,
-      img:r.result
-    });
+    produtos.push({nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:false,img:r.result});
     salvar();
   }
-  r.readAsDataURL(document.getElementById('img').files[0]);
+  r.readAsDataURL(img.files[0]);
 }
 function editar(){
-  const i=document.getElementById('selectProd').value;
-  Object.assign(produtos[i],{
-    nome:document.getElementById('nome').value,
-    preco:+document.getElementById('preco').value,
-    estoque:+document.getElementById('estoque').value,
-    infinito:document.getElementById('infinito').checked,
-    forcarEsgotado:document.getElementById('forcarEsgotado').checked
-  });
+  const i=selectProd.value;
+  Object.assign(produtos[i],{nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:forcarEsgotado.checked});
   salvar();
 }
-function apagar(){produtos.splice(document.getElementById('selectProd').value,1);salvar();}
+function apagar(){produtos.splice(selectProd.value,1);salvar();}
 
-render();
+// INIT
+render();renderReviews();carregarAdmin();
 </script>
 </body>
 </html>
