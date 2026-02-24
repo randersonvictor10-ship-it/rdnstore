@@ -3,141 +3,150 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rdn Store Turbo</title>
+<title>Rdn Store</title>
+
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#000;color:#fff;overflow-x:hidden;position:relative}
+/* ===== RESET & FONTE ===== */
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{background:#000;color:white;overflow-x:hidden;}
+.top-bar{background:#8b0000;padding:12px;text-align:center;font-weight:bold;font-size:18px;text-shadow:0 0 8px red;}
+.header{display:flex;justify-content:space-between;align-items:center;padding:15px;background:#111;border-bottom:2px solid #8b0000;}
+.logo{color:#ff2e2e;font-size:28px;font-weight:bold;cursor:pointer;text-shadow:0 0 10px red;animation:neon 1.5s infinite alternate;}
+@keyframes neon{0%{text-shadow:0 0 5px red;}50%{text-shadow:0 0 15px red,0 0 25px red;}100%{text-shadow:0 0 20px red,0 0 40px red;}}
+
+/* ===== CUPOM ===== */
+#cupom-container{display:flex;justify-content:center;gap:10px;margin:10px;}
+#cupom-container input{padding:6px;border-radius:6px;border:none;width:160px;}
+#cupom-container button{padding:6px;border-radius:6px;border:none;background:#ff2e2e;color:#fff;cursor:pointer;transition:0.3s;}
+#cupom-container button:hover{background:#ff5555;}
+#cupomMsg{color:#ff2e2e;font-size:12px;align-self:center;}
+
+/* ===== PRODUTOS ===== */
+.products{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:15px;}
+.card{background:#111;border:1px solid #8b0000;border-radius:15px;overflow:hidden;position:relative;box-shadow:0 0 10px rgba(255,0,0,0.4);transition:0.3s;}
+.card:hover{box-shadow:0 0 25px rgba(255,0,0,0.8);}
+.card img{width:100%;height:140px;object-fit:cover;border-bottom:1px solid #8b0000;}
+.card-content{padding:12px;}
+.price{color:#ff2e2e;font-weight:bold;font-size:16px;margin-top:5px;}
+.stock{font-size:12px;margin-top:2px;color:#00ff88;}
+.buy-btn{margin-top:8px;width:100%;padding:8px;background:#8b0000;border:none;color:white;border-radius:8px;cursor:pointer;font-weight:bold;transition:0.3s;}
+.buy-btn:hover{background:#ff2e2e;box-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e;}
+.buy-btn:disabled{opacity:0.5;background:#333;}
+.sold-out{position:absolute;inset:0;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;font-size:22px;color:#ff2e2e;font-weight:bold;text-transform:uppercase;}
+
+/* ===== MODAL COMPRA ===== */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:999;}
+.modal-box{background:#111;border:2px solid #8b0000;padding:20px;border-radius:16px;width:280px;text-align:center;animation:fadeIn 0.3s;}
+@keyframes fadeIn{0%{opacity:0;transform:scale(0.9);}100%{opacity:1;transform:scale(1);}}
+
+/* ===== ADMIN ===== */
+#adminLogin{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:1000;}
+.admin-box{background:#111;padding:25px;border:2px solid #8b0000;border-radius:16px;width:300px;text-align:center;}
+.admin-box input{width:100%;padding:8px;margin:8px 0;border-radius:8px;border:none;background:#000;color:white;}
+
+.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:12px;border-radius:16px;width:300px;z-index:999;display:none;}
+.admin-panel h3{text-align:center;color:#ff2e2e;margin-bottom:6px;}
+.admin-panel input,.admin-panel select{width:100%;margin:4px 0;padding:6px;border-radius:6px;border:none;background:#000;color:#fff;}
+.admin-panel label{font-size:13px;display:flex;gap:6px;align-items:center;margin:3px 0;}
+.small-btn{font-size:12px;padding:6px;margin-top:5px;cursor:pointer;}
+
+/* ===== AVALIAÇÕES ===== */
+#avaliacoes{margin:20px;padding:5px;text-align:left;font-size:10px;line-height:1.2;color:#ff5555;overflow-y:auto;}
+#avaliacoes .avaliacao{margin-bottom:4px;}
+#avaliacoes .avaliacao strong{color:#ff2e2e;}
+
+/* ===== HISTÓRICO ===== */
+#historico{display:none;max-height:200px;overflow-y:auto;background:#111;border:1px solid #8b0000;padding:8px;border-radius:8px;margin-top:8px;font-size:12px;color:#fff;}
+
+/* ===== FUNDO ==== */
 body::before{
-  content:"";position:fixed;inset:0;z-index:-1;
-  background:url('LINK_DA_SUA_IMAGEM_DO_BONECO') no-repeat center/cover;
-  opacity:0.08;animation:moveBG 30s linear infinite;
+  content:"";position:fixed;inset:0;background:url('');background-size:cover;background-position:center;opacity:0.05;z-index:-1;
 }
-@keyframes moveBG{0%{background-position:0 0}100%{background-position:300px 0}}
-.top-bar{background:#8b0000;padding:12px;text-align:center;font-weight:bold;font-size:16px;letter-spacing:1px;animation:neonTop 1.5s infinite alternate;position:relative;}
-@keyframes neonTop{from{text-shadow:0 0 5px red;}to{text-shadow:0 0 20px red,0 0 40px red;}}
-#refCount{position:absolute;top:50%;right:12px;transform:translateY(-50%);color:#ff2e2e;font-weight:bold;font-size:14px;text-shadow:0 0 5px red;}
-.header{padding:15px;background:#111;border-bottom:2px solid #8b0000;display:flex;justify-content:center;position:relative}
-.logo{color:#ff2e2e;font-size:28px;font-weight:bold;cursor:pointer;text-shadow:0 0 10px red;transition:0.3s;animation:pulseLogo 2s infinite;}
-.logo:hover{transform:scale(1.1);}
-@keyframes pulseLogo{0%{text-shadow:0 0 10px red}50%{text-shadow:0 0 20px red,0 0 40px red}100%{text-shadow:0 0 10px red}}
-.products{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;padding:20px}
-@media(max-width:700px){.products{grid-template-columns:1fr}}
-.card{background:#111;border:1px solid #8b0000;border-radius:18px;overflow:hidden;position:relative;transition:0.3s;animation:fadeIn 0.8s ease;}
-.card:hover{box-shadow:0 0 25px red;transform:rotateZ(2deg) scale(1.05);}
-.card img{width:100%;height:150px;object-fit:cover;transition:0.4s;}
-.card img:hover{transform:scale(1.1) rotateZ(1deg);}
-.card-content{padding:14px}
-.price{color:#ff2e2e;font-weight:bold;margin-top:6px;font-size:15px}
-.stock{font-size:12px;color:#bbb}
-.buy-btn{margin-top:10px;width:100%;padding:10px;background:#ff2e2e;border:none;color:#fff;border-radius:10px;font-weight:bold;cursor:pointer;transition:0.4s;animation:glowBtn 2s infinite alternate;}
-.buy-btn:hover{background:#8b0000;transform:scale(1.05);}
-@keyframes glowBtn{0%{box-shadow:0 0 5px red}50%{box-shadow:0 0 15px red,0 0 30px red}100%{box-shadow:0 0 5px red}}
-.sold-out{position:absolute;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;font-size:20px;color:#ff2e2e;font-weight:bold;letter-spacing:1px}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999}
-.modal-box{background:#111;border:2px solid #8b0000;padding:20px;border-radius:16px;width:280px;text-align:center;animation:popIn 0.5s ease;}
-.modal-box h3{color:#ff2e2e;margin-bottom:10px}
-.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:14px;border-radius:16px;width:340px;z-index:999;display:none;animation:fadeIn 0.5s;}
-.admin-panel h3{text-align:center;color:#ff2e2e;margin-bottom:8px;}
-.admin-panel input,.admin-panel select{width:100%;margin:5px 0;padding:8px;border-radius:8px;border:none;background:#000;color:#fff}
-.admin-panel label{font-size:13px;display:flex;gap:6px;align-items:center}
-.small-btn{font-size:12px;padding:6px;margin-top:5px;cursor:pointer}
-.tab-buttons{display:flex;gap:5px;margin-bottom:8px}
-.tab-buttons button{flex:1;padding:6px;background:#111;border:1px solid #8b0000;color:#fff;border-radius:6px;cursor:pointer;transition:0.3s;animation:tabBtnAnim 2s infinite alternate;}
-.tab-buttons button.active{background:#ff2e2e;color:#fff;box-shadow:0 0 10px red;}
-@keyframes tabBtnAnim{0%{box-shadow:0 0 3px red}50%{box-shadow:0 0 12px red,0 0 20px red}100%{box-shadow:0 0 3px red}}
-.tab-content{display:none}
-.tab-content.active{display:block}
-#history{max-height:120px;overflow-y:auto;background:#111;border:1px solid #8b0000;padding:8px;border-radius:10px;font-size:10px;color:#ccc;margin-top:5px}
-#history div{margin-bottom:4px;line-height:1.2}
-#reviews{padding:10px; max-width:400px; margin:10px auto; font-size:8px; color:#fff; background:#111; border:1px solid #8b0000; border-radius:10px; max-height:200px; overflow-y:auto;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-@keyframes popIn{from{opacity:0;transform:scale(0.8);}to{opacity:1;transform:scale(1);}}
 </style>
 </head>
 <body>
 
-<div class="top-bar">Rdn Store Turbo 🔥 <span id="refCount">Vendas: 0</span></div>
-<div class="header"><div class="logo" id="logo">Rdn Store</div></div>
+<div class="top-bar">Rdn Store Oficial 🔥</div>
+
+<div class="header">
+  <div class="logo" id="logo">Rdn Store</div>
+</div>
+
+<!-- CUPOM -->
+<div id="cupom-container">
+  <input type="text" id="cupomInput" placeholder="Digite cupom">
+  <button onclick="aplicarCupom()">Aplicar</button>
+  <span id="cupomMsg"></span>
+</div>
+
 <div class="products" id="products"></div>
 
+<!-- MODAL COMPRA -->
 <div class="modal" id="buyModal">
   <div class="modal-box">
-    <h3>Finalizar compra</h3>
+    <h3 style="color:#ff2e2e">Finalizar compra</h3>
     <button class="buy-btn" onclick="finalizar('zap')">WhatsApp</button>
     <button class="buy-btn" onclick="finalizar('ig')">Instagram</button>
     <button class="buy-btn small-btn" onclick="buyModal.style.display='none'">Cancelar</button>
   </div>
 </div>
 
-<div class="admin-panel" id="adminPanel">
-  <div class="tab-buttons">
-    <button class="active" onclick="abrirAba('produtos',this)">Produtos</button>
-    <button onclick="abrirAba('vendas',this)">Histórico Vendas</button>
-  </div>
-
-  <div id="produtos" class="tab-content active">
-    <select id="selectProd"></select>
-    <input id="nome" placeholder="Nome">
-    <input id="preco" type="number" placeholder="Preço">
-    <input id="estoque" type="number" placeholder="Estoque">
-    <label><input type="checkbox" id="infinito"> Estoque infinito</label>
-    <label><input type="checkbox" id="forcarEsgotado"> Forçar esgotado</label>
-    <input id="img" type="file">
-    <button class="buy-btn" onclick="criar()">Criar</button>
-    <button class="buy-btn" onclick="editar()">Salvar</button>
-    <button class="buy-btn" onclick="apagar()">Apagar</button>
-    <button class="buy-btn small-btn" onclick="sairAdmin()">Sair</button>
-  </div>
-
-  <div id="vendas" class="tab-content">
-    <div id="history"></div>
-    <div id="history-count">Total vendas: 0</div>
+<!-- ADMIN LOGIN -->
+<div id="adminLogin">
+  <div class="admin-box">
+    <h3 style="color:#ff2e2e">ADMIN</h3>
+    <input type="password" id="adminPass" placeholder="Senha">
+    <button class="buy-btn" onclick="loginAdmin()">Entrar</button>
   </div>
 </div>
 
-<div id="reviews"></div>
+<!-- ADMIN PANEL -->
+<div class="admin-panel" id="adminPanel">
+  <h3>ADMIN</h3>
+  <select id="selectProd"></select>
+  <input id="nome" placeholder="Nome do produto">
+  <input id="preco" type="number" placeholder="Preço">
+  <input id="estoque" type="number" placeholder="Estoque">
+  <label><input type="checkbox" id="infinito"> Estoque infinito</label>
+  <label><input type="checkbox" id="forcarEsgotado"> Forçar esgotado</label>
+  <input id="img" type="file">
+  <button class="buy-btn" onclick="criar()">Criar</button>
+  <button class="buy-btn" onclick="editar()">Salvar</button>
+  <button class="buy-btn" onclick="apagar()">Apagar</button>
+  <button class="buy-btn small-btn" onclick="sairAdmin()">Sair</button>
+
+  <h4 style="color:#ff2e2e;margin-top:10px;">Histórico de Vendas (<span id="contRef">0</span>)</h4>
+  <div id="historico"></div>
+</div>
+
+<!-- AVALIAÇÕES -->
+<div id="avaliacoes"></div>
 
 <script>
+// ===== VARIÁVEIS =====
 const ADMIN_SENHA="randerson555";
 const zap="https://wa.me/5581995367131";
 const ig="https://instagram.com/rdn.store.ofc";
-
 let produtos=JSON.parse(localStorage.produtos||"[]");
-let vendas=JSON.parse(localStorage.vendas||"[]");
-let avaliacoes=JSON.parse(localStorage.avaliacoes||"[]");
+let historico=JSON.parse(localStorage.historico||"[]");
 let produtoAtual=null;
+let cupomAtivo=false;
 
-const avaliacoesFake=[
-  {nome:"João","texto":"Ótima loja! Produtos entregues rápido."},
-  {nome:"Maria","texto":"Preço justo e atendimento top."},
-  {nome:"Lucas","texto":"Recomendo a todos meus amigos."},
-  {nome:"Ana","texto":"Muito confiável e segura."},
-  {nome:"Pedro","texto":"Adorei o Brainrot 1,4b!"},
-  {nome:"Camila","texto":"Compra fácil e rápida."},
-  {nome:"Rafael","texto":"Produto incrível."},
-  {nome:"Bianca","texto":"Chegou antes do esperado."},
-  {nome:"Felipe","texto":"Suporte nota 10."},
-  {nome:"Larissa","texto":"Voltarei a comprar com certeza."}
-];
-
-function salvar(){
-  localStorage.produtos=JSON.stringify(produtos);
-  localStorage.vendas=JSON.stringify(vendas);
-  localStorage.avaliacoes=JSON.stringify(avaliacoes);
-  render();carregarAdmin();renderVendas();renderReviews();
-}
-
+// ===== FUNÇÕES =====
+function salvar(){localStorage.produtos=JSON.stringify(produtos);localStorage.historico=JSON.stringify(historico);render();carregarAdmin();atualizarHistorico();}
 function render(){
   products.innerHTML="";
   produtos.forEach((p,i)=>{
     const esgotado=p.forcarEsgotado || (!p.infinito && p.estoque<=0);
+    let precoFinal=p.preco;
+    if(cupomAtivo) precoFinal=(p.preco*0.95).toFixed(2);
     products.innerHTML+=`
       <div class="card">
         ${esgotado?'<div class="sold-out">ESGOTADO</div>':''}
         <img src="${p.img}">
         <div class="card-content">
           <div>${p.nome}</div>
-          <div class="price">R$${p.preco}</div>
+          <div class="price">R$${precoFinal}</div>
           <div class="stock">${p.infinito?'Infinito':'Estoque: '+p.estoque}</div>
           <button class="buy-btn" ${esgotado?'disabled':''} onclick="abrirCompra(${i})">Comprar</button>
         </div>
@@ -145,38 +154,47 @@ function render(){
   });
 }
 
-function abrirCompra(i){produtoAtual=i;buyModal.style.display='flex';}
+function abrirCompra(i){produtoAtual=i;buyModal.style.display="flex";}
 function finalizar(tipo){
   const p=produtos[produtoAtual];
-  const hora=new Date().toLocaleString("pt-BR");
   if(!p.infinito)p.estoque--;
-  vendas.push({produto:p.nome,preco:p.preco,hora});
+  // Histórico
+  const data=new Date().toLocaleString();
+  historico.push({produto:p.nome,preco:p.preco,data});
+  // Atualiza contagem de referências
   salvar();
-  const msg=`🛒 Produto: ${p.nome} — R$${p.preco} \nHora: ${hora}`;
-  if(tipo=="zap"){window.open(zap+"?text="+encodeURIComponent(msg),"_blank")}
-  else{window.open(ig,"_blank")}
-  buyModal.style.display='none';
+  // Mensagem
+  const msg=`🛒 Produto: ${p.nome} - R$${p.preco} - ${data}`;
+  window.open(tipo==="zap"?`${zap}?text=${msg}`:`${ig}`, "_blank");
+  buyModal.style.display="none";
 }
 
+// ===== CUPOM =====
+function aplicarCupom(){
+  const c=cupomInput.value.trim().toUpperCase();
+  if(c==="RDN5"){cupomAtivo=true;cupomMsg.innerText="Cupom aplicado! 5% OFF";render();}
+  else{cupomAtivo=false;cupomMsg.innerText="Cupom inválido";render();}
+}
+
+// ===== ADMIN =====
 let clicks=0;
-logo.onclick=()=>{if(++clicks==5){let s=prompt("Senha Admin:"); if(s===ADMIN_SENHA){adminPanel.style.display='block';clicks=0}else alert("Senha incorreta");}}
-function sairAdmin(){adminPanel.style.display='none'}
-
-function abrirAba(id,btn){
-  document.querySelectorAll(".tab-content").forEach(t=>t.classList.remove("active"));
-  document.querySelectorAll(".tab-buttons button").forEach(b=>b.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  btn.classList.add("active");
-}
+logo.onclick=()=>{if(++clicks==5){adminLogin.style.display="flex";clicks=0;}};
+function loginAdmin(){if(adminPass.value===ADMIN_SENHA){adminLogin.style.display="none";adminPanel.style.display="block";carregarAdmin();}else alert("Senha errada");}
+function sairAdmin(){adminPanel.style.display="none";adminPass.value="";}
 
 function carregarAdmin(){
   selectProd.innerHTML="";
   produtos.forEach((p,i)=>selectProd.innerHTML+=`<option value="${i}">${p.nome}</option>`);
+  atualizarHistorico();
 }
+
 selectProd.onchange=()=>{
   const p=produtos[selectProd.value];
-  nome.value=p.nome; preco.value=p.preco; estoque.value=p.estoque;
-  infinito.checked=p.infinito; forcarEsgotado.checked=p.forcarEsgotado;
+  nome.value=p.nome;
+  preco.value=p.preco;
+  estoque.value=p.estoque;
+  infinito.checked=p.infinito;
+  forcarEsgotado.checked=p.forcarEsgotado;
 }
 
 function criar(){
@@ -185,21 +203,46 @@ function criar(){
     produtos.push({nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:false,img:r.result});
     salvar();
   }
-  if(img.files[0]) r.readAsDataURL(img.files[0]);
+  r.readAsDataURL(img.files[0]);
 }
-function editar(){const i=selectProd.value;Object.assign(produtos[i],{nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:forcarEsgotado.checked}); salvar();}
-function apagar(){produtos.splice(selectProd.value,1); salvar();}
+function editar(){const i=selectProd.value;Object.assign(produtos[i],{nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:forcarEsgotado.checked});salvar();}
+function apagar(){produtos.splice(selectProd.value,1);salvar();}
 
-function renderVendas(){
-  history.innerHTML="";
-  vendas.forEach(v=>history.innerHTML+=`<div>${v.hora}: ${v.produto} — R$${v.preco}</div>`);
-  historyCount.innerText="Total vendas: "+vendas.length;
-  refCount.innerText=vendas.length;
+// ===== HISTÓRICO =====
+function atualizarHistorico(){
+  contRef.innerText=historico.length;
+  historicoDiv=historico.map(h=>`${h.data} - ${h.produto} - R$${h.preco}`).join("<br>");
+  historicoDiv=historicoDiv||"Nenhuma venda ainda";
+  document.getElementById("historico").innerHTML=historicoDiv;
 }
 
-function renderReviews(){reviews.innerHTML="";avaliacoesFake.concat(avaliacoes).forEach(a=>reviews.innerHTML+=`<div><b>${a.nome}:</b> ${a.texto}</div>`);}
+// ===== AVALIAÇÕES =====
+const avals=[
+  {nome:"Lucas",msg:"Excelente loja, recomendo!"},
+  {nome:"Ana",msg:"Entrega rápida e confiável."},
+  {nome:"Carlos",msg:"Produtos de ótima qualidade."},
+  {nome:"Maria",msg:"Preço justo e atendimento top."},
+  {nome:"João",msg:"Sempre volto a comprar aqui."},
+  {nome:"Beatriz",msg:"Super recomendo, 5 estrelas!"},
+  {nome:"Pedro",msg:"Muito bom, adorei."},
+  {nome:"Camila",msg:"Atendimento rápido e eficiente."},
+  {nome:"Rafael",msg:"Produtos incríveis!"},  
+  {nome:"Fernanda",msg:"Amei, compra garantida."},
+  {nome:"Bruno",msg:"Vale cada centavo."},
+  {nome:"Juliana",msg:"Top demais!"},
+  {nome:"Gustavo",msg:"Recomendo para todos."},
+  {nome:"Patrícia",msg:"Muito satisfeito com a compra."},
+  {nome:"Thiago",msg:"Tudo perfeito, obrigado!"}
+];
+function renderAvaliacoes(){
+  avaliacoes.innerHTML="";
+  avals.forEach(a=>avaliacoes.innerHTML+=`<div class="avaliacao"><strong>${a.nome}:</strong> ${a.msg}</div>`);
+}
 
-render(); renderVendas(); renderReviews();
+// ===== INICIAL =====
+render();
+renderAvaliacoes();
 </script>
+
 </body>
 </html>
