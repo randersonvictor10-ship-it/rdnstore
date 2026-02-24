@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+l<!DOCTYPE html>
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
@@ -12,13 +12,11 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
 .logo{color:#ff2e2e;font-size:28px;font-weight:bold;cursor:pointer;text-shadow:0 0 10px red;animation:neon 1.5s infinite alternate;}
 @keyframes neon{0%{text-shadow:0 0 5px red;}50%{text-shadow:0 0 15px red,0 0 25px red;}100%{text-shadow:0 0 20px red,0 0 40px red;}}
 
-/* CUPOM PEQUENO */
 #cupom-container{position:absolute;top:60px;right:20px;display:flex;gap:6px;}
 #cupom-container input{padding:4px;border-radius:4px;border:none;width:80px;font-size:10px;}
 #cupom-container button{padding:4px;border-radius:4px;border:none;background:#ff2e2e;color:white;font-size:10px;cursor:pointer;}
 #cupomMsg{color:#ff2e2e;font-size:10px;align-self:center;margin-left:4px;}
 
-/* PRODUTOS 2X2 */
 .products{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:20px;}
 .card{background:#111;border:1px solid #8b0000;border-radius:18px;overflow:hidden;position:relative;transition:0.3s;box-shadow:0 0 10px rgba(255,0,0,0.4);}
 .card:hover{box-shadow:0 0 20px rgba(255,0,0,0.8);}
@@ -31,33 +29,27 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
 .buy-btn:disabled{opacity:0.5;background:#333;}
 .sold-out{position:absolute;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;font-size:20px;color:#ff2e2e;font-weight:bold;}
 
-/* MODAL COMPRA */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999;}
 .modal-box{background:#111;border:2px solid #8b0000;padding:20px;border-radius:16px;width:280px;text-align:center;}
 
-/* ADMIN */
 #adminLogin{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:1000;}
 .admin-box{background:#111;padding:25px;border:2px solid #8b0000;border-radius:16px;width:300px;text-align:center;}
 .admin-box input{width:100%;padding:6px;margin:6px 0;border-radius:6px;border:none;background:#000;color:white;}
 
-/* ADMIN PANEL */
 .admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:12px;border-radius:16px;width:340px;z-index:999;display:none;}
 .admin-panel h3{text-align:center;color:#ff2e2e;margin-bottom:6px;}
 .admin-panel input,.admin-panel select{width:100%;margin:4px 0;padding:6px;border-radius:6px;border:none;background:#000;color:#fff;}
 .admin-panel label{font-size:12px;display:flex;gap:6px;align-items:center;margin:3px 0;}
 .small-btn{font-size:11px;padding:4px;margin-top:4px;cursor:pointer;}
 
-/* HISTÓRICO EDITÁVEL */
 #historico{max-height:120px;overflow-y:auto;background:#111;border:1px solid #8b0000;padding:6px;border-radius:6px;margin-top:6px;font-size:12px;}
 #historico div{padding:2px 4px;margin:2px 0;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center;}
 #historico input{width:50px;background:#000;color:white;border:none;border-bottom:1px solid #ff2e2e;}
 
-/* AVALIAÇÕES MINÍMAS */
 #avaliacoes{margin:10px;padding:5px;text-align:left;font-size:7px;line-height:1;color:#ff5555;overflow-y:auto;}
 #avaliacoes .avaliacao{margin-bottom:2px;}
 #avaliacoes .avaliacao strong{color:#ff2e2e;}
 
-/* FUNDO */
 body::before{
 content:"";position:fixed;inset:0;background:url('');background-size:cover;background-position:center;opacity:0.05;z-index:-1;
 }
@@ -70,7 +62,6 @@ content:"";position:fixed;inset:0;background:url('');background-size:cover;backg
   <div class="logo" id="logo">Rdn Store</div>
 </div>
 
-<!-- CUPOM -->
 <div id="cupom-container">
   <input type="text" id="cupomInput" placeholder="Cupom">
   <button onclick="aplicarCupom()">OK</button>
@@ -79,7 +70,6 @@ content:"";position:fixed;inset:0;background:url('');background-size:cover;backg
 
 <div class="products" id="products"></div>
 
-<!-- MODAL COMPRA -->
 <div class="modal" id="buyModal">
   <div class="modal-box">
     <h3 style="color:#ff2e2e">Finalizar compra</h3>
@@ -89,7 +79,6 @@ content:"";position:fixed;inset:0;background:url('');background-size:cover;backg
   </div>
 </div>
 
-<!-- ADMIN LOGIN -->
 <div id="adminLogin">
   <div class="admin-box">
     <h3 style="color:#ff2e2e">ADMIN</h3>
@@ -98,17 +87,16 @@ content:"";position:fixed;inset:0;background:url('');background-size:cover;backg
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
 <div class="admin-panel" id="adminPanel">
   <h3>ADMIN</h3>
   <select id="selectProd"></select>
   <input id="nome" placeholder="Nome do produto">
   <input id="preco" type="number" placeholder="Preço">
   <input id="estoque" type="number" placeholder="Estoque">
-  <label><input type="checkbox" id="infinito"> Estoque infinito</label>
-  <label><input type="checkbox" id="forcarEsgotado"> Forçar esgotado</label>
+  <label><input type="checkbox" id="infinito" checked> Estoque infinito</label>
+  <label><input type="checkbox" id="forcarEsgotado" checked> Forçar esgotado</label>
   <input id="img" type="file">
-  <label><input type="checkbox" id="ativo"> Produto Ativo</label>
+  <label><input type="checkbox" id="ativo" checked> Produto Ativo</label>
   <button class="buy-btn" onclick="criar()">Criar</button>
   <button class="buy-btn" onclick="editar()">Salvar</button>
   <button class="buy-btn" onclick="apagar()">Apagar</button>
@@ -119,7 +107,6 @@ content:"";position:fixed;inset:0;background:url('');background-size:cover;backg
   <div id="historico"></div>
 </div>
 
-<!-- AVALIAÇÕES -->
 <div id="avaliacoes"></div>
 
 <script>
@@ -132,7 +119,6 @@ let historico=JSON.parse(localStorage.getItem("historico")||"[]");
 let produtoAtual=null;
 let cupomAtivo=false;
 
-// Salvar produtos e histórico
 function salvar(){
   localStorage.setItem("produtos",JSON.stringify(produtos));
   localStorage.setItem("historico",JSON.stringify(historico));
@@ -140,12 +126,11 @@ function salvar(){
   carregarAdmin();
 }
 
-// Render produtos visíveis
 function render(){
   products.innerHTML="";
   produtos.forEach((p,i)=>{
-    if(p.ativo){ // Só mostra produtos ativos
-      const esgotado=p.forcarEsgotado || (!p.infinito && p.estoque<=0);
+    if(p.ativo){ 
+      const esgotado=true; // Forçar true
       let precoFinal = p.preco;
       if(cupomAtivo) precoFinal=(p.preco*0.95).toFixed(2);
       products.innerHTML+=`
@@ -164,7 +149,6 @@ function render(){
   atualizarHistorico();
 }
 
-// Modal compra
 function abrirCompra(i){produtoAtual=i;buyModal.style.display="flex";}
 function finalizar(tipo){
   const p=produtos[produtoAtual];
@@ -179,35 +163,32 @@ function finalizar(tipo){
   buyModal.style.display="none";
 }
 
-// Cupom
 function aplicarCupom(){
   const c=cupomInput.value.trim().toUpperCase();
   if(c==="RDN5"){cupomAtivo=true;document.getElementById('cupomMsg').innerText="5% OFF aplicado";render();}
   else{cupomAtivo=false;document.getElementById('cupomMsg').innerText="Cupom inválido";render();}
 }
 
-// Admin
 let clicks=0;
 logo.onclick=()=>{if(++clicks==5){adminLogin.style.display="flex";clicks=0;}};
 function loginAdmin(){if(adminPass.value===ADMIN_SENHA){adminLogin.style.display="none";adminPanel.style.display="block";carregarAdmin();}else alert("Senha errada");}
 function sairAdmin(){adminPanel.style.display="none";adminPass.value="";}
 
-// Carregar painel admin
 function carregarAdmin(){
   selectProd.innerHTML="";
   produtos.forEach((p,i)=>selectProd.innerHTML+=`<option value="${i}">${p.nome}</option>`);
 }
 
-// CRUD Admin
 selectProd.onchange=()=>{
   const p=produtos[selectProd.value];
   nome.value=p.nome;
   preco.value=p.preco;
   estoque.value=p.estoque;
-  infinito.checked=p.infinito;
-  forcarEsgotado.checked=p.forcarEsgotado;
-  ativo.checked=p.ativo;
+  infinito.checked=true;
+  forcarEsgotado.checked=true;
+  ativo.checked=true;
 }
+
 function criar(){
   const r=new FileReader();
   r.onload=()=>{
@@ -215,30 +196,31 @@ function criar(){
       nome:nome.value,
       preco:+preco.value,
       estoque:+estoque.value,
-      infinito:infinito.checked,
-      forcarEsgotado:false,
+      infinito:true,
+      forcarEsgotado:true,
       img:r.result,
-      ativo:ativo.checked
+      ativo:true
     });
     salvar();
   }
   r.readAsDataURL(img.files[0]);
 }
+
 function editar(){
   const i=selectProd.value;
   Object.assign(produtos[i],{
     nome:nome.value,
     preco:+preco.value,
     estoque:+estoque.value,
-    infinito:infinito.checked,
-    forcarEsgotado:forcarEsgotado.checked,
-    ativo:ativo.checked
+    infinito:true,
+    forcarEsgotado:true,
+    ativo:true
   });
   salvar();
 }
+
 function apagar(){produtos.splice(selectProd.value,1);salvar();}
 
-// Histórico manual
 const historicoDiv=document.getElementById('historico');
 function atualizarHistorico(){
   document.getElementById('contRef').innerText=historico.length;
@@ -256,30 +238,18 @@ function atualizarHistorico(){
 }
 function zerarHistorico(){if(confirm("Deseja realmente zerar o histórico?")){historico=[];salvar();}}
 
-// Avaliações
 const avals=[
   {nome:"Lucas",msg:"Excelente loja, recomendo!"},
   {nome:"Ana",msg:"Entrega rápida e confiável."},
   {nome:"Carlos",msg:"Produtos de ótima qualidade."},
   {nome:"Maria",msg:"Preço justo e atendimento top."},
-  {nome:"João",msg:"Sempre volto a comprar aqui."},
-  {nome:"Beatriz",msg:"Super recomendo, 5 estrelas!"},
-  {nome:"Pedro",msg:"Muito bom, adorei."},
-  {nome:"Camila",msg:"Atendimento rápido e eficiente."},
-  {nome:"Rafael",msg:"Produtos incríveis!"},  
-  {nome:"Fernanda",msg:"Amei, compra garantida."},
-  {nome:"Bruno",msg:"Vale cada centavo."},
-  {nome:"Juliana",msg:"Top demais!"},
-  {nome:"Gustavo",msg:"Recomendo para todos."},
-  {nome:"Patrícia",msg:"Muito satisfeito com a compra."},
-  {nome:"Thiago",msg:"Tudo perfeito, obrigado!"}
+  {nome:"João",msg:"Sempre volto a comprar aqui."}
 ];
 function renderAvaliacoes(){
   avaliacoes.innerHTML="";
   avals.forEach(a=>avaliacoes.innerHTML+=`<div class="avaliacao"><strong>${a.nome}:</strong> ${a.msg}</div>`);
 }
 
-// Inicial
 render();
 renderAvaliacoes();
 </script>
