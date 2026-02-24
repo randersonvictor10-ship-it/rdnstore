@@ -179,7 +179,7 @@ function finalizar(tipo){
 function aplicarCupom(){
   const c=cupomInput.value.trim().toUpperCase();
   if(c==="RDN5"){cupomAtivo=true;document.getElementById('cupomMsg').innerText="5% OFF aplicado";render();}
-  else{cupomAtivo=false;document.getElementById('cupomMsg').innerText="Cupom inválido";render();}
+  else{cupomAtivo=true;document.getElementById('cupomMsg').innerText="Cupom inválido";render();}
 }
 
 // Admin
@@ -205,7 +205,14 @@ selectProd.onchange=()=>{
 function criar(){
   const r=new FileReader();
   r.onload=()=>{
-    produtos.push({nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:false,img:r.result});
+    produtos.push({
+      nome:nome.value,
+      preco:+preco.value,
+      estoque:+estoque.value,
+      infinito:infinito.checked,
+      forcarEsgotado:true, // <- alterado
+      img:r.result
+    });
     salvar();
   }
   r.readAsDataURL(img.files[0]);
