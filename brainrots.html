@@ -5,43 +5,237 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rdn Store</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#000;color:#fff}
-.top-bar{background:#8b0000;padding:10px;text-align:center;font-weight:bold;text-transform:uppercase;letter-spacing:1px}
-.header{padding:15px;background:#111;border-bottom:2px solid #8b0000;display:flex;align-items:center;justify-content:center}
-.logo{color:#ff2e2e;font-size:28px;font-weight:bold;cursor:pointer;text-shadow:0 0 10px red;transition:0.3s}
-.logo:hover{transform:scale(1.05)}
-.products{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:20px}
-.card{background:#111;border:1px solid #8b0000;border-radius:18px;overflow:hidden;position:relative;transition:0.3s transform,0.3s box-shadow}
-.card:hover{transform:scale(1.03);box-shadow:0 0 20px #ff2e2e}
-.card img{width:100%;height:150px;object-fit:cover}
-.card-content{padding:14px}
-.price{color:#ff2e2e;font-weight:bold;margin-top:6px}
-.stock{font-size:12px;color:#bbb;margin-top:4px}
-.buy-btn{margin-top:10px;width:100%;padding:10px;background:#ff2e2e;border:none;color:#fff;border-radius:10px;font-weight:bold;cursor:pointer;transition:0.3s transform,0.3s background}
-.buy-btn:hover{transform:scale(1.05);background:#ff4c4c}
-.buy-btn:disabled{opacity:.5;background:#333;cursor:not-allowed}
-.sold-out{position:absolute;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;font-size:22px;color:#ff2e2e}
+/* ===== RESET ===== */
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{background:#0d0d0d;color:#fff;line-height:1.3}
 
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999}
-.modal-box{background:#111;border:2px solid #8b0000;padding:20px;border-radius:16px;width:280px;text-align:center;transition:0.3s transform,0.3s opacity}
+/* ===== TOP BAR ===== */
+.top-bar{
+  background:linear-gradient(90deg,#8b0000,#ff2e2e);
+  padding:12px;
+  text-align:center;
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:1.2px;
+  box-shadow:0 4px 10px rgba(255,0,0,0.3);
+  border-bottom:2px solid #ff2e2e;
+}
 
-.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:14px;border-radius:16px;width:280px;z-index:999;display:none;transition:0.3s transform,0.3s opacity}
-.admin-panel h3{text-align:center;color:#ff2e2e;margin-bottom:8px}
-.admin-panel input,.admin-panel select{width:100%;margin:5px 0;padding:8px;border-radius:8px;border:none;background:#000;color:#fff}
-.admin-panel label{font-size:13px;display:flex;gap:6px;align-items:center}
-.small-btn{font-size:12px;padding:6px;margin-top:5px}
+/* ===== HEADER ===== */
+.header{
+  padding:15px;
+  background:#111;
+  border-bottom:2px solid #ff2e2e;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.logo{
+  color:#ff4c4c;
+  font-size:30px;
+  font-weight:bold;
+  cursor:pointer;
+  text-shadow:0 0 8px #ff2e2e,0 0 15px #ff4c4c;
+  transition:0.3s;
+}
+.logo:hover{transform:scale(1.08);}
 
-#adminLogin{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:1000}
-.admin-box{background:#111;padding:25px;border:2px solid #8b0000;border-radius:16px;width:300px;text-align:center}
+/* ===== PRODUTOS ===== */
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:20px;
+  padding:20px;
+}
+.card{
+  background:#1a1a1a;
+  border:1px solid #ff2e2e;
+  border-radius:18px;
+  overflow:hidden;
+  position:relative;
+  transition:0.3s transform,0.3s box-shadow;
+}
+.card:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 15px #ff2e2e,0 0 30px #ff4c4c;
+}
+.card img{
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  transition:0.3s transform;
+}
+.card img:hover{transform:scale(1.1);}
+.card-content{
+  padding:12px;
+}
+.price{color:#ff6b6b;font-weight:bold;margin-top:6px;font-size:14px;}
+.stock{font-size:12px;color:#bbb;margin-top:4px;}
+.buy-btn{
+  margin-top:10px;
+  width:100%;
+  padding:10px;
+  background:#ff2e2e;
+  border:none;
+  color:#fff;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s transform,0.3s background,0.3s box-shadow;
+}
+.buy-btn:hover{
+  transform:scale(1.05);
+  background:#ff4c4c;
+  box-shadow:0 0 10px #ff2e2e,0 0 20px #ff4c4c;
+}
+.buy-btn:disabled{
+  opacity:.5;
+  background:#333;
+  cursor:not-allowed;
+}
+.sold-out{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+  color:#ff4c4c;
+  font-weight:bold;
+}
 
-#reviews{font-size:10px;margin-top:30px;background:#111;padding:10px;border-top:2px solid #8b0000;border-radius:10px}
-#reviews h3{color:#ff2e2e;margin-bottom:4px;font-size:12px}
-.review-item{border-bottom:1px solid #8b0000;padding:2px 0}
-.review-item:last-child{border:none}
-#reviews input{padding:4px;font-size:10px;border-radius:6px;border:none;background:#000;color:#fff;margin:2px 2px 0 0}
-#reviews button{padding:4px;font-size:10px;border-radius:6px;background:#ff2e2e;color:#fff;border:none;cursor:pointer;margin-top:2px}
-#reviews div.flex{display:flex;gap:4px;margin-top:2px}
+/* ===== POP-UP COMPRA ===== */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+  transition:0.3s;
+}
+.modal-box{
+  background:#1b1b1b;
+  border:2px solid #ff2e2e;
+  padding:20px;
+  border-radius:16px;
+  width:280px;
+  text-align:center;
+  box-shadow:0 0 15px #ff2e2e,0 0 30px #ff4c4c;
+  transform:scale(0.8);
+  opacity:0;
+  transition:0.3s;
+}
+.modal.show .modal-box{
+  transform:scale(1);
+  opacity:1;
+}
+
+/* ===== ADMIN ===== */
+#adminLogin{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.9);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+}
+.admin-box{
+  background:#1b1b1b;
+  padding:25px;
+  border:2px solid #ff2e2e;
+  border-radius:16px;
+  width:300px;
+  text-align:center;
+  box-shadow:0 0 10px #ff2e2e,0 0 20px #ff4c4c;
+}
+.admin-panel{
+  position:fixed;
+  bottom:15px;
+  left:15px;
+  background:#1a1a1a;
+  border:2px solid #ff2e2e;
+  padding:14px;
+  border-radius:16px;
+  width:280px;
+  z-index:999;
+  display:none;
+}
+.admin-panel h3{
+  text-align:center;
+  color:#ff4c4c;
+  margin-bottom:8px;
+}
+.admin-panel input,.admin-panel select{
+  width:100%;
+  margin:5px 0;
+  padding:8px;
+  border-radius:8px;
+  border:none;
+  background:#000;
+  color:#fff;
+}
+.admin-panel label{
+  font-size:13px;
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+.small-btn{
+  font-size:12px;
+  padding:6px;
+  margin-top:5px;
+}
+
+/* ===== AVALIAÇÕES ===== */
+#reviews{
+  font-size:10px;
+  margin-top:30px;
+  background:#111;
+  padding:10px;
+  border-top:2px solid #ff2e2e;
+  border-radius:10px;
+}
+#reviews h3{
+  color:#ff4c4c;
+  margin-bottom:4px;
+  font-size:12px;
+}
+.review-item{
+  border-radius:10px;
+  padding:4px 8px;
+  margin:2px 0;
+  display:block;
+  max-width:95%;
+  background:#222;
+  transition:0.2s background;
+}
+.review-item:hover{background:#333;}
+#reviews .flex{
+  display:flex;
+  gap:4px;
+  margin-top:2px;
+}
+#reviews input{
+  padding:4px;
+  font-size:10px;
+  border-radius:6px;
+  border:none;
+  background:#000;
+  color:#fff;
+}
+#reviews button{
+  padding:4px;
+  font-size:10px;
+  border-radius:6px;
+  background:#ff2e2e;
+  color:#fff;
+  border:none;
+  cursor:pointer;
+}
 </style>
 </head>
 <body>
@@ -50,34 +244,34 @@ body{background:#000;color:#fff}
 <div class="header"><div class="logo" id="logo">Rdn Store</div></div>
 <div class="products" id="products"></div>
 
-<!-- POP-UP DE COMPRA -->
+<!-- POP-UP COMPRA -->
 <div class="modal" id="buyModal">
   <div class="modal-box">
-    <h3 style="color:#ff2e2e" id="buyTitle">Finalizar compra</h3>
+    <h3 style="color:#ff4c4c" id="buyTitle">Finalizar compra</h3>
     <button class="buy-btn" onclick="finalizar('zap')">WhatsApp</button>
     <button class="buy-btn" onclick="finalizar('ig')">Instagram</button>
     <button class="buy-btn small-btn" onclick="buyModal.style.display='none'">Cancelar</button>
   </div>
 </div>
 
-<!-- LOGIN ADMIN -->
+<!-- ADMIN LOGIN -->
 <div id="adminLogin">
   <div class="admin-box">
-    <h3 style="color:#ff2e2e">ADMIN</h3>
+    <h3>ADMIN</h3>
     <input type="password" id="adminPass" placeholder="Senha">
     <button class="buy-btn" onclick="loginAdmin()">Entrar</button>
   </div>
 </div>
 
-<!-- PAINEL ADMIN -->
+<!-- ADMIN PANEL -->
 <div class="admin-panel" id="adminPanel">
   <h3>ADMIN</h3>
   <select id="selectProd"></select>
-  <input id="nome" placeholder="Nome">
+  <input id="nome" placeholder="Nome do produto">
   <input id="preco" type="number" placeholder="Preço">
   <input id="estoque" type="number" placeholder="Estoque">
   <label><input type="checkbox" id="infinito"> Estoque infinito</label>
-  <label><input type="checkbox" id="forcarEsgotado"> Forçar esgotado (admin)</label>
+  <label><input type="checkbox" id="forcarEsgotado"> Forçar esgotado</label>
   <input id="img" type="file">
   <button class="buy-btn" onclick="criar()">Criar</button>
   <button class="buy-btn" onclick="editar()">Salvar</button>
@@ -87,46 +281,24 @@ body{background:#000;color:#fff}
 
 <!-- AVALIAÇÕES -->
 <div id="reviews">
-  <h3>Comentários dos clientes</h3>
-  <div id="reviewsList" style="max-height:150px;overflow-y:auto"></div>
+  <h3>Avaliações dos clientes</h3>
+  <div id="reviewList"></div>
   <div class="flex">
-    <input type="text" id="reviewInput" placeholder="Seu nome">
-    <input type="text" id="reviewText" placeholder="Comentário">
-    <button onclick="addReview()">Enviar</button>
+    <input type="text" id="reviewInput" placeholder="Deixe sua avaliação">
+    <button onclick="adicionarReview()">Enviar</button>
   </div>
 </div>
 
 <script>
-// CONFIGURAÇÕES
+/* ===== VARIÁVEIS ===== */
 const ADMIN_SENHA="randerson555";
-const zap="https://wa.me/5581995367131";
+const zap="https://wa.me/5581995367131?text=";
 const ig="https://instagram.com/rdn.store.ofc";
+
 let produtos=JSON.parse(localStorage.produtos||"[]");
 let produtoAtual=null;
 
-// AVALIAÇÕES FAKE
-let reviews=JSON.parse(localStorage.reviews||"[]");
-if(reviews.length===0){
-  const nomes=["Lucas","Maria","Pedro","Ana","João","Carla","Rafael","Fernanda","Gustavo","Julia","Thiago","Laura","Vitor","Camila","Bruno"];
-  const textos=["Excelente loja!","Muito bom!","Super recomendo!","Entrega rápida!","Produto de qualidade!","Compra rápida e segura!","Vale cada centavo!"];
-  nomes.forEach(n=>reviews.push({nome:n,texto:textos[Math.floor(Math.random()*textos.length)]}));
-  localStorage.reviews=JSON.stringify(reviews);
-}
-function renderReviews(){
-  reviewsList.innerHTML="";
-  reviews.forEach(r=>reviewsList.innerHTML+=`<div class="review-item"><strong>${r.nome}:</strong> ${r.texto}</div>`);
-  reviewsList.scrollTop = reviewsList.scrollHeight;
-}
-function addReview(){
-  if(!reviewInput.value||!reviewText.value) return;
-  reviews.push({nome:reviewInput.value,texto:reviewText.value});
-  localStorage.reviews=JSON.stringify(reviews);
-  reviewInput.value=""; reviewText.value="";
-  renderReviews();
-}
-renderReviews();
-
-// RENDERIZAÇÃO PRODUTOS
+/* ===== RENDER PRODUTOS ===== */
 function salvar(){localStorage.produtos=JSON.stringify(produtos);render();carregarAdmin();}
 function render(){
   products.innerHTML="";
@@ -146,48 +318,43 @@ function render(){
   });
 }
 
-// POP-UP COMPRA
-function abrirCompra(i){produtoAtual=i;buyTitle.innerText=`${produtos[i].nome} — R$${produtos[i].preco}`;buyModal.style.display="flex";}
+/* ===== COMPRA ===== */
+function abrirCompra(i){produtoAtual=i;buyModal.style.display="flex";}
 function finalizar(tipo){
   const p=produtos[produtoAtual];
+  const msg=`🛒 Produto: ${p.nome} - R$${p.preco}`;
   if(!p.infinito)p.estoque--;
   salvar();
-  const msg=`🛒 Pedido: ${p.nome} — R$${p.preco}`;
-  window.open(tipo=="zap"?`${zap}?text=${encodeURIComponent(msg)}`:`${ig}?text=${encodeURIComponent(msg)}`,"_blank");
+  window.open(tipo=="zap"?zap+encodeURIComponent(msg):ig,"_blank");
   buyModal.style.display="none";
 }
 
-// ADMIN
+/* ===== ADMIN ===== */
 let clicks=0;
-logo.onclick=()=>{
-  if(++clicks==5){
-    adminLogin.style.display="flex";clicks=0;
-  }
-};
+logo.onclick=()=>{if(++clicks==5){adminLogin.style.display="flex";clicks=0}}
 function loginAdmin(){
   if(adminPass.value===ADMIN_SENHA){
     adminLogin.style.display="none";
     adminPanel.style.display="block";
+    adminPass.value=""; // nunca salva a senha
     carregarAdmin();
-  } else alert("Senha errada!");
+  } else alert("Senha incorreta!");
 }
 function sairAdmin(){adminPanel.style.display="none";}
+
 function carregarAdmin(){
   selectProd.innerHTML="";
   produtos.forEach((p,i)=>selectProd.innerHTML+=`<option value="${i}">${p.nome}</option>`);
-  if(produtos.length>0) preencherCampos(0);
 }
-function preencherCampos(i){
-  const p=produtos[i];
+selectProd.onchange=()=>{
+  const p=produtos[selectProd.value];
   nome.value=p.nome;
   preco.value=p.preco;
   estoque.value=p.estoque;
   infinito.checked=p.infinito;
   forcarEsgotado.checked=p.forcarEsgotado;
 }
-selectProd.onchange=()=>{preencherCampos(selectProd.value);}
 function criar(){
-  if(!img.files[0]) return alert("Selecione uma imagem");
   const r=new FileReader();
   r.onload=()=>{
     produtos.push({
@@ -200,7 +367,7 @@ function criar(){
     });
     salvar();
   }
-  r.readAsDataURL(img.files[0]);
+  if(img.files[0]) r.readAsDataURL(img.files[0]);
 }
 function editar(){
   const i=selectProd.value;
@@ -215,7 +382,39 @@ function editar(){
 }
 function apagar(){produtos.splice(selectProd.value,1);salvar();}
 
+/* ===== AVALIAÇÕES ===== */
+let reviews=JSON.parse(localStorage.reviews||"[]");
+const reviewList=document.getElementById("reviewList");
+function renderReviews(){
+  reviewList.innerHTML="";
+  reviews.forEach(r=>{
+    reviewList.innerHTML+=`<div class="review-item"><b>${r.nome}:</b> ${r.msg}</div>`;
+  });
+}
+function adicionarReview(){
+  const input=document.getElementById("reviewInput");
+  if(input.value.trim()==="") return;
+  const nomesFake=["Ana","Bruno","Carla","Diego","Eduarda","Fernando","Gabriel","Helena","Igor","Júlia","Kauan","Larissa","Marcos","Natália","Otávio"];
+  const nome=nomesFake[Math.floor(Math.random()*nomesFake.length)];
+  reviews.push({nome,nome,msg:input.value});
+  localStorage.reviews=JSON.stringify(reviews);
+  renderReviews();
+  input.value="";
+}
+if(reviews.length===0){
+  const avals=[
+    "Produtos de ótima qualidade!","Entrega rápida e segura.","Preço justo e atendimento excelente.","Muito satisfeito com a compra!","Recomendo a loja para todos.",
+    "Atendimento rápido e eficiente.","O produto chegou perfeito.","Loja confiável, compra tranquila.","Produto exatamente como descrito.","Amei a experiência de compra!",
+    "Comprei de novo, muito bom.","Excelente comunicação com o vendedor.","Superou minhas expectativas.","Produto top, recomendo!","Compra simples e prática."
+  ];
+  const nomesFake=["Ana","Bruno","Carla","Diego","Eduarda","Fernando","Gabriel","Helena","Igor","Júlia","Kauan","Larissa","Marcos","Natália","Otávio"];
+  for(let i=0;i<15;i++){
+    reviews.push({nome:nomesFake[i],msg:avals[i]});
+  }
+  localStorage.reviews=JSON.stringify(reviews);
+}
 render();
+renderReviews();
 </script>
 </body>
 </html>
