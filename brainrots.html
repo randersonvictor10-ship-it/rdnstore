@@ -5,10 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rdn Store</title>
 <style>
-/* RESET & FONT */
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 body{background:#000;color:white;overflow-x:hidden;position:relative;}
-/* TOP BAR */
 .top-bar{background:#8b0000;padding:12px;text-align:center;font-weight:bold;font-size:18px;text-shadow:0 0 8px red;}
 .header{display:flex;justify-content:space-between;align-items:center;padding:15px;background:#111;border-bottom:2px solid #8b0000;}
 .logo{color:#ff2e2e;font-size:28px;font-weight:bold;cursor:pointer;text-shadow:0 0 10px red;animation:neon 1.5s infinite alternate;}
@@ -57,10 +55,6 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
 #avaliacoes{margin:5px;padding:2px;text-align:left;font-size:7px;line-height:1;color:#ff5555;overflow-y:auto;}
 #avaliacoes .avaliacao{margin-bottom:2px;}
 #avaliacoes .avaliacao strong{color:#ff2e2e;}
-
-/* NOVO FORMULÁRIO PARA COMENTÁRIOS */
-#formAvaliacoes input{width:80%;font-size:7px;padding:2px;margin-bottom:2px;border-radius:3px;border:none;background:#111;color:#fff;}
-#formAvaliacoes button{font-size:7px;padding:2px;border-radius:3px;border:none;background:#ff2e2e;color:white;cursor:pointer;}
 
 /* FUNDO */
 body::before{
@@ -118,50 +112,29 @@ body::before{
   <button class="buy-btn" onclick="apagar()">Apagar</button>
   <button class="buy-btn small-btn" onclick="sairAdmin()">Sair</button>
 
-  <!-- HISTÓRICO -->
   <h4 style="color:#ff2e2e;margin-top:8px;">Histórico de Vendas (<span id="contRef">0</span>)</h4>
   <button id="historico-btn" onclick="zerarHistorico()">Zerar Histórico</button>
   <div id="historico"></div>
-
-  <!-- EDITAR HISTÓRICO -->
-  <div id="editarHistorico" style="margin-top:6px;">
-    <select id="selectHistorico"></select>
-    <input type="text" id="editarProduto" placeholder="Produto" style="width:48%;margin:2px 1%;padding:4px;font-size:11px;">
-    <input type="number" id="editarPreco" placeholder="Preço" style="width:48%;margin:2px 1%;padding:4px;font-size:11px;">
-    <input type="text" id="editarData" placeholder="Data" style="width:98%;margin:2px 1%;padding:4px;font-size:11px;">
-    <button class="buy-btn small-btn" onclick="salvarEdicaoHistorico()">Salvar Alteração</button>
-  </div>
 </div>
 
 <!-- AVALIAÇÕES -->
 <div id="avaliacoes"></div>
 
-<!-- FORMULÁRIO COMENTÁRIOS -->
-<div id="formAvaliacoes">
-  <input type="text" id="novoComentario" placeholder="Escreva sua avaliação...">
-  <button onclick="adicionarComentario()">Enviar</button>
-</div>
-
 <script>
-// CONFIGURAÇÕES
 const ADMIN_SENHA="randerson555";
 const zap="https://wa.me/5581995367131";
 const ig="https://instagram.com/rdn.store.ofc";
+
 let produtos=JSON.parse(localStorage.produtos||"[]");
 let historico=JSON.parse(localStorage.historico||"[]");
-let comentarios=JSON.parse(localStorage.comentarios||"[]");
 let produtoAtual=null;
 let cupomAtivo=false;
 
-// SALVAR E RENDER
+// FUNÇÕES PRINCIPAIS
 function salvar(){
   localStorage.produtos=JSON.stringify(produtos);
   localStorage.historico=JSON.stringify(historico);
-  localStorage.comentarios=JSON.stringify(comentarios);
-  render();
-  carregarAdmin();
-  renderAvaliacoes();
-  atualizarHistorico();
+  render();carregarAdmin();atualizarHistorico();
 }
 
 function render(){
@@ -184,7 +157,6 @@ function render(){
   });
 }
 
-// COMPRA
 function abrirCompra(i){produtoAtual=i;buyModal.style.display="flex";}
 function finalizar(tipo){
   const p=produtos[produtoAtual];
@@ -216,7 +188,6 @@ function carregarAdmin(){
   atualizarHistorico();
 }
 
-// PRODUTOS ADMIN
 selectProd.onchange=()=>{
   const p=produtos[selectProd.value];
   nome.value=p.nome;
@@ -225,42 +196,29 @@ selectProd.onchange=()=>{
   infinito.checked=p.infinito;
   forcarEsgotado.checked=p.forcarEsgotado;
 }
-function criar(){const r=new FileReader();r.onload=()=>{produtos.push({nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:false,img:r.result});salvar();};r.readAsDataURL(img.files[0]);}
+
+function criar(){
+  const r=new FileReader();
+  r.onload=()=>{
+    produtos.push({nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:false,img:r.result});
+    salvar();
+  }
+  r.readAsDataURL(img.files[0]);
+}
 function editar(){const i=selectProd.value;Object.assign(produtos[i],{nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:forcarEsgotado.checked});salvar();}
 function apagar(){produtos.splice(selectProd.value,1);salvar();}
 
 // HISTÓRICO
-const selectHistorico=document.getElementById("selectHistorico");
-const editarProduto=document.getElementById("editarProduto");
-const editarPreco=document.getElementById("editarPreco");
-const editarData=document.getElementById("editarData");
 function atualizarHistorico(){
   contRef.innerText=historico.length;
-  historicoEl=document.getElementById("historico");
-  historicoEl.innerHTML=historico.map((h,i)=>`${h.data} - ${h.produto} - R$${h.preco}`).join("<br>")||"Nenhuma venda ainda";
-  selectHistorico.innerHTML="";
-  historico.forEach((h,i)=>selectHistorico.innerHTML+=`<option value="${i}">${h.data} - ${h.produto}</option>`);
-  if(historico.length>0) preencherCamposHistorico();
+  document.getElementById("historico").innerHTML=historico.map(h=>`${h.data} - ${h.produto} - R$${h.preco}`).join("<br>")||"Nenhuma venda ainda";
 }
-selectHistorico.onchange=preencherCamposHistorico;
-function preencherCamposHistorico(){
-  const h=historico[selectHistorico.value];
-  if(!h) return;
-  editarProduto.value=h.produto;
-  editarPreco.value=h.preco;
-  editarData.value=h.data;
-}
-function salvarEdicaoHistorico(){
-  const i=selectHistorico.value;
-  if(historico[i]){
-    historico[i].produto=editarProduto.value;
-    historico[i].preco=+editarPreco.value;
-    historico[i].data=editarData.value;
+function zerarHistorico(){
+  if(confirm("Deseja realmente zerar o histórico?")){
+    historico=[];
     salvar();
-    alert("Histórico atualizado!");
   }
 }
-function zerarHistorico(){if(confirm("Deseja realmente zerar o histórico?")){historico=[];salvar();}}
 
 // AVALIAÇÕES
 const avals=[
@@ -272,7 +230,7 @@ const avals=[
   {nome:"Beatriz",msg:"Super recomendo, 5 estrelas!"},
   {nome:"Pedro",msg:"Muito bom, adorei."},
   {nome:"Camila",msg:"Atendimento rápido e eficiente."},
-  {nome:"Rafael",msg:"Produtos incríveis!"},
+  {nome:"Rafael",msg:"Produtos incríveis!"},  
   {nome:"Fernanda",msg:"Amei, compra garantida."},
   {nome:"Bruno",msg:"Vale cada centavo."},
   {nome:"Juliana",msg:"Top demais!"},
@@ -280,14 +238,15 @@ const avals=[
   {nome:"Patrícia",msg:"Muito satisfeito com a compra."},
   {nome:"Thiago",msg:"Tudo perfeito, obrigado!"}
 ];
-
 function renderAvaliacoes(){
   avaliacoes.innerHTML="";
   avals.forEach(a=>avaliacoes.innerHTML+=`<div class="avaliacao"><strong>${a.nome}:</strong> ${a.msg}</div>`);
-  comentarios.forEach(c=>avaliacoes.innerHTML+=`<div class="avaliacao"><strong>Cliente:</strong> ${c}</div>`);
 }
 
-function adicionarComentario(){
-  const msg=novoComentario.value.trim();
-  if(!msg) return;
-  comentarios.push(msg);
+// INICIAL
+render();
+renderAvaliacoes();
+</script>
+
+</body>
+</html>
