@@ -14,134 +14,104 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 body{background:#000;color:#fff}
 
-/* ===== HEADER ===== */
+/* HEADER */
 .top-bar{background:#8b0000;padding:10px;text-align:center;font-weight:bold}
-.header{padding:15px;background:#111;border-bottom:2px solid #8b0000}
-.logo{color:#ff2e2e;font-size:26px;font-weight:bold;text-align:center}
+.logo{color:#ff2e2e;font-size:26px;font-weight:bold;text-align:center;padding:15px}
 
-/* ===== PRODUTOS ===== */
+/* PRODUTOS */
 .products{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:20px}
-.card{background:#111;border:1px solid #8b0000;border-radius:15px;overflow:hidden;box-shadow:0 0 10px rgba(255,0,0,.3);transition:.3s}
-.card:hover{transform:translateY(-4px)}
+.card{background:#111;border:1px solid #8b0000;border-radius:15px;overflow:hidden}
 .card img{width:100%;height:140px;object-fit:cover}
 .card-content{padding:12px}
 .price{color:#ff2e2e;font-weight:bold}
-.rating{color:gold;font-size:14px}
-.buy-btn{margin-top:8px;width:100%;padding:8px;background:#8b0000;border:none;color:#fff;border-radius:8px;font-weight:bold;cursor:pointer}
+.buy-btn{margin-top:8px;width:100%;padding:8px;background:#8b0000;border:none;color:#fff;border-radius:8px;font-weight:bold}
 
-/* ===== POPUP ===== */
+/* POPUP */
 .popup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);display:none;justify-content:center;align-items:center;z-index:999}
-.popup-box{background:#111;border:2px solid #8b0000;border-radius:18px;padding:20px;width:90%;max-width:420px;text-align:center}
-.popup-btn{width:100%;padding:12px;margin:8px 0;border:none;border-radius:12px;font-weight:bold;cursor:pointer}
-.whats{background:#25D366;color:#fff}
-.insta{background:linear-gradient(45deg,#f58529,#dd2a7b,#8134af);color:#fff}
-.cancel{background:#222;color:#fff}
+.popup-box{background:#111;border:2px solid #8b0000;border-radius:15px;padding:20px;width:90%;max-width:420px}
 
-/* ===== AVALIAÇÕES ===== */
-.reviews{padding:20px}
-.review-card{
-  background:#111;
-  border:1px solid #8b0000;
-  border-radius:12px;
-  padding:12px;
-  margin-bottom:10px;
-}
-.review-stars{color:gold}
-.review-name{font-weight:bold;color:#ff2e2e}
-
-/* ===== FORM ===== */
-.review-form input,
-.review-form textarea,
-.review-form select{
-  width:100%;
-  padding:8px;
-  margin:5px 0;
-  border-radius:6px;
-  border:none;
-}
-.review-form button{
-  width:100%;
-  padding:10px;
+/* ADMIN BTN */
+.admin-btn{
+  position:fixed;
+  bottom:15px;
+  right:15px;
   background:#8b0000;
-  border:none;
   color:#fff;
-  border-radius:8px;
+  border:none;
+  padding:12px 15px;
+  border-radius:50%;
   font-weight:bold;
+  cursor:pointer;
 }
+
+/* AVALIAÇÕES PEQUENAS */
+.footer-reviews{
+  border-top:1px solid #222;
+  padding:10px;
+  font-size:11px;
+  color:#aaa;
+}
+.footer-reviews span{
+  display:block;
+  margin-bottom:4px;
+}
+.stars{color:gold;font-size:11px}
 </style>
 </head>
 
 <body>
 
 <div class="top-bar">Rdn Store Oficial 🔥</div>
-<div class="header"><div class="logo">Rdn Store</div></div>
+
+<div class="logo" id="logo">Rdn Store</div>
 
 <div class="products" id="products"></div>
+
+<button class="admin-btn" onclick="openAdmin()">ADM</button>
 
 <!-- POPUP COMPRA -->
 <div class="popup" id="buyPopup">
   <div class="popup-box">
-    <h2 id="buyTitle"></h2>
+    <h3 id="buyTitle"></h3>
     <p id="buyPrice"></p>
-    <button class="popup-btn whats" onclick="buyWhats()">WhatsApp</button>
-    <button class="popup-btn insta" onclick="buyInsta()">Instagram</button>
-    <button class="popup-btn cancel" onclick="closePopups()">Cancelar</button>
+    <button class="buy-btn" onclick="buyWhats()">WhatsApp</button>
+    <button class="buy-btn" onclick="buyInsta()">Instagram</button>
+    <button class="buy-btn" onclick="closePopups()">Cancelar</button>
   </div>
 </div>
 
-<!-- ===== AVALIAÇÕES ===== -->
-<div class="reviews">
-  <h2 style="text-align:center;color:#ff2e2e">Avaliações ⭐</h2>
-
-  <!-- FAKE -->
-  <div class="review-card">
-    <div class="review-stars">⭐⭐⭐⭐⭐</div>
-    <div class="review-name">Lucas</div>
-    <p>Entrega rápida e confiável, loja top demais 🔥</p>
+<!-- ADMIN -->
+<div class="popup" id="adminPopup">
+  <div class="popup-box">
+    <h3>Painel Admin</h3>
+    <div id="adminInfo"></div>
+    <button class="buy-btn" onclick="logout()">Sair</button>
   </div>
+</div>
 
-  <div class="review-card">
-    <div class="review-stars">⭐⭐⭐⭐⭐</div>
-    <div class="review-name">Matheus</div>
-    <p>Comprei e recebi certinho, recomendo muito!</p>
-  </div>
-
-  <div class="review-card">
-    <div class="review-stars">⭐⭐⭐⭐⭐</div>
-    <div class="review-name">Rafael</div>
-    <p>Melhor loja de brainrot que já vi 💯</p>
-  </div>
-
-  <!-- REAIS -->
-  <div id="realReviews"></div>
-
-  <!-- FORM -->
-  <div class="review-form">
-    <h3 style="text-align:center;margin-top:15px">Deixe sua avaliação</h3>
-    <input id="rName" placeholder="Seu nome">
-    <select id="rStars">
-      <option value="5">⭐⭐⭐⭐⭐</option>
-      <option value="4">⭐⭐⭐⭐</option>
-      <option value="3">⭐⭐⭐</option>
-      <option value="2">⭐⭐</option>
-      <option value="1">⭐</option>
-    </select>
-    <textarea id="rText" placeholder="Seu comentário"></textarea>
-    <button onclick="sendReview()">Enviar avaliação</button>
-  </div>
+<!-- AVALIAÇÕES PEQUENAS -->
+<div class="footer-reviews">
+  <span><span class="stars">★★★★★</span> Lucas — entrega rápida</span>
+  <span><span class="stars">★★★★★</span> Matheus — loja confiável</span>
+  <span><span class="stars">★★★★★</span> Rafael — recomendo</span>
+  <span><span class="stars">★★★★★</span> Pedro — chegou certinho</span>
+  <span><span class="stars">★★★★★</span> João — top demais</span>
 </div>
 
 <script>
-/* ===== FIREBASE ===== */
+/* FIREBASE */
 firebase.initializeApp({
-  apiKey: "SUA_API_KEY",
-  authDomain: "SEU_PROJETO.firebaseapp.com",
-  projectId: "SEU_PROJETO"
+  apiKey:"SUA_API_KEY",
+  authDomain:"SEU_PROJETO.firebaseapp.com",
+  projectId:"SEU_PROJETO"
 });
-const db = firebase.firestore();
 
-const telefoneWhatsApp = "5581995367131";
-let selectedProduct=null;
+const db=firebase.firestore();
+const auth=firebase.auth();
+
+const ADMIN_EMAIL="randersonvictor10@gmail.com";
+const telefoneWhatsApp="5581995367131";
+let selected=null;
 
 /* PRODUTOS */
 db.collection("products").onSnapshot(s=>{
@@ -154,7 +124,6 @@ db.collection("products").onSnapshot(s=>{
         <div class="card-content">
           <div>${p.name}</div>
           <div class="price">R$${p.price}</div>
-          <div class="rating">⭐ ${p.rating||5}</div>
           <button class="buy-btn" onclick="openBuy('${p.name}',${p.price})">Comprar</button>
         </div>
       </div>`;
@@ -163,41 +132,50 @@ db.collection("products").onSnapshot(s=>{
 
 /* COMPRA */
 function openBuy(n,p){
-  selectedProduct={n,p};
+  selected={n,p};
   buyTitle.innerText=n;
   buyPrice.innerText="Preço: R$"+p;
   buyPopup.style.display="flex";
 }
 function closePopups(){buyPopup.style.display="none"}
+
 function buyWhats(){
-  window.open(`https://wa.me/${telefoneWhatsApp}?text=${encodeURIComponent("Quero comprar "+selectedProduct.n+" por R$"+selectedProduct.p)}`);
+  window.open(`https://wa.me/${telefoneWhatsApp}?text=${encodeURIComponent("Quero comprar "+selected.n+" por R$"+selected.p)}`);
 }
 function buyInsta(){
   window.open("https://instagram.com/rdn.store.ofc");
 }
 
-/* AVALIAÇÕES */
-db.collection("reviews").onSnapshot(s=>{
-  realReviews.innerHTML="";
-  s.forEach(d=>{
-    const r=d.data();
-    realReviews.innerHTML+=`
-      <div class="review-card">
-        <div class="review-stars">${"⭐".repeat(r.stars)}</div>
-        <div class="review-name">${r.name}</div>
-        <p>${r.text}</p>
-      </div>`;
-  });
+/* ===== ADMIN – 3 FORMAS DE ABRIR ===== */
+function openAdmin(){
+  auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+}
+
+/* clique secreto no logo */
+let clicks=0;
+logo.onclick=()=>{
+  clicks++;
+  if(clicks>=5) openAdmin();
+  setTimeout(()=>clicks=0,1500);
+};
+
+/* atalho teclado */
+document.addEventListener("keydown",e=>{
+  if(e.ctrlKey && e.shiftKey && e.key==="A"){
+    openAdmin();
+  }
 });
 
-function sendReview(){
-  if(!rName.value||!rText.value)return alert("Preencha tudo");
-  db.collection("reviews").add({
-    name:rName.value,
-    stars:Number(rStars.value),
-    text:rText.value
-  });
-  rName.value="";rText.value="";
+auth.onAuthStateChanged(u=>{
+  if(u && u.email===ADMIN_EMAIL){
+    adminPopup.style.display="flex";
+    adminInfo.innerText="Logado como ADMIN";
+  }
+});
+
+function logout(){
+  auth.signOut();
+  adminPopup.style.display="none";
 }
 </script>
 
