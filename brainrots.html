@@ -104,7 +104,7 @@ body::before{
   <select id="selectProd"></select>
   <input id="nome" placeholder="Nome do produto">
   <input id="preco" type="number" placeholder="Preço">
-  <input id="estoque" type="number" placeholder="Estoque">
+  <input id="estoque" type="number" min="0" placeholder="Estoque">
   <label><input type="checkbox" id="infinito"> Estoque infinito</label>
   <label><input type="checkbox" id="forcarEsgotado"> Forçar esgotado</label>
   <input id="img" type="file">
@@ -131,10 +131,17 @@ let historico=JSON.parse(localStorage.historico||"[]");
 let produtoAtual=null;
 let cupomAtivo=false;
 
-// Criar produtos padrão 15x
+// Criar 15 produtos caso não existam
 if(produtos.length<15){
   for(let i=produtos.length;i<15;i++){
-    produtos.push({nome:"Produto "+(i+1),preco:10+i,estoque:10,infinito:false,forcarEsgotado:false,img:"https://via.placeholder.com/150"});
+    produtos.push({
+      nome:"Produto "+(i+1),
+      preco:10+i,
+      estoque:10,
+      infinito:false,
+      forcarEsgotado:false,
+      img:"https://via.placeholder.com/150"
+    });
   }
 }
 
@@ -212,12 +219,20 @@ selectProd.onchange=()=>{
 function criar(){
   const r=new FileReader();
   r.onload=()=>{
-    produtos.push({nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:false,img:r.result});
+    produtos.push({nome:nome.value,preco:+preco.value,estoque:+estoque.value||0,infinito:infinito.checked,forcarEsgotado:false,img:r.result});
     salvar();
   }
   r.readAsDataURL(img.files[0]);
 }
-function editar(){const i=selectProd.value;Object.assign(produtos[i],{nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:forcarEsgotado.checked});salvar();}
+function editar(){
+  const i=selectProd.value;
+  produtos[i].nome=nome.value;
+  produtos[i].preco=+preco.value;
+  produtos[i].estoque=+estoque.value; // permite colocar qualquer número
+  produtos[i].infinito=infinito.checked;
+  produtos[i].forcarEsgotado=forcarEsgotado.checked;
+  salvar();
+}
 function apagar(){produtos.splice(selectProd.value,1);salvar();}
 
 // Histórico manual
