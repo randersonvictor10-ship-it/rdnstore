@@ -3,27 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rdn Store</title>
+<title>Rdn Store Turbo</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
 body{background:#000;color:#fff;overflow-x:hidden;position:relative}
 body::before{
   content:"";position:fixed;inset:0;z-index:-1;
   background:url('LINK_DA_SUA_IMAGEM_DO_BONECO') no-repeat center/cover;
-  opacity:0.08;animation:moveBG 20s linear infinite;
+  opacity:0.08;animation:moveBG 30s linear infinite;
 }
-@keyframes moveBG{0%{background-position:0 0}100%{background-position:200px 0}}
-.top-bar{background:#8b0000;padding:12px;text-align:center;font-weight:bold;font-size:16px;letter-spacing:1px;animation:neonTop 1.5s infinite alternate;}
+@keyframes moveBG{0%{background-position:0 0}100%{background-position:300px 0}}
+.top-bar{background:#8b0000;padding:12px;text-align:center;font-weight:bold;font-size:16px;letter-spacing:1px;animation:neonTop 1.5s infinite alternate;position:relative;}
 @keyframes neonTop{from{text-shadow:0 0 5px red;}to{text-shadow:0 0 20px red,0 0 40px red;}}
+#refCount{position:absolute;top:50%;right:12px;transform:translateY(-50%);color:#ff2e2e;font-weight:bold;font-size:14px;text-shadow:0 0 5px red;}
 .header{padding:15px;background:#111;border-bottom:2px solid #8b0000;display:flex;justify-content:center;position:relative}
 .logo{color:#ff2e2e;font-size:28px;font-weight:bold;cursor:pointer;text-shadow:0 0 10px red;transition:0.3s;animation:pulseLogo 2s infinite;}
 .logo:hover{transform:scale(1.1);}
 @keyframes pulseLogo{0%{text-shadow:0 0 10px red}50%{text-shadow:0 0 20px red,0 0 40px red}100%{text-shadow:0 0 10px red}}
-.products{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px}
+.products{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;padding:20px}
+@media(max-width:700px){.products{grid-template-columns:1fr}}
 .card{background:#111;border:1px solid #8b0000;border-radius:18px;overflow:hidden;position:relative;transition:0.3s;animation:fadeIn 0.8s ease;}
-.card:hover{box-shadow:0 0 25px red;transform:rotateZ(1deg) scale(1.03);}
+.card:hover{box-shadow:0 0 25px red;transform:rotateZ(2deg) scale(1.05);}
 .card img{width:100%;height:150px;object-fit:cover;transition:0.4s;}
-.card img:hover{transform:scale(1.05);}
+.card img:hover{transform:scale(1.1) rotateZ(1deg);}
 .card-content{padding:14px}
 .price{color:#ff2e2e;font-weight:bold;margin-top:6px;font-size:15px}
 .stock{font-size:12px;color:#bbb}
@@ -34,33 +36,30 @@ body::before{
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999}
 .modal-box{background:#111;border:2px solid #8b0000;padding:20px;border-radius:16px;width:280px;text-align:center;animation:popIn 0.5s ease;}
 .modal-box h3{color:#ff2e2e;margin-bottom:10px}
-.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:14px;border-radius:16px;width:320px;z-index:999;display:none;animation:fadeIn 0.5s;}
+.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:14px;border-radius:16px;width:340px;z-index:999;display:none;animation:fadeIn 0.5s;}
 .admin-panel h3{text-align:center;color:#ff2e2e;margin-bottom:8px;}
 .admin-panel input,.admin-panel select{width:100%;margin:5px 0;padding:8px;border-radius:8px;border:none;background:#000;color:#fff}
 .admin-panel label{font-size:13px;display:flex;gap:6px;align-items:center}
-.small-btn{font-size:12px;padding:6px;margin-top:5px}
-/* ABAS */
+.small-btn{font-size:12px;padding:6px;margin-top:5px;cursor:pointer}
 .tab-buttons{display:flex;gap:5px;margin-bottom:8px}
-.tab-buttons button{flex:1;padding:6px;background:#111;border:1px solid #8b0000;color:#fff;border-radius:6px;cursor:pointer;transition:0.3s}
-.tab-buttons button.active{background:#ff2e2e;color:#fff}
+.tab-buttons button{flex:1;padding:6px;background:#111;border:1px solid #8b0000;color:#fff;border-radius:6px;cursor:pointer;transition:0.3s;animation:tabBtnAnim 2s infinite alternate;}
+.tab-buttons button.active{background:#ff2e2e;color:#fff;box-shadow:0 0 10px red;}
+@keyframes tabBtnAnim{0%{box-shadow:0 0 3px red}50%{box-shadow:0 0 12px red,0 0 20px red}100%{box-shadow:0 0 3px red}}
 .tab-content{display:none}
 .tab-content.active{display:block}
-#history{max-height:100px;overflow-y:auto;background:#111;border:1px solid #8b0000;padding:8px;border-radius:10px;font-size:10px;color:#ccc;margin-top:5px}
+#history{max-height:120px;overflow-y:auto;background:#111;border:1px solid #8b0000;padding:8px;border-radius:10px;font-size:10px;color:#ccc;margin-top:5px}
 #history div{margin-bottom:4px;line-height:1.2}
-#history-count{font-size:11px;color:#ff2e2e;margin-top:4px;font-weight:bold}
-/* AVALIACOES */
-#reviews{padding:10px; max-width:400px; margin:10px auto; font-size:10px; color:#fff; background:#111; border:1px solid #8b0000; border-radius:10px; max-height:200px; overflow-y:auto;}
+#reviews{padding:10px; max-width:400px; margin:10px auto; font-size:8px; color:#fff; background:#111; border:1px solid #8b0000; border-radius:10px; max-height:200px; overflow-y:auto;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 @keyframes popIn{from{opacity:0;transform:scale(0.8);}to{opacity:1;transform:scale(1);}}
 </style>
 </head>
 <body>
 
-<div class="top-bar">Rdn Store Oficial 🔥</div>
+<div class="top-bar">Rdn Store Turbo 🔥 <span id="refCount">Vendas: 0</span></div>
 <div class="header"><div class="logo" id="logo">Rdn Store</div></div>
 <div class="products" id="products"></div>
 
-<!-- MODAL COMPRA -->
 <div class="modal" id="buyModal">
   <div class="modal-box">
     <h3>Finalizar compra</h3>
@@ -70,7 +69,6 @@ body::before{
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
 <div class="admin-panel" id="adminPanel">
   <div class="tab-buttons">
     <button class="active" onclick="abrirAba('produtos',this)">Produtos</button>
@@ -109,7 +107,6 @@ let vendas=JSON.parse(localStorage.vendas||"[]");
 let avaliacoes=JSON.parse(localStorage.avaliacoes||"[]");
 let produtoAtual=null;
 
-// FAKES
 const avaliacoesFake=[
   {nome:"João","texto":"Ótima loja! Produtos entregues rápido."},
   {nome:"Maria","texto":"Preço justo e atendimento top."},
@@ -123,7 +120,6 @@ const avaliacoesFake=[
   {nome:"Larissa","texto":"Voltarei a comprar com certeza."}
 ];
 
-// RENDER
 function salvar(){
   localStorage.produtos=JSON.stringify(produtos);
   localStorage.vendas=JSON.stringify(vendas);
@@ -149,7 +145,6 @@ function render(){
   });
 }
 
-// MODAL COMPRA
 function abrirCompra(i){produtoAtual=i;buyModal.style.display='flex';}
 function finalizar(tipo){
   const p=produtos[produtoAtual];
@@ -163,7 +158,6 @@ function finalizar(tipo){
   buyModal.style.display='none';
 }
 
-// ADMIN
 let clicks=0;
 logo.onclick=()=>{if(++clicks==5){let s=prompt("Senha Admin:"); if(s===ADMIN_SENHA){adminPanel.style.display='block';clicks=0}else alert("Senha incorreta");}}
 function sairAdmin(){adminPanel.style.display='none'}
@@ -185,7 +179,6 @@ selectProd.onchange=()=>{
   infinito.checked=p.infinito; forcarEsgotado.checked=p.forcarEsgotado;
 }
 
-// CRUD PRODUTOS
 function criar(){
   const r=new FileReader();
   r.onload=()=>{
@@ -197,26 +190,15 @@ function criar(){
 function editar(){const i=selectProd.value;Object.assign(produtos[i],{nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:forcarEsgotado.checked}); salvar();}
 function apagar(){produtos.splice(selectProd.value,1); salvar();}
 
-// HISTÓRICO DE VENDAS
 function renderVendas(){
   history.innerHTML="";
   vendas.forEach(v=>history.innerHTML+=`<div>${v.hora}: ${v.produto} — R$${v.preco}</div>`);
   historyCount.innerText="Total vendas: "+vendas.length;
+  refCount.innerText=vendas.length;
 }
 
-// AVALIACOES
 function renderReviews(){reviews.innerHTML="";avaliacoesFake.concat(avaliacoes).forEach(a=>reviews.innerHTML+=`<div><b>${a.nome}:</b> ${a.texto}</div>`);}
-function enviarReview(){
-  const n=document.getElementById("nomeReview")?.value.trim();
-  const t=document.getElementById("textoReview")?.value.trim();
-  if(!n||!t){alert("Preencha nome e avaliação"); return;}
-  avaliacoes.push({nome:n,texto:t});
-  document.getElementById("nomeReview").value=""; 
-  document.getElementById("textoReview").value="";
-  salvar();
-}
 
-// INIT
 render(); renderVendas(); renderReviews();
 </script>
 </body>
