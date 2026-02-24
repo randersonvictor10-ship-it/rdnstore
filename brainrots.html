@@ -146,15 +146,6 @@ function buyInsta(){
 }
 
 // ===== ADMIN =====
-function openAdmin(){
-  auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-}
-auth.onAuthStateChanged(u=>{
-  if(u && u.email===ADMIN_EMAIL){
-    admin.style.display="flex";
-    adminArea.innerHTML="<p>Admin logado ✔</p>";
-  }
-});
 function closeAdmin(){admin.style.display="none"}
 function logout(){auth.signOut();closeAdmin()}
 </script>
