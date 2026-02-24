@@ -4,241 +4,229 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rdn Store</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
-body{background:#0d0d0d;color:#fff;line-height:1.2;transition:background .3s}
 
-/* Top bar */
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif;}
+body{
+  background:#0d0d0d url('file_0000000023c071f5a78c26a32bea3332.png') no-repeat center bottom;
+  background-size:contain;
+  color:#fff;
+  line-height:1.2;
+  transition:background .3s;
+}
+
+/* ===== TOP BAR ===== */
 .top-bar{
-  background:linear-gradient(90deg,#8b0000,#ff2e2e);
+  background:#8b0000;
   padding:10px;
   text-align:center;
   font-weight:bold;
   text-transform:uppercase;
   letter-spacing:1px;
-  border-bottom:2px solid #ff2e2e;
-  box-shadow:0 3px 8px rgba(255,0,0,0.3);
-  animation:slideDown 1s ease-out;
-}
-@keyframes slideDown{
-  from{transform:translateY(-20px);opacity:0;}
-  to{transform:translateY(0);opacity:1;}
+  box-shadow:0 2px 10px rgba(255,0,0,0.4);
 }
 
-/* Header */
+/* ===== HEADER ===== */
 .header{
-  padding:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px;
   background:#111;
-  border-bottom:2px solid #ff2e2e;
-  text-align:center;
-  animation:fadeIn 1s ease-out;
+  border-bottom:2px solid #8b0000;
 }
 .logo{
-  color:#ff4c4c;
-  font-size:28px;
+  color:#ff2e2e;
+  font-size:26px;
   font-weight:bold;
   cursor:pointer;
-  text-shadow:0 0 8px #ff2e2e;
-  transition:.3s;
+  animation:neon 1.5s infinite alternate;
+  text-shadow:0 0 5px red;
 }
-.logo:hover{transform:scale(1.05);}
+@keyframes neon{
+  from{text-shadow:0 0 5px red;}
+  to{text-shadow:0 0 20px red,0 0 40px red;}
+}
 
-/* Products - 2x2 grid */
+/* ===== PRODUTOS 2x2 ===== */
 .products{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:16px;
-  padding:16px;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  padding:20px;
 }
 .card{
-  background:#1a1a1a;
-  border:1px solid #ff2e2e;
-  border-radius:16px;
+  background:#111;
+  border:1px solid #8b0000;
+  border-radius:15px;
   overflow:hidden;
   position:relative;
-  transition:.3s transform, .3s box-shadow;
+  box-shadow:0 0 10px rgba(255,0,0,0.3);
+  transition:0.3s;
 }
 .card:hover{
-  transform:scale(1.04);
-  box-shadow:0 0 12px #ff2e2e,0 0 22px #ff4c4c;
+  box-shadow:0 0 20px rgba(255,0,0,0.7);
+  transform:translateY(-5px);
 }
 .card img{
   width:100%;
   height:140px;
   object-fit:cover;
-  transition:.3s transform;
+  border-bottom:1px solid #8b0000;
 }
-.card img:hover{transform:scale(1.08);}
-.card-content{padding:10px;}
-.price{color:#ff6b6b;font-weight:bold;font-size:12px;margin-top:4px;}
-.stock{font-size:10px;color:#bbb;margin-top:2px;}
+.card-content{
+  padding:15px;
+}
+.price{
+  color:#ff2e2e;
+  font-weight:bold;
+  font-size:16px;
+  margin-top:5px;
+}
+.stock{
+  font-size:12px;
+  margin-top:5px;
+  color:#00ff88;
+}
 .buy-btn{
-  margin-top:6px;
+  margin-top:10px;
   width:100%;
   padding:8px;
-  background:#ff2e2e;
+  background:#8b0000;
   border:none;
-  color:#fff;
+  color:white;
   border-radius:8px;
-  font-weight:bold;
-  font-size:12px;
   cursor:pointer;
-  transition:.3s transform, .3s background;
+  font-weight:bold;
+  transition:0.3s;
 }
 .buy-btn:hover{
-  background:#ff4c4c;
-  transform:scale(1.05);
-}
-.buy-btn:disabled{
-  opacity:.5;
-  background:#333;
-  cursor:not-allowed;
-}
-.sold-out{
-  position:absolute;inset:0;
-  background:rgba(0,0,0,.85);
-  display:flex;align-items:center;justify-content:center;
-  font-size:16px;color:#ff4c4c;font-weight:bold;
-  animation:fadeIn 0.5s;
+  background:#ff2e2e;
+  box-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e;
 }
 
-/* Modal Compra */
+/* ===== SOLD OUT ===== */
+.sold-out{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.85);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:red;
+  font-size:22px;
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+/* ===== MODAL DE COMPRA ===== */
 .modal{
-  position:fixed;inset:0;
-  background:rgba(0,0,0,.85);
-  display:none;align-items:center;justify-content:center;z-index:999;
-  animation:fadeIn 0.4s;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+  animation:fadeIn 0.3s;
 }
 .modal-box{
-  background:#1b1b1b;
-  border:2px solid #ff2e2e;
-  padding:16px;
-  border-radius:16px;
-  width:260px;
-  text-align:center;
-  box-shadow:0 0 12px #ff2e2e,0 0 24px #ff4c4c;
-  animation:slideUp 0.4s;
-}
-
-/* Admin Login */
-#adminLogin{
-  position:fixed;inset:0;
-  background:rgba(0,0,0,.9);
-  display:none;align-items:center;justify-content:center;z-index:1000;
-}
-.admin-box{
-  background:#1b1b1b;
+  background:#111;
+  border:2px solid #8b0000;
   padding:20px;
-  border:2px solid #ff2e2e;
   border-radius:16px;
   width:280px;
   text-align:center;
-  box-shadow:0 0 10px #ff2e2e,0 0 18px #ff4c4c;
-  animation:slideDown 0.4s;
+}
+@keyframes fadeIn{
+  from{opacity:0;}
+  to{opacity:1;}
 }
 
-/* Admin Panel */
+/* ===== ADMIN PANEL ===== */
 .admin-panel{
   position:fixed;
-  bottom:12px;left:12px;
-  background:#1a1a1a;
-  border:2px solid #ff2e2e;
-  padding:12px;
+  bottom:15px;
+  left:15px;
+  background:#111;
+  border:2px solid #8b0000;
+  padding:14px;
   border-radius:16px;
-  width:320px;
+  width:280px;
   z-index:999;
   display:none;
-  animation:fadeIn 0.5s;
 }
-.admin-panel h3{text-align:center;color:#ff4c4c;margin-bottom:6px;}
-.admin-tabs{display:flex;gap:4px;margin-bottom:8px;}
-.admin-tabs button{flex:1;padding:5px;font-size:10px;background:#111;border:none;color:#fff;border-radius:6px;cursor:pointer;}
-.admin-tabs button.active{background:#ff2e2e;}
-.admin-content{max-height:300px;overflow-y:auto;}
-.admin-content input,.admin-content select{width:100%;margin:4px 0;padding:6px;border-radius:6px;border:none;background:#000;color:#fff;font-size:12px;}
-.admin-content label{font-size:11px;display:flex;gap:4px;align-items:center;}
-.admin-content button{width:100%;margin:4px 0;padding:6px;border-radius:6px;border:none;font-weight:bold;cursor:pointer;font-size:12px;transition:.2s;}
-.admin-content button:hover{background:#ff4c4c;color:#fff;}
-
-/* Avaliações apenas input */
-#reviews{
-  font-size:6px;
-  margin-top:20px;
-  background:#111;
-  padding:6px;
-  border-top:2px solid #ff2e2e;
+.admin-panel h3{text-align:center;color:#ff2e2e;}
+.admin-panel input,.admin-panel select{
+  width:100%;
+  margin:5px 0;
+  padding:8px;
   border-radius:8px;
+  border:none;
+  background:#000;
+  color:#fff;
 }
-#reviews h3{color:#ff4c4c;font-size:8px;margin-bottom:2px;}
-#reviews .flex{display:flex;gap:4px;margin-top:2px;}
-#reviews input{padding:2px;font-size:6px;border-radius:4px;border:none;background:#000;color:#fff;}
-#reviews button{padding:2px;font-size:6px;border-radius:4px;background:#ff2e2e;color:#fff;border:none;cursor:pointer;}
-
-/* Animações */
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
-@keyframes slideDown{from{transform:translateY(-20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.admin-panel label{
+  font-size:13px;
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+.small-btn{
+  font-size:12px;
+  padding:6px;
+  margin-top:5px;
+}
 </style>
 </head>
+
 <body>
 
 <div class="top-bar">Rdn Store Oficial 🔥</div>
 <div class="header"><div class="logo" id="logo">Rdn Store</div></div>
 <div class="products" id="products"></div>
 
-<!-- Modal Compra -->
+<!-- MODAL DE COMPRA -->
 <div class="modal" id="buyModal">
   <div class="modal-box">
-    <h3 style="color:#ff4c4c" id="buyTitle">Finalizar compra</h3>
+    <h3 style="color:#ff2e2e">Finalizar compra</h3>
     <button class="buy-btn" onclick="finalizar('zap')">WhatsApp</button>
     <button class="buy-btn" onclick="finalizar('ig')">Instagram</button>
     <button class="buy-btn small-btn" onclick="buyModal.style.display='none'">Cancelar</button>
   </div>
 </div>
 
-<!-- Admin Login -->
-<div id="adminLogin">
-  <div class="admin-box">
-    <h3>ADMIN</h3>
-    <input type="password" id="adminPass" placeholder="Senha">
-    <button class="buy-btn" onclick="loginAdmin()">Entrar</button>
-  </div>
-</div>
-
-<!-- Admin Panel -->
+<!-- ADMIN -->
 <div class="admin-panel" id="adminPanel">
   <h3>ADMIN</h3>
-  <div class="admin-tabs">
-    <button class="tab-btn active" data-tab="produtos">Produtos</button>
-    <button class="tab-btn" data-tab="vendas">Histórico</button>
-    <button class="tab-btn" data-tab="avaliacoes">Avaliações</button>
-  </div>
-  <div class="admin-content" id="adminContent"></div>
+  <select id="selectProd"></select>
+  <input id="nome" placeholder="Nome">
+  <input id="preco" type="number" placeholder="Preço">
+  <input id="estoque" type="number" placeholder="Estoque">
+  <label><input type="checkbox" id="infinito"> Estoque infinito</label>
+  <label><input type="checkbox" id="forcarEsgotado"> Forçar esgotado (admin)</label>
+  <input id="img" type="file">
+  <button class="buy-btn" onclick="criar()">Criar</button>
+  <button class="buy-btn" onclick="editar()">Salvar</button>
+  <button class="buy-btn" onclick="apagar()">Apagar</button>
   <button class="buy-btn small-btn" onclick="sairAdmin()">Sair</button>
-</div>
-
-<!-- Avaliações input -->
-<div id="reviews">
-  <h3>Avaliações dos clientes</h3>
-  <div class="flex">
-    <input type="text" id="reviewInput" placeholder="Deixe sua avaliação">
-    <button onclick="adicionarReview()">Enviar</button>
-  </div>
 </div>
 
 <script>
 const ADMIN_SENHA="randerson555";
 const zap="https://wa.me/5581995367131?text=";
-const ig="https://instagram.com/rdn.store.ofc";
+const ig="https://instagram.com/rdn.store.ofc?text=";
 
 let produtos=JSON.parse(localStorage.produtos||"[]");
 let produtoAtual=null;
-let vendas=JSON.parse(localStorage.vendas||"[]");
-let reviews=JSON.parse(localStorage.reviews||"[]");
 
-/* Render Produtos */
 function salvar(){localStorage.produtos=JSON.stringify(produtos);render();carregarAdmin();}
 function render(){
+  const products=document.getElementById("products");
   products.innerHTML="";
   produtos.forEach((p,i)=>{
     const esgotado=p.forcarEsgotado || (!p.infinito && p.estoque<=0);
@@ -256,107 +244,81 @@ function render(){
   });
 }
 
-/* Compra */
-function abrirCompra(i){produtoAtual=i;buyModal.style.display="flex";}
+function abrirCompra(i){produtoAtual=i;document.getElementById('buyModal').style.display='flex';}
 function finalizar(tipo){
   const p=produtos[produtoAtual];
-  const msg=`🛒 Produto: ${p.nome} - R$${p.preco}`;
   if(!p.infinito)p.estoque--;
-  vendas.push({produto:p.nome,preco:p.preco,data:new Date().toLocaleString(),enviada:false});
-  localStorage.vendas=JSON.stringify(vendas);
   salvar();
-  window.open(tipo=="zap"?zap+encodeURIComponent(msg):ig,"_blank");
-  buyModal.style.display="none";
+  const texto=`🛒 Quero comprar ${p.nome} — R$${p.preco}`;
+  window.open(tipo=="zap"?zap+encodeURIComponent(texto):ig+encodeURIComponent(texto),"_blank");
+  document.getElementById('buyModal').style.display='none';
 }
 
-/* Admin */
+/* ADMIN */
 let clicks=0;
-logo.onclick=()=>{if(++clicks==5){adminLogin.style.display="flex";clicks=0}}
-function loginAdmin(){
-  if(adminPass.value===ADMIN_SENHA){
-    adminLogin.style.display="none";
-    adminPanel.style.display="block";
-    adminPass.value="";
-    carregarAdmin();
-    mostrarTab('produtos');
-  } else alert("Senha incorreta!");
-}
-function sairAdmin(){adminPanel.style.display="none";}
-
-/* Admin Tabs */
-const tabs=document.querySelectorAll('.tab-btn');
-const adminContent=document.getElementById('adminContent');
-tabs.forEach(btn=>{
-  btn.onclick=()=>{
-    tabs.forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    mostrarTab(btn.dataset.tab);
-  }
-});
-function mostrarTab(tab){
-  adminContent.innerHTML="";
-  if(tab==='produtos'){
-    adminContent.innerHTML=`<select id="selectProd"></select>
-    <input id="nome" placeholder="Nome do produto">
-    <input id="preco" type="number" placeholder="Preço">
-    <input id="estoque" type="number" placeholder="Estoque">
-    <label><input type="checkbox" id="infinito"> Estoque infinito</label>
-    <label><input type="checkbox" id="forcarEsgotado"> Forçar esgotado</label>
-    <input id="img" type="file">
-    <button class="buy-btn" onclick="criar()">Criar</button>
-    <button class="buy-btn" onclick="editar()">Salvar</button>
-    <button class="buy-btn" onclick="apagar()">Apagar</button>`;
-    carregarAdminProdutos();
-  } else if(tab==='vendas'){
-    if(vendas.length===0) adminContent.innerHTML="<p>Nenhuma venda ainda.</p>";
-    else{
-      vendas.forEach((v,i)=>adminContent.innerHTML+=`<p>${v.data} - ${v.produto} - R$${v.preco} - <button onclick="marcarEnviada(${i})">${v.enviada?'Enviada':'Marcar enviada'}</button></p>`);
-    }
-  } else if(tab==='avaliacoes'){
-    adminContent.innerHTML="<p>Somente usuários podem enviar avaliações.</p>";
+document.getElementById("logo").onclick=()=>{
+  if(++clicks==5){
+    const senha=prompt("Digite a senha do admin:");
+    if(senha===ADMIN_SENHA){
+      document.getElementById('adminPanel').style.display='block';
+      carregarAdmin();
+    } else alert("Senha incorreta!");
+    clicks=0;
   }
 }
 
-/* Admin produtos */
-function carregarAdminProdutos(){
+function sairAdmin(){document.getElementById('adminPanel').style.display='none'}
+
+function carregarAdmin(){
   const selectProd=document.getElementById('selectProd');
   selectProd.innerHTML="";
   produtos.forEach((p,i)=>selectProd.innerHTML+=`<option value="${i}">${p.nome}</option>`);
-  selectProd.onchange=()=>{
-    const p=produtos[selectProd.value];
-    nome.value=p.nome;
-    preco.value=p.preco;
-    estoque.value=p.estoque;
-    infinito.checked=p.infinito;
-    forcarEsgotado.checked=p.forcarEsgotado;
-  }
 }
+
+document.getElementById('selectProd').onchange=()=>{
+  const p=produtos[document.getElementById('selectProd').value];
+  document.getElementById('nome').value=p.nome;
+  document.getElementById('preco').value=p.preco;
+  document.getElementById('estoque').value=p.estoque;
+  document.getElementById('infinito').checked=p.infinito;
+  document.getElementById('forcarEsgotado').checked=p.forcarEsgotado;
+}
+
 function criar(){
   const r=new FileReader();
   r.onload=()=>{
-    produtos.push({nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:false,img:r.result});
+    produtos.push({
+      nome:document.getElementById('nome').value,
+      preco:+document.getElementById('preco').value,
+      estoque:+document.getElementById('estoque').value,
+      infinito:document.getElementById('infinito').checked,
+      forcarEsgotado:false,
+      img:r.result
+    });
     salvar();
   }
-  if(img.files[0]) r.readAsDataURL(img.files[0]);
+  r.readAsDataURL(document.getElementById('img').files[0]);
 }
+
 function editar(){
-  const i=selectProd.value;
-  Object.assign(produtos[i],{nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:forcarEsgotado.checked});
+  const i=document.getElementById('selectProd').value;
+  Object.assign(produtos[i],{
+    nome:document.getElementById('nome').value,
+    preco:+document.getElementById('preco').value,
+    estoque:+document.getElementById('estoque').value,
+    infinito:document.getElementById('infinito').checked,
+    forcarEsgotado:document.getElementById('forcarEsgotado').checked
+  });
   salvar();
 }
-function apagar(){produtos.splice(selectProd.value,1);salvar();}
-function marcarEnviada(i){vendas[i].enviada=true;localStorage.vendas=JSON.stringify(vendas);mostrarTab('vendas');}
 
-/* Reviews */
-function adicionarReview(){
-  const input=document.getElementById("reviewInput");
-  if(input.value.trim()==="") return;
-  reviews.push({msg:input.value});
-  localStorage.reviews=JSON.stringify(reviews);
-  input.value="";
+function apagar(){
+  produtos.splice(document.getElementById('selectProd').value,1);
+  salvar();
 }
 
 render();
 </script>
+
 </body>
 </html>
