@@ -41,7 +41,7 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
 .admin-box input{width:100%;padding:6px;margin:6px 0;border-radius:6px;border:none;background:#000;color:white;}
 
 /* ADMIN PANEL */
-.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:12px;border-radius:16px;width:320px;z-index:999;display:none;}
+.admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:12px;border-radius:16px;width:340px;z-index:999;display:none;}
 .admin-panel h3{text-align:center;color:#ff2e2e;margin-bottom:6px;}
 .admin-panel input,.admin-panel select{width:100%;margin:4px 0;padding:6px;border-radius:6px;border:none;background:#000;color:#fff;}
 .admin-panel label{font-size:12px;display:flex;gap:6px;align-items:center;margin:3px 0;}
@@ -51,6 +51,11 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
 #historico{max-height:120px;overflow-y:auto;background:#111;border:1px solid #8b0000;padding:6px;border-radius:6px;margin-top:6px;font-size:12px;}
 #historico div{padding:2px 4px;margin:2px 0;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center;}
 #historico input{width:50px;background:#000;color:white;border:none;border-bottom:1px solid #ff2e2e;}
+
+/* AVALIAÇÕES MINÍMAS */
+#avaliacoes{margin:10px;padding:5px;text-align:left;font-size:7px;line-height:1;color:#ff5555;overflow-y:auto;}
+#avaliacoes .avaliacao{margin-bottom:2px;}
+#avaliacoes .avaliacao strong{color:#ff2e2e;}
 
 /* FUNDO */
 body::before{
@@ -112,6 +117,9 @@ body::before{
   <button class="buy-btn small-btn" onclick="zerarHistorico()">Zerar Histórico</button>
   <div id="historico"></div>
 </div>
+
+<!-- AVALIAÇÕES -->
+<div id="avaliacoes"></div>
 
 <script>
 const ADMIN_SENHA="randerson555";
@@ -213,18 +221,43 @@ function atualizarHistorico(){
   historico.forEach((h,i)=>{
     const div = document.createElement('div');
     div.innerHTML = `<span>${h.data} - ${h.produto} - R$ </span>`;
-    const input = document.createElement('input');
-    input.type='number';
-    input.value=h.preco;
-    input.onchange=()=>{historico[i].preco=+input.value;salvar();}
-    div.appendChild(input);
+    const inputPreco = document.createElement('input');
+    inputPreco.type='number';
+    inputPreco.value=h.preco;
+    inputPreco.onchange=()=>{historico[i].preco=+inputPreco.value;salvar();}
+    div.appendChild(inputPreco);
     historicoDiv.appendChild(div);
   });
 }
 
 function zerarHistorico(){if(confirm("Deseja realmente zerar o histórico?")){historico=[];salvar();}}
 
+// Avaliações
+const avals=[
+  {nome:"Lucas",msg:"Excelente loja, recomendo!"},
+  {nome:"Ana",msg:"Entrega rápida e confiável."},
+  {nome:"Carlos",msg:"Produtos de ótima qualidade."},
+  {nome:"Maria",msg:"Preço justo e atendimento top."},
+  {nome:"João",msg:"Sempre volto a comprar aqui."},
+  {nome:"Beatriz",msg:"Super recomendo, 5 estrelas!"},
+  {nome:"Pedro",msg:"Muito bom, adorei."},
+  {nome:"Camila",msg:"Atendimento rápido e eficiente."},
+  {nome:"Rafael",msg:"Produtos incríveis!"},  
+  {nome:"Fernanda",msg:"Amei, compra garantida."},
+  {nome:"Bruno",msg:"Vale cada centavo."},
+  {nome:"Juliana",msg:"Top demais!"},
+  {nome:"Gustavo",msg:"Recomendo para todos."},
+  {nome:"Patrícia",msg:"Muito satisfeito com a compra."},
+  {nome:"Thiago",msg:"Tudo perfeito, obrigado!"}
+];
+function renderAvaliacoes(){
+  avaliacoes.innerHTML="";
+  avals.forEach(a=>avaliacoes.innerHTML+=`<div class="avaliacao"><strong>${a.nome}:</strong> ${a.msg}</div>`);
+}
+
+// Inicial
 render();
+renderAvaliacoes();
 </script>
 
 </body>
