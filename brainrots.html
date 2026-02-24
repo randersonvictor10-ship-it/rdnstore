@@ -5,178 +5,158 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rdn Store</title>
 
-<!-- Firebase -->
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
 body{background:#000;color:#fff}
 
-/* HEADER */
+/* ===== HEADER ===== */
 .top-bar{background:#8b0000;padding:10px;text-align:center;font-weight:bold}
-.logo{color:#ff2e2e;font-size:26px;font-weight:bold;text-align:center;padding:15px}
+.header{display:flex;justify-content:space-between;align-items:center;padding:15px;background:#111;border-bottom:2px solid #8b0000}
+.logo{color:#ff2e2e;font-size:26px;font-weight:bold;text-shadow:0 0 10px red}
 
-/* PRODUTOS */
-.products{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:20px}
-.card{background:#111;border:1px solid #8b0000;border-radius:15px;overflow:hidden}
-.card img{width:100%;height:140px;object-fit:cover}
-.card-content{padding:12px}
-.price{color:#ff2e2e;font-weight:bold}
-.buy-btn{margin-top:8px;width:100%;padding:8px;background:#8b0000;border:none;color:#fff;border-radius:8px;font-weight:bold}
-
-/* POPUP */
-.popup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);display:none;justify-content:center;align-items:center;z-index:999}
-.popup-box{background:#111;border:2px solid #8b0000;border-radius:15px;padding:20px;width:90%;max-width:420px}
-
-/* ADMIN BTN */
-.admin-btn{
+/* ===== ADMIN BTN ===== */
+#adminBtn{
   position:fixed;
   bottom:15px;
   right:15px;
   background:#8b0000;
-  color:#fff;
-  border:none;
-  padding:12px 15px;
+  padding:10px 14px;
   border-radius:50%;
-  font-weight:bold;
+  font-size:18px;
   cursor:pointer;
+  box-shadow:0 0 15px red;
+  z-index:999;
 }
 
-/* AVALIAÇÕES PEQUENAS */
-.footer-reviews{
-  border-top:1px solid #222;
-  padding:10px;
-  font-size:11px;
-  color:#aaa;
+/* ===== PRODUTOS ===== */
+.products{display:grid;grid-template-columns:1fr 1fr;gap:15px;padding:20px}
+.card{background:#111;border:1px solid #8b0000;border-radius:15px;overflow:hidden;transition:.3s}
+.card:hover{box-shadow:0 0 20px red}
+.card img{width:100%;height:140px;object-fit:cover}
+.card-content{padding:12px}
+.price{color:#ff2e2e;font-weight:bold}
+.buy-btn{margin-top:8px;width:100%;padding:8px;background:#8b0000;border:none;color:#fff;border-radius:8px}
+
+/* ===== POPUP ===== */
+.popup,.admin{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.8);
+  display:none;justify-content:center;align-items:center;
+  z-index:2000
 }
-.footer-reviews span{
-  display:block;
-  margin-bottom:4px;
+.box{
+  background:#111;
+  border:2px solid #8b0000;
+  border-radius:15px;
+  padding:20px;
+  width:90%;max-width:400px;
+  animation:pop .3s
 }
-.stars{color:gold;font-size:11px}
+@keyframes pop{from{transform:scale(.7)}to{transform:scale(1)}}
+.box button{width:100%;margin-top:10px;padding:10px;border:none;border-radius:8px}
+
+/* ===== ADMIN ===== */
+.admin .box{max-width:600px}
+input,select{width:100%;padding:8px;margin-top:5px;background:#000;border:1px solid #8b0000;color:#fff;border-radius:6px}
 </style>
 </head>
 
 <body>
 
 <div class="top-bar">Rdn Store Oficial 🔥</div>
-
-<div class="logo" id="logo">Rdn Store</div>
+<div class="header"><div class="logo">Rdn Store</div></div>
 
 <div class="products" id="products"></div>
 
-<button class="admin-btn" onclick="openAdmin()">ADM</button>
+<!-- BOTÃO ADMIN -->
+<div id="adminBtn" onclick="openAdmin()">⚙</div>
 
 <!-- POPUP COMPRA -->
 <div class="popup" id="buyPopup">
-  <div class="popup-box">
+  <div class="box">
     <h3 id="buyTitle"></h3>
-    <p id="buyPrice"></p>
-    <button class="buy-btn" onclick="buyWhats()">WhatsApp</button>
-    <button class="buy-btn" onclick="buyInsta()">Instagram</button>
-    <button class="buy-btn" onclick="closePopups()">Cancelar</button>
+    <button onclick="buyZap()">WhatsApp</button>
+    <button onclick="buyInsta()">Instagram</button>
+    <button onclick="closeBuy()">Cancelar</button>
   </div>
 </div>
 
 <!-- ADMIN -->
-<div class="popup" id="adminPopup">
-  <div class="popup-box">
-    <h3>Painel Admin</h3>
-    <div id="adminInfo"></div>
-    <button class="buy-btn" onclick="logout()">Sair</button>
+<div class="admin" id="admin">
+  <div class="box">
+    <h2>Admin</h2>
+    <div id="adminArea"></div>
+    <button onclick="logout()">Sair</button>
+    <button onclick="closeAdmin()">Fechar</button>
   </div>
 </div>
 
-<!-- AVALIAÇÕES PEQUENAS -->
-<div class="footer-reviews">
-  <span><span class="stars">★★★★★</span> Lucas — entrega rápida</span>
-  <span><span class="stars">★★★★★</span> Matheus — loja confiável</span>
-  <span><span class="stars">★★★★★</span> Rafael — recomendo</span>
-  <span><span class="stars">★★★★★</span> Pedro — chegou certinho</span>
-  <span><span class="stars">★★★★★</span> João — top demais</span>
-</div>
-
 <script>
-/* FIREBASE */
+// ===== CONFIG FIREBASE (COLOQUE O SEU) =====
 firebase.initializeApp({
-  apiKey:"SUA_API_KEY",
-  authDomain:"SEU_PROJETO.firebaseapp.com",
-  projectId:"SEU_PROJETO"
+  apiKey: "SUA_API_KEY",
+  authDomain: "SEU_DOMINIO.firebaseapp.com",
+  projectId: "SEU_PROJECT_ID"
 });
 
-const db=firebase.firestore();
-const auth=firebase.auth();
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-const ADMIN_EMAIL="randersonvictor10@gmail.com";
-const telefoneWhatsApp="5581995367131";
-let selected=null;
+const ADMIN_EMAIL = "randersonvictor10@gmail.com";
+const telefone = "5581995367131";
+let produtoAtual = null;
 
-/* PRODUTOS */
-db.collection("products").onSnapshot(s=>{
-  products.innerHTML="";
-  s.forEach(d=>{
-    const p=d.data();
-    products.innerHTML+=`
-      <div class="card">
-        <img src="${p.img}">
-        <div class="card-content">
-          <div>${p.name}</div>
-          <div class="price">R$${p.price}</div>
-          <button class="buy-btn" onclick="openBuy('${p.name}',${p.price})">Comprar</button>
-        </div>
-      </div>`;
-  });
+// ===== PRODUTOS =====
+const produtos = [
+ {nome:"Brainrot 1.4b",preco:55,img:"images/brainrot1.png",estoque:1},
+ {nome:"Brainrot 1.2b",preco:50,img:"images/brainrot2.png",estoque:1}
+];
+
+const div = document.getElementById("products");
+produtos.forEach((p,i)=>{
+  div.innerHTML+=`
+  <div class="card">
+    <img src="${p.img}">
+    <div class="card-content">
+      <div>${p.nome}</div>
+      <div class="price">R$${p.preco}</div>
+      <button class="buy-btn" onclick="openBuy(${i})">Comprar</button>
+    </div>
+  </div>`;
 });
 
-/* COMPRA */
-function openBuy(n,p){
-  selected={n,p};
-  buyTitle.innerText=n;
-  buyPrice.innerText="Preço: R$"+p;
-  buyPopup.style.display="flex";
+// ===== COMPRA =====
+function openBuy(i){
+  produtoAtual = produtos[i];
+  document.getElementById("buyTitle").innerText = produtoAtual.nome+" - R$"+produtoAtual.preco;
+  document.getElementById("buyPopup").style.display="flex";
 }
-function closePopups(){buyPopup.style.display="none"}
-
-function buyWhats(){
-  window.open(`https://wa.me/${telefoneWhatsApp}?text=${encodeURIComponent("Quero comprar "+selected.n+" por R$"+selected.p)}`);
+function closeBuy(){buyPopup.style.display="none"}
+function buyZap(){
+  let msg=`🛒 ${produtoAtual.nome} - R$${produtoAtual.preco}`;
+  window.open(`https://wa.me/${telefone}?text=${encodeURIComponent(msg)}`);
 }
 function buyInsta(){
   window.open("https://instagram.com/rdn.store.ofc");
 }
 
-/* ===== ADMIN – 3 FORMAS DE ABRIR ===== */
+// ===== ADMIN =====
 function openAdmin(){
   auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
 }
-
-/* clique secreto no logo */
-let clicks=0;
-logo.onclick=()=>{
-  clicks++;
-  if(clicks>=5) openAdmin();
-  setTimeout(()=>clicks=0,1500);
-};
-
-/* atalho teclado */
-document.addEventListener("keydown",e=>{
-  if(e.ctrlKey && e.shiftKey && e.key==="A"){
-    openAdmin();
-  }
-});
-
 auth.onAuthStateChanged(u=>{
   if(u && u.email===ADMIN_EMAIL){
-    adminPopup.style.display="flex";
-    adminInfo.innerText="Logado como ADMIN";
+    admin.style.display="flex";
+    adminArea.innerHTML="<p>Admin logado ✔</p>";
   }
 });
-
-function logout(){
-  auth.signOut();
-  adminPopup.style.display="none";
-}
+function closeAdmin(){admin.style.display="none"}
+function logout(){auth.signOut();closeAdmin()}
 </script>
 
 </body>
