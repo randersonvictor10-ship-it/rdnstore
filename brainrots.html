@@ -133,7 +133,7 @@ body{background:#0d0d0d;color:#fff;line-height:1.3}
   opacity:1;
 }
 
-/* ===== ADMIN ===== */
+/* ===== ADMIN LOGIN ===== */
 #adminLogin{
   position:fixed;
   inset:0;
@@ -152,6 +152,8 @@ body{background:#0d0d0d;color:#fff;line-height:1.3}
   text-align:center;
   box-shadow:0 0 10px #ff2e2e,0 0 20px #ff4c4c;
 }
+
+/* ===== ADMIN PANEL ===== */
 .admin-panel{
   position:fixed;
   bottom:15px;
@@ -160,7 +162,7 @@ body{background:#0d0d0d;color:#fff;line-height:1.3}
   border:2px solid #ff2e2e;
   padding:14px;
   border-radius:16px;
-  width:280px;
+  width:320px;
   z-index:999;
   display:none;
 }
@@ -169,26 +171,27 @@ body{background:#0d0d0d;color:#fff;line-height:1.3}
   color:#ff4c4c;
   margin-bottom:8px;
 }
-.admin-panel input,.admin-panel select{
-  width:100%;
-  margin:5px 0;
-  padding:8px;
-  border-radius:8px;
-  border:none;
-  background:#000;
-  color:#fff;
-}
-.admin-panel label{
-  font-size:13px;
+.admin-tabs{
   display:flex;
-  gap:6px;
-  align-items:center;
+  gap:4px;
+  margin-bottom:10px;
 }
-.small-btn{
-  font-size:12px;
+.admin-tabs button{
+  flex:1;
   padding:6px;
-  margin-top:5px;
+  font-size:12px;
+  background:#111;
+  border:none;
+  color:#fff;
+  border-radius:8px;
+  cursor:pointer;
 }
+.admin-tabs button.active{background:#ff2e2e;}
+.admin-content{max-height:350px;overflow-y:auto;}
+.admin-content input,.admin-content select{width:100%;margin:5px 0;padding:8px;border-radius:8px;border:none;background:#000;color:#fff}
+.admin-content label{font-size:13px;display:flex;gap:6px;align-items:center}
+.admin-content button{width:100%;margin:5px 0;padding:8px;border-radius:8px;border:none;font-weight:bold;cursor:pointer;transition:0.3s}
+.admin-content button:hover{background:#ff4c4c;color:#fff}
 
 /* ===== AVALIAÇÕES ===== */
 #reviews{
@@ -266,16 +269,12 @@ body{background:#0d0d0d;color:#fff;line-height:1.3}
 <!-- ADMIN PANEL -->
 <div class="admin-panel" id="adminPanel">
   <h3>ADMIN</h3>
-  <select id="selectProd"></select>
-  <input id="nome" placeholder="Nome do produto">
-  <input id="preco" type="number" placeholder="Preço">
-  <input id="estoque" type="number" placeholder="Estoque">
-  <label><input type="checkbox" id="infinito"> Estoque infinito</label>
-  <label><input type="checkbox" id="forcarEsgotado"> Forçar esgotado</label>
-  <input id="img" type="file">
-  <button class="buy-btn" onclick="criar()">Criar</button>
-  <button class="buy-btn" onclick="editar()">Salvar</button>
-  <button class="buy-btn" onclick="apagar()">Apagar</button>
+  <div class="admin-tabs">
+    <button class="tab-btn active" data-tab="produtos">Produtos</button>
+    <button class="tab-btn" data-tab="vendas">Histórico</button>
+    <button class="tab-btn" data-tab="avaliacoes">Avaliações</button>
+  </div>
+  <div class="admin-content" id="adminContent"></div>
   <button class="buy-btn small-btn" onclick="sairAdmin()">Sair</button>
 </div>
 
@@ -297,6 +296,7 @@ const ig="https://instagram.com/rdn.store.ofc";
 
 let produtos=JSON.parse(localStorage.produtos||"[]");
 let produtoAtual=null;
+let vendas=JSON.parse(localStorage.vendas||"[]");
 
 /* ===== RENDER PRODUTOS ===== */
 function salvar(){localStorage.produtos=JSON.stringify(produtos);render();carregarAdmin();}
@@ -324,6 +324,8 @@ function finalizar(tipo){
   const p=produtos[produtoAtual];
   const msg=`🛒 Produto: ${p.nome} - R$${p.preco}`;
   if(!p.infinito)p.estoque--;
+  vendas.push({produto:p.nome,preco:p.preco,data:new Date().toLocaleString()});
+  localStorage.vendas=JSON.stringify(vendas);
   salvar();
   window.open(tipo=="zap"?zap+encodeURIComponent(msg):ig,"_blank");
   buyModal.style.display="none";
@@ -336,48 +338,73 @@ function loginAdmin(){
   if(adminPass.value===ADMIN_SENHA){
     adminLogin.style.display="none";
     adminPanel.style.display="block";
-    adminPass.value=""; // nunca salva a senha
+    adminPass.value="";
     carregarAdmin();
+    mostrarTab('produtos');
   } else alert("Senha incorreta!");
 }
 function sairAdmin(){adminPanel.style.display="none";}
 
-function carregarAdmin(){
+/* TABS ADMIN */
+const tabs=document.querySelectorAll('.tab-btn');
+const adminContent=document.getElementById('adminContent');
+tabs.forEach(btn=>{
+  btn.onclick=()=>{
+    tabs.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    mostrarTab(btn.dataset.tab);
+  }
+});
+function mostrarTab(tab){
+  adminContent.innerHTML="";
+  if(tab==='produtos'){
+    adminContent.innerHTML=`<select id="selectProd"></select>
+    <input id="nome" placeholder="Nome do produto">
+    <input id="preco" type="number" placeholder="Preço">
+    <input id="estoque" type="number" placeholder="Estoque">
+    <label><input type="checkbox" id="infinito"> Estoque infinito</label>
+    <label><input type="checkbox" id="forcarEsgotado"> Forçar esgotado</label>
+    <input id="img" type="file">
+    <button class="buy-btn" onclick="criar()">Criar</button>
+    <button class="buy-btn" onclick="editar()">Salvar</button>
+    <button class="buy-btn" onclick="apagar()">Apagar</button>`;
+    carregarAdminProdutos();
+  } else if(tab==='vendas'){
+    if(vendas.length===0) adminContent.innerHTML="<p>Nenhuma venda ainda.</p>";
+    else{
+      vendas.forEach(v=>adminContent.innerHTML+=`<p>${v.data} - ${v.produto} - R$${v.preco}</p>`);
+    }
+  } else if(tab==='avaliacoes'){
+    let r=JSON.parse(localStorage.reviews||"[]");
+    r.forEach(v=>adminContent.innerHTML+=`<p>${v.nome}: ${v.msg}</p>`);
+  }
+}
+
+/* ADMIN PRODUTOS */
+function carregarAdminProdutos(){
+  const selectProd=document.getElementById('selectProd');
   selectProd.innerHTML="";
   produtos.forEach((p,i)=>selectProd.innerHTML+=`<option value="${i}">${p.nome}</option>`);
-}
-selectProd.onchange=()=>{
-  const p=produtos[selectProd.value];
-  nome.value=p.nome;
-  preco.value=p.preco;
-  estoque.value=p.estoque;
-  infinito.checked=p.infinito;
-  forcarEsgotado.checked=p.forcarEsgotado;
+  selectProd.onchange=()=>{
+    const p=produtos[selectProd.value];
+    nome.value=p.nome;
+    preco.value=p.preco;
+    estoque.value=p.estoque;
+    infinito.checked=p.infinito;
+    forcarEsgotado.checked=p.forcarEsgotado;
+  }
 }
 function criar(){
   const r=new FileReader();
   r.onload=()=>{
-    produtos.push({
-      nome:nome.value,
-      preco:+preco.value,
-      estoque:+estoque.value,
-      infinito:infinito.checked,
-      forcarEsgotado:false,
-      img:r.result
-    });
+    produtos.push({nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:false,img:r.result});
     salvar();
   }
   if(img.files[0]) r.readAsDataURL(img.files[0]);
 }
 function editar(){
   const i=selectProd.value;
-  Object.assign(produtos[i],{
-    nome:nome.value,
-    preco:+preco.value,
-    estoque:+estoque.value,
-    infinito:infinito.checked,
-    forcarEsgotado:forcarEsgotado.checked
-  });
+  Object.assign(produtos[i],{nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:forcarEsgotado.checked});
   salvar();
 }
 function apagar(){produtos.splice(selectProd.value,1);salvar();}
@@ -396,7 +423,7 @@ function adicionarReview(){
   if(input.value.trim()==="") return;
   const nomesFake=["Ana","Bruno","Carla","Diego","Eduarda","Fernando","Gabriel","Helena","Igor","Júlia","Kauan","Larissa","Marcos","Natália","Otávio"];
   const nome=nomesFake[Math.floor(Math.random()*nomesFake.length)];
-  reviews.push({nome,nome,msg:input.value});
+  reviews.push({nome,msg:input.value});
   localStorage.reviews=JSON.stringify(reviews);
   renderReviews();
   input.value="";
@@ -408,9 +435,7 @@ if(reviews.length===0){
     "Comprei de novo, muito bom.","Excelente comunicação com o vendedor.","Superou minhas expectativas.","Produto top, recomendo!","Compra simples e prática."
   ];
   const nomesFake=["Ana","Bruno","Carla","Diego","Eduarda","Fernando","Gabriel","Helena","Igor","Júlia","Kauan","Larissa","Marcos","Natália","Otávio"];
-  for(let i=0;i<15;i++){
-    reviews.push({nome:nomesFake[i],msg:avals[i]});
-  }
+  for(let i=0;i<15;i++) reviews.push({nome:nomesFake[i],msg:avals[i]});
   localStorage.reviews=JSON.stringify(reviews);
 }
 render();
