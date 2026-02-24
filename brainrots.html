@@ -12,14 +12,12 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
 .logo{color:#ff2e2e;font-size:28px;font-weight:bold;cursor:pointer;text-shadow:0 0 10px red;animation:neon 1.5s infinite alternate;}
 @keyframes neon{0%{text-shadow:0 0 5px red;}50%{text-shadow:0 0 15px red,0 0 25px red;}100%{text-shadow:0 0 20px red,0 0 40px red;}}
 
-/* CUPOM */
 #cupom-container{position:absolute;top:60px;right:20px;display:flex;gap:6px;}
 #cupom-container input{padding:4px;border-radius:4px;border:none;width:80px;font-size:10px;}
 #cupom-container button{padding:4px;border-radius:4px;border:none;background:#ff2e2e;color:white;font-size:10px;cursor:pointer;}
 #cupomMsg{color:#ff2e2e;font-size:10px;align-self:center;margin-left:4px;}
 
-/* PRODUTOS 2X2 */
-.products{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:20px;}
+.products{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;padding:20px;}
 .card{background:#111;border:1px solid #8b0000;border-radius:18px;overflow:hidden;position:relative;transition:0.3s;box-shadow:0 0 10px rgba(255,0,0,0.4);}
 .card:hover{box-shadow:0 0 20px rgba(255,0,0,0.8);}
 .card img{width:100%;height:150px;object-fit:cover;border-bottom:1px solid #8b0000;}
@@ -31,39 +29,35 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
 .buy-btn:disabled{opacity:0.5;background:#333;}
 .sold-out{position:absolute;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;font-size:20px;color:#ff2e2e;font-weight:bold;}
 
-/* MODAL COMPRA */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999;}
 .modal-box{background:#111;border:2px solid #8b0000;padding:20px;border-radius:16px;width:280px;text-align:center;}
 
-/* ADMIN LOGIN */
 #adminLogin{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:1000;}
 .admin-box{background:#111;padding:25px;border:2px solid #8b0000;border-radius:16px;width:300px;text-align:center;}
 .admin-box input{width:100%;padding:6px;margin:6px 0;border-radius:6px;border:none;background:#000;color:white;}
 
-/* ADMIN PANEL */
 .admin-panel{position:fixed;bottom:15px;left:15px;background:#111;border:2px solid #8b0000;padding:12px;border-radius:16px;width:340px;z-index:999;display:none;}
 .admin-panel h3{text-align:center;color:#ff2e2e;margin-bottom:6px;}
 .admin-panel input,.admin-panel select{width:100%;margin:4px 0;padding:6px;border-radius:6px;border:none;background:#000;color:#fff;}
 .admin-panel label{font-size:12px;display:flex;gap:6px;align-items:center;margin:3px 0;}
 .small-btn{font-size:11px;padding:4px;margin-top:4px;cursor:pointer;}
+
 #historico{max-height:120px;overflow-y:auto;background:#111;border:1px solid #8b0000;padding:6px;border-radius:6px;margin-top:6px;font-size:12px;}
 #historico div{padding:2px 4px;margin:2px 0;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center;}
 #historico input{width:50px;background:#000;color:white;border:none;border-bottom:1px solid #ff2e2e;}
 
-/* AVALIAÇÕES */
-#avaliacoes{margin:10px;padding:5px;text-align:left;font-size:10px;line-height:1;color:#ff5555;overflow-y:auto;}
+#avaliacoes{margin:10px;padding:5px;text-align:left;font-size:7px;line-height:1;color:#ff5555;overflow-y:auto;}
 #avaliacoes .avaliacao{margin-bottom:2px;}
 #avaliacoes .avaliacao strong{color:#ff2e2e;}
 </style>
 </head>
 <body>
 
-<div class="top-bar">RDN STORE OFICIAL 🔥</div>
+<div class="top-bar">RDN STORE Oficial 🔥</div>
 <div class="header">
   <div class="logo" id="logo">RDN STORE</div>
 </div>
 
-<!-- CUPOM -->
 <div id="cupom-container">
   <input type="text" id="cupomInput" placeholder="Cupom">
   <button onclick="aplicarCupom()">OK</button>
@@ -72,7 +66,6 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
 
 <div class="products" id="products"></div>
 
-<!-- MODAL COMPRA -->
 <div class="modal" id="buyModal">
   <div class="modal-box">
     <h3 style="color:#ff2e2e">Finalizar compra</h3>
@@ -82,7 +75,6 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
   </div>
 </div>
 
-<!-- ADMIN LOGIN -->
 <div id="adminLogin">
   <div class="admin-box">
     <h3 style="color:#ff2e2e">ADMIN</h3>
@@ -91,7 +83,6 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
 <div class="admin-panel" id="adminPanel">
   <h3>ADMIN</h3>
   <select id="selectProd"></select>
@@ -99,7 +90,6 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
   <input id="preco" type="number" placeholder="Preço">
   <input id="estoque" type="number" placeholder="Estoque">
   <label><input type="checkbox" id="infinito"> Estoque infinito</label>
-  <label><input type="checkbox" id="forcarEsgotado"> Forçar esgotado</label>
   <input id="img" type="file">
   <button class="buy-btn" onclick="criar()">Criar</button>
   <button class="buy-btn" onclick="editar()">Salvar</button>
@@ -111,38 +101,64 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
   <div id="historico"></div>
 </div>
 
-<!-- AVALIAÇÕES -->
 <div id="avaliacoes"></div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
 const ADMIN_SENHA="randerson555";
 const zap="https://wa.me/5581995367131";
 const ig="https://instagram.com/rdn.store.ofc";
 
-let produtos=JSON.parse(localStorage.produtos||"[]");
-let historico=JSON.parse(localStorage.historico||"[]");
+// CONFIG FIREBASE AQUI
+const firebaseConfig = {
+  apiKey: "SUA_API_KEY",
+  authDomain: "SEU_PROJETO.firebaseapp.com",
+  databaseURL: "https://SEU_PROJETO-default-rtdb.firebaseio.com",
+  projectId: "SEU_PROJETO",
+  storageBucket: "SEU_PROJETO.appspot.com",
+  messagingSenderId: "SEU_ID",
+  appId: "SEU_APPID"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// Funções principais
+let produtos=[];
+let historico=[]; 
 let produtoAtual=null;
 let cupomAtivo=false;
 
-// Salvar produtos e histórico
-function salvar(){localStorage.produtos=JSON.stringify(produtos);localStorage.historico=JSON.stringify(historico);render();carregarAdmin();}
+// Carregar produtos do Firebase
+function carregarProdutos(){
+  db.ref('produtos').on('value', snap=>{
+    produtos = snap.val()||[];
+    render();
+    carregarAdmin();
+  });
+}
+
+// Salvar produtos no Firebase
+function salvarProdutos(){
+  db.ref('produtos').set(produtos);
+}
 
 // Render produtos
 function render(){
-  products.innerHTML="";
+  const container = document.getElementById('products');
+  container.innerHTML="";
   produtos.forEach((p,i)=>{
-    const esgotado = p.forcarEsgotado || (!p.infinito && p.estoque<=0);
-    let precoFinal = p.preco;
-    if(cupomAtivo) precoFinal=(p.preco*0.95).toFixed(2);
-    products.innerHTML+=`
+    const precoFinal = cupomAtivo ? (p.preco*0.95).toFixed(2) : p.preco;
+    container.innerHTML+=`
       <div class="card">
-        ${esgotado?'<div class="sold-out">ESGOTADO</div>':''}
         <img src="${p.img}">
         <div class="card-content">
           <div>${p.nome}</div>
           <div class="price">R$${precoFinal}</div>
-          <div class="stock">${p.infinito?'Infinito':'Estoque: '+p.estoque}</div>
-          <button class="buy-btn" ${esgotado?'disabled':''} onclick="abrirCompra(${i})">Comprar</button>
+          <div class="stock">Stock: 1</div>
+          <button class="buy-btn" onclick="abrirCompra(${i})">Comprar</button>
         </div>
       </div>`;
   });
@@ -153,34 +169,26 @@ function render(){
 function abrirCompra(i){produtoAtual=i;buyModal.style.display="flex";}
 function finalizar(tipo){
   const p = produtos[produtoAtual];
-  if(!p.infinito) p.estoque--;
-
-  let precoVenda = p.preco;
-  if(cupomAtivo) precoVenda=(p.preco*0.95).toFixed(2);
-
+  const precoVenda = cupomAtivo ? (p.preco*0.95).toFixed(2) : p.preco;
   const data = new Date().toLocaleString();
   historico.push({produto:p.nome,preco:precoVenda,data});
-  salvar();
-
+  db.ref('historico').set(historico);
+  window.open(tipo==="zap"?`${zap}?text=${encodeURIComponent(`🛒 Produto: ${p.nome} - R$${precoVenda} - ${data}`)}`:`${ig}`,"_blank");
   buyModal.style.display='none';
-
-  const msg=`🛒 Produto: ${p.nome} - R$${precoVenda} - ${data}`;
-  if(tipo==="zap"){window.open(`https://wa.me/5581995367131?text=${encodeURIComponent(msg)}`,"_blank");}
-  else if(tipo==="ig"){window.open("https://instagram.com/rdn.store.ofc","_blank");}
 }
 
 // Cupom
 function aplicarCupom(){
   const c=cupomInput.value.trim().toUpperCase();
   if(c==="RDN5"){cupomAtivo=true;cupomMsg.innerText="5% OFF aplicado";render();}
-  else{cupomAtivo=false;cupomMsg.innerText="Cupom inválido";}
+  else{cupomAtivo=false;cupomMsg.innerText="Cupom inválido";render();}
 }
 
 // Admin
 let clicks=0;
-logo.onclick=()=>{if(++clicks==5){adminLogin.style.display="flex";clicks=0;}};
-function loginAdmin(){if(adminPass.value===ADMIN_SENHA){adminLogin.style.display="none";adminPanel.style.display="block";carregarAdmin();}else alert("Senha errada");}
-function sairAdmin(){adminPanel.style.display="none";adminPass.value="";}
+logo.onclick=()=>{if(++clicks===5){adminLogin.style.display='flex';clicks=0;}};
+function loginAdmin(){if(adminPass.value===ADMIN_SENHA){adminLogin.style.display='none';adminPanel.style.display='block';carregarAdmin();}else alert("Senha errada");}
+function sairAdmin(){adminPanel.style.display='none';adminPass.value="";}
 
 function carregarAdmin(){
   selectProd.innerHTML="";
@@ -192,51 +200,42 @@ selectProd.onchange=()=>{
   const p=produtos[selectProd.value];
   nome.value=p.nome;
   preco.value=p.preco;
-  estoque.value=p.estoque;
-  infinito.checked=p.infinito;
-  forcarEsgotado.checked=p.forcarEsgotado;
 }
-
 function criar(){
-  if(!img.files[0]){alert("Selecione uma imagem"); return;}
   const r=new FileReader();
   r.onload=()=>{
-    produtos.push({
-      nome:nome.value,
-      preco:+preco.value,
-      estoque:+estoque.value,
-      infinito:infinito.checked,
-      forcarEsgotado:forcarEsgotado.checked,
-      img:r.result
-    });
-    salvar();
+    produtos.push({nome:nome.value,preco:+preco.value,img:r.result});
+    salvarProdutos();
   }
   r.readAsDataURL(img.files[0]);
 }
 function editar(){
-  const i=selectProd.value;
-  Object.assign(produtos[i],{nome:nome.value,preco:+preco.value,estoque:+estoque.value,infinito:infinito.checked,forcarEsgotado:forcarEsgotado.checked});
-  salvar();
+  const i = selectProd.value;
+  Object.assign(produtos[i],{nome:nome.value,preco:+preco.value});
+  salvarProdutos();
 }
-function apagar(){produtos.splice(selectProd.value,1);salvar();}
+function apagar(){produtos.splice(selectProd.value,1);salvarProdutos();}
 
-// Histórico
-const historicoDiv=document.getElementById('historico');
+// Histórico manual
+const historicoDiv = document.getElementById('historico');
 function atualizarHistorico(){
-  document.getElementById('contRef').innerText=historico.length;
-  historicoDiv.innerHTML="";
-  historico.forEach((h,i)=>{
-    const div=document.createElement('div');
-    div.innerHTML=`<span>${h.data} - ${h.produto} - R$ </span>`;
-    const inputPreco=document.createElement('input');
-    inputPreco.type='number';
-    inputPreco.value=h.preco;
-    inputPreco.onchange=()=>{historico[i].preco=+inputPreco.value;salvar();}
-    div.appendChild(inputPreco);
-    historicoDiv.appendChild(div);
+  db.ref('historico').on('value', snap=>{
+    historico = snap.val()||[];
+    document.getElementById('contRef').innerText = historico.length;
+    historicoDiv.innerHTML="";
+    historico.forEach((h,i)=>{
+      const div = document.createElement('div');
+      div.innerHTML = `<span>${h.data} - ${h.produto} - R$ </span>`;
+      const inputPreco = document.createElement('input');
+      inputPreco.type='number';
+      inputPreco.value=h.preco;
+      inputPreco.onchange=()=>{historico[i].preco=+inputPreco.value;db.ref('historico').set(historico);}
+      div.appendChild(inputPreco);
+      historicoDiv.appendChild(div);
+    });
   });
 }
-function zerarHistorico(){if(confirm("Deseja realmente zerar o histórico?")){historico=[];salvar();}}
+function zerarHistorico(){if(confirm("Deseja realmente zerar o histórico?")){historico=[];db.ref('historico').set([]);}}
 
 // Avaliações
 const avals=[
@@ -256,15 +255,11 @@ const avals=[
   {nome:"Patrícia",msg:"Muito satisfeito com a compra."},
   {nome:"Thiago",msg:"Tudo perfeito, obrigado!"}
 ];
-function renderAvaliacoes(){
-  avaliacoes.innerHTML="";
-  avals.forEach(a=>avaliacoes.innerHTML+=`<div class="avaliacao"><strong>${a.nome}:</strong> ${a.msg}</div>`);
-}
+function renderAvaliacoes(){avaliacoes.innerHTML="";avals.forEach(a=>avaliacoes.innerHTML+=`<div class="avaliacao"><strong>${a.nome}:</strong> ${a.msg}</div>`);}
 
 // Inicial
-render();
+carregarProdutos();
 renderAvaliacoes();
 </script>
-
 </body>
 </html>
