@@ -23,8 +23,6 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
 .card-content .stock{font-size:12px;color:#ff2e2e;margin-top:4px;}
 .buy-btn{margin-top:8px;width:100%;padding:8px;background:#8b0000;border:none;color:white;border-radius:10px;font-weight:bold;cursor:pointer;font-size:12px;transition:0.3s;}
 .buy-btn:hover{background:#ff2e2e;box-shadow:0 0 15px #ff2e2e,0 0 30px #ff2e2e;}
-.buy-btn:disabled{opacity:0.5;background:#333;}
-.sold-out{position:absolute;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;font-size:18px;color:#ff2e2e;font-weight:bold;}
 
 /* MODAL COMPRA */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999;}
@@ -41,11 +39,8 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
 .admin-panel input,.admin-panel select{width:100%;margin:4px 0;padding:6px;border-radius:6px;border:none;background:#000;color:#fff;}
 .admin-panel label{font-size:12px;display:flex;gap:6px;align-items:center;margin:3px 0;}
 .small-btn{font-size:11px;padding:4px;margin-top:4px;cursor:pointer;}
-
-/* HISTÓRICO */
 #historico{max-height:120px;overflow-y:auto;background:#111;border:1px solid #8b0000;padding:6px;border-radius:6px;margin-top:6px;font-size:12px;}
 #historico div{padding:2px 4px;margin:2px 0;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center;}
-#historico input{width:50px;background:#000;color:white;border:none;border-bottom:1px solid #ff2e2e;}
 </style>
 </head>
 <body>
@@ -83,17 +78,18 @@ body{background:#000;color:white;overflow-x:hidden;position:relative;}
   <input id="preco" type="number" placeholder="Preço">
   <input id="img" type="file">
   <button class="buy-btn" onclick="criar()">Criar</button>
+  <button class="buy-btn" onclick="editar()">Salvar</button>
+  <button class="buy-btn" onclick="apagar()">Apagar</button>
   <button class="buy-btn small-btn" onclick="sairAdmin()">Sair</button>
-
-  <h4 style="color:#ff2e2e;margin-top:8px;">Histórico de Vendas</h4>
+  <h4 style="color:#ff2e2e;margin-top:8px;">Histórico de Produtos</h4>
   <div id="historico"></div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+import { getDatabase, ref, set, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-// Firebase Config
+// Config Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyAkOwU1T92cz1stmo1-VwcXE_nIDp-sk-M",
   authDomain: "rdn-store.firebaseapp.com",
@@ -106,11 +102,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// Estado global
 let produtos = [];
+let keys = [];
 let produtoAtual = null;
 
-// Renderizar produtos
+// Render
 function renderProdutos(){
   const container = document.getElementById('products');
   container.innerHTML='';
@@ -124,9 +120,9 @@ function renderProdutos(){
           <div class="stock">Stock: 1</div>
           <button class="buy-btn" onclick="abrirCompra(${i})">Comprar</button>
         </div>
-      </div>
-    `;
+      </div>`;
   });
+  renderHistorico();
 }
 
 // Modal compra
@@ -172,15 +168,45 @@ window.criar=()=>{
   reader.readAsDataURL(file);
 }
 
-// Receber produtos em tempo real
-onValue(ref(db,'produtos'),(snapshot)=>{
-  produtos = [];
+window.editar=()=>{
+  const i = document.getElementById('historico').selectedIndex || 0;
+  const key = keys[i];
+  update(ref(db,'produtos/'+key),{
+    nome:nome.value,
+    preco:preco.value
+  });
+}
+
+window.apagar=()=>{
+  const i = document.getElementById('historico').selectedIndex || 0;
+  const key = keys[i];
+  remove(ref(db,'produtos/'+key));
+}
+
+// Carregar produtos tempo real
+onValue(ref(db,'produtos'),snapshot=>{
+  produtos=[]; keys=[];
   snapshot.forEach(s=>{
     produtos.push(s.val());
+    keys.push(s.key);
   });
   renderProdutos();
-});
-</script>
+})
 
+// Render histórico admin
+function renderHistorico(){
+  const hist = document.getElementById('historico');
+  hist.innerHTML='';
+  produtos.forEach((p,i)=>{
+    const div = document.createElement('div');
+    div.textContent=`${p.nome} - R$${p.preco}`;
+    div.onclick=()=>{
+      nome.value=p.nome;
+      preco.value=p.preco;
+    }
+    hist.appendChild(div);
+  });
+}
+</script>
 </body>
 </html>
