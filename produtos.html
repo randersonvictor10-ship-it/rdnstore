@@ -1,1 +1,76 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+<title>Produtos</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+<h1 class="logo">RDN STORE</h1>
+<a href="carrinho.html">
+<button>🛒 Carrinho</button>
+</a>
+</header>
+
+<div class="produtos" id="produtos"></div>
+
+<script type="module">
+
+import { db } from "./firebase.js";
+import { ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const produtosDiv = document.getElementById("produtos");
+
+const produtosRef = ref(db,"produtos");
+
+onValue(produtosRef,(snapshot)=>{
+
+produtosDiv.innerHTML="";
+
+snapshot.forEach((child)=>{
+
+const p = child.val();
+
+produtosDiv.innerHTML+=`
+
+<div class="produto">
+
+<img src="${p.imagem}">
+
+<h3>${p.nome}</h3>
+
+<p>💰 R$ ${p.preco}</p>
+
+<p>📦 Estoque: ${p.stock}</p>
+
+<button onclick="addCarrinho('${p.nome}','${p.preco}')">
+Comprar
+</button>
+
+</div>
+
+`
+
+})
+
+})
+
+window.addCarrinho = function(nome,preco){
+
+let carrinho = JSON.parse(localStorage.getItem("carrinho")) || []
+
+carrinho.push({nome,preco})
+
+localStorage.setItem("carrinho",JSON.stringify(carrinho))
+
+alert("Adicionado ao carrinho")
+
+}
+
+</script>
+
+</body>
+</html>
