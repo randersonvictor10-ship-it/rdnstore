@@ -1,28 +1,22 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="pt-BR">
 <head>
+<meta charset="UTF-8">
 <title>RDN STORE</title>
 <link rel="stylesheet" href="style.css">
+<script type="module" src="firebase.js"></script>
+<script type="module" src="script.js"></script>
 </head>
-
 <body>
+<header>RDN STORE</header>
 
-<header>
+<div class="container" id="produtosContainer"></div>
 
-<h1 class="logo">🔥 RDN STORE 🔥</h1>
-
-</header>
-
-<center>
-
-<h2>Bem vindo à loja</h2>
-
-<a href="produtos.html">
-<button>Entrar na Loja</button>
-</a>
-
-</center>
-
+<div id="carrinho">
+  <h3>Carrinho</h3>
+  <div id="itensCarrinho"></div>
+  <p id="totalCarrinho">Total: R$ 0</p>
+  <button id="comprar">Comprar via WhatsApp</button>
+</div>
 </body>
 </html>
