@@ -1,1 +1,54 @@
+body{
+background:#0a0a0a;
+color:white;
+font-family:Arial;
+margin:0;
+}
 
+header{
+background:black;
+padding:20px;
+text-align:center;
+border-bottom:2px solid red;
+}
+
+.logo{
+color:red;
+font-size:28px;
+}
+
+.produtos{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:20px;
+padding:20px;
+}
+
+.produto{
+background:#111;
+padding:15px;
+width:200px;
+border-radius:10px;
+border:1px solid red;
+text-align:center;
+}
+
+.produto img{
+width:100%;
+border-radius:8px;
+}
+
+button{
+background:red;
+border:none;
+padding:10px;
+color:white;
+border-radius:5px;
+cursor:pointer;
+margin-top:5px;
+}
+
+button:hover{
+background:#ff3333;
+}
