@@ -1,1 +1,95 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+<title>ADMIN</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+<h1 class="logo">PAINEL ADMIN</h1>
+</header>
+
+<center>
+
+<h2>Criar Produto</h2>
+
+<input id="nome" placeholder="Nome"><br>
+<input id="preco" placeholder="Preço"><br>
+<input id="stock" placeholder="Estoque"><br>
+<input id="imagem" placeholder="Link da imagem"><br>
+
+<button onclick="add()">Adicionar Produto</button>
+
+<h2>Produtos Criados</h2>
+
+<div id="lista"></div>
+
+</center>
+
+<script type="module">
+
+import { db } from "./firebase.js";
+import { ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const lista = document.getElementById("lista");
+
+window.add = function(){
+
+const nome = document.getElementById("nome").value
+const preco = document.getElementById("preco").value
+const stock = document.getElementById("stock").value
+const imagem = document.getElementById("imagem").value
+
+push(ref(db,"produtos"),{
+nome,
+preco,
+stock,
+imagem
+})
+
+alert("Produto criado!")
+
+}
+
+const produtosRef = ref(db,"produtos")
+
+onValue(produtosRef,(snapshot)=>{
+
+lista.innerHTML=""
+
+snapshot.forEach((child)=>{
+
+const p = child.val()
+const id = child.key
+
+lista.innerHTML+=`
+
+<div>
+
+${p.nome} - R$${p.preco}
+
+<button onclick="deletar('${id}')">
+❌ Deletar
+</button>
+
+</div>
+
+`
+
+})
+
+})
+
+window.deletar = function(id){
+
+remove(ref(db,"produtos/"+id))
+
+}
+
+</script>
+
+</body>
+</html>
