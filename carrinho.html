@@ -1,1 +1,40 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+<title>Carrinho</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+<h1 class="logo">Carrinho</h1>
+</header>
+
+<div id="carrinho"></div>
+
+<script>
+
+let carrinho = JSON.parse(localStorage.getItem("carrinho")) || []
+
+let div = document.getElementById("carrinho")
+
+let total = 0
+
+carrinho.forEach(p=>{
+
+total += Number(p.preco)
+
+div.innerHTML+=`
+<p>${p.nome} - R$ ${p.preco}</p>
+`
+
+})
+
+div.innerHTML+=`<h3>Total: R$ ${total}</h3>`
+
+</script>
+
+</body>
+</html>
