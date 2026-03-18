@@ -1,95 +1,73 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="pt-BR">
 <head>
-<title>ADMIN</title>
+<meta charset="UTF-8">
+<title>Admin - RDN STORE</title>
 <link rel="stylesheet" href="style.css">
+<script type="module" src="firebase.js"></script>
 </head>
-
 <body>
+<header>Painel Admin</header>
 
-<header>
-<h1 class="logo">PAINEL ADMIN</h1>
-</header>
-
-<center>
-
-<h2>Criar Produto</h2>
-
-<input id="nome" placeholder="Nome"><br>
-<input id="preco" placeholder="Preço"><br>
-<input id="stock" placeholder="Estoque"><br>
-<input id="imagem" placeholder="Link da imagem"><br>
-
-<button onclick="add()">Adicionar Produto</button>
-
-<h2>Produtos Criados</h2>
-
-<div id="lista"></div>
-
-</center>
-
-<script type="module">
-
-import { db } from "./firebase.js";
-import { ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-const lista = document.getElementById("lista");
-
-window.add = function(){
-
-const nome = document.getElementById("nome").value
-const preco = document.getElementById("preco").value
-const stock = document.getElementById("stock").value
-const imagem = document.getElementById("imagem").value
-
-push(ref(db,"produtos"),{
-nome,
-preco,
-stock,
-imagem
-})
-
-alert("Produto criado!")
-
-}
-
-const produtosRef = ref(db,"produtos")
-
-onValue(produtosRef,(snapshot)=>{
-
-lista.innerHTML=""
-
-snapshot.forEach((child)=>{
-
-const p = child.val()
-const id = child.key
-
-lista.innerHTML+=`
-
-<div>
-
-${p.nome} - R$${p.preco}
-
-<button onclick="deletar('${id}')">
-❌ Deletar
-</button>
-
+<div class="container">
+  <input type="password" id="senhaAdmin" placeholder="Senha Admin">
+  <button id="loginBtn">Entrar</button>
 </div>
 
-`
+<div class="container" id="adminArea" style="display:none;">
+  <h3>Adicionar Produto</h3>
+  <input id="nome" placeholder="Nome do produto"><br>
+  <input id="preco" placeholder="Preço" type="number"><br>
+  <input id="estoque" placeholder="Estoque" type="number"><br>
+  <button id="adicionarProduto">Adicionar Produto</button>
+  <h3>Produtos Existentes</h3>
+  <div id="listaProdutos"></div>
+</div>
 
-})
+<script type="module">
+import { db, ref, push, set, onValue, remove } from "./firebase.js";
 
-})
+const senhaCorreta = "1234";
+const loginBtn = document.getElementById("loginBtn");
+const adminArea = document.getElementById("adminArea");
+const listaProdutos = document.getElementById("listaProdutos");
 
-window.deletar = function(id){
+loginBtn.addEventListener("click", () => {
+  const senha = document.getElementById("senhaAdmin").value;
+  if(senha === senhaCorreta){
+    adminArea.style.display = "block";
+    alert("Bem-vindo Admin!");
+    carregarProdutos();
+  } else {
+    alert("Senha incorreta!");
+  }
+});
 
-remove(ref(db,"produtos/"+id))
+const adicionarProdutoBtn = document.getElementById("adicionarProduto");
+adicionarProdutoBtn.addEventListener("click", () => {
+  const nome = document.getElementById("nome").value;
+  const preco = document.getElementById("preco").value;
+  const estoque = document.getElementById("estoque").value;
+  if(!nome || !preco || !estoque) return alert("Preencha todos os campos!");
+  const novoProdutoRef = push(ref(db, 'produtos'));
+  set(novoProdutoRef, {nome, preco, estoque}).then(() => alert("Produto adicionado!"));
+});
 
+function carregarProdutos(){
+  const produtosRef = ref(db,'produtos');
+  onValue(produtosRef, snapshot => {
+    listaProdutos.innerHTML = '';
+    snapshot.forEach(child => {
+      const p = child.val();
+      const div = document.createElement('div');
+      div.innerHTML = `${p.nome} - R$ ${p.preco} - Estoque: ${p.estoque} 
+        <button onclick="deletar('${child.key}')">❌ Deletar</button>`;
+      listaProdutos.appendChild(div);
+    });
+  });
 }
 
+window.deletar = (id) => remove(ref(db, 'produtos/'+id));
 </script>
-
 </body>
 </html>
